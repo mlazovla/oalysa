@@ -1,0 +1,14 @@
+{* This is the welcome page, you can delete it *}
+
+{block content}
+	<h1 n:block="title">OA Lysá</h1>
+
+	<ul class="navig">
+	    <li><a n:href="Homepage:">Home</a></li>
+	    {if loggedIn}
+	        <li><a n:href="Sign:out">Odhlásit {$user->username}</a></li>
+	    {else}
+	        <li><a n:href="Sign:in">Přihlásit</a></li>
+    {/if}
+	</ul>
+{/block}
