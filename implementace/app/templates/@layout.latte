@@ -19,14 +19,28 @@
 <body>
 	<script> document.documentElement.className+=' js' </script>
 
-	<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
-
-	{include content}
-
+	<header>{block header}{/block}{block userInfo}{/block}</header>
+	
+	<div class="menu">{block menu}{/block}</div>
+	
+	<div id="content">
+		<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+	
+		{if $isLoggedIn}
+			{include content}
+		{else}
+			<p>Je potřeba se přihlásit.</p>
+		{/if}
+	</div>
+	
 	{block scripts}
 	<script src="{$basePath}/js/jquery.js"></script>
 	<script src="{$basePath}/js/netteForms.js"></script>
 	<script src="{$basePath}/js/main.js"></script>
 	{/block}
+	
+	<footer>
+		Vladimír Mlázovský 2015
+	</footer>
 </body>
 </html>

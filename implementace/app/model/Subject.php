@@ -20,4 +20,26 @@ class Subject extends \Nette\Database\Table\Selection {
                 $database->getDatabaseReflection());
         $this->db = $database;
     }
+    
+    /**
+     * Returns grades of this subject.
+     * @param int $subjectId
+     * @return Grade[] $grades
+     */
+    public function getGrades($subjectId) {
+        $s2g = new Subject2Grade($this->db);
+        $temp = $s2g->where('Subject_id = '. $subjectId);
+        if ($temp == null) return null;
+        
+        /**
+         * @var Grade[] $grades
+         */
+        $grades = null;
+        foreach ($temp as $t) {
+            $temp2 = new Grade($this->db);
+            $grades[] = $t->grade;
+            //$grades[] = $temp2->get($t->grade_id);
+        }
+        return $grades;       
+    }
 }

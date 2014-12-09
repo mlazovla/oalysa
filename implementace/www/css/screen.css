@@ -1,3 +1,5 @@
+/* Nette original design*/
+
 body {
 	font-size: 15px;
 	line-height: 1.6;
@@ -52,3 +54,28 @@ form .error {
 html.js .jshidden {
 	display: none;
 }
+
+
+/***************************************
+ *
+ * OA Lysa design by Vladimir Mlazovsky
+ *
+ */
+
+* {
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+header {
+	display: block;
+	padding: 10px 10px 10px 10px;
+	background-color: #24A;
+	color: #DDE;
+}
+
+header a {
+	color: white;
+}
+
+footer {background-color: #AAA;}

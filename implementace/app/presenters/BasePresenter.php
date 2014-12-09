@@ -11,5 +11,9 @@ use Nette,
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
-
+    public function beforeRender()
+    {
+        $this->template->isLoggedIn = $this->user->isLoggedIn();
+    }
+    
 }

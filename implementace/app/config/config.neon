@@ -10,7 +10,6 @@ parameters:
 php:
 	date.timezone: Europe/Prague
 
-
 nette:
 	application:
 		errorPresenter: Error
@@ -19,9 +18,26 @@ nette:
 
 	session:
 		expiration: 14 days
-			
-
+		
+	security:
+		users:
+			admin: blabru
+	
 services:
-	- App\Model\UserManager
+#	- App\Model\UserManager
 	- App\RouterFactory
 	router: @App\RouterFactory::createRouter
+	
+	database: @Nette\Database\Context
+
+	action: App\Model\Action
+	attachement: App\Model\Attachement
+	comentary: App\Model\Comentary
+	grade: App\Model\Grade
+	log: App\Model\Log
+	news: App\Model\News
+	subject: App\Model\Subject
+	subject2grade: App\Model\Subject2Grade
+	topic: App\Model\Topic
+	user2usersGroup: App\Model\User2UsersGroup
+	usersGroup: App\Model\UsersGroup

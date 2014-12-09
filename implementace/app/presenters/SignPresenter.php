@@ -21,10 +21,10 @@ class SignPresenter extends BasePresenter
 	{
 		$form = new Nette\Application\UI\Form;
 		$form->addText('username', 'Username:')
-			->setRequired('Please enter your username.');
+			->setRequired('Zadejte své jméno.');
 
 		$form->addPassword('password', 'Heslo:')
-			->setRequired('Please enter your password.');
+			->setRequired('Zadejte své heslo.');
 
 		$form->addCheckbox('remember', 'Zapamatovat');
 
@@ -38,17 +38,19 @@ class SignPresenter extends BasePresenter
 
 	public function signInFormSucceeded($form, $values)
 	{
+	    // doba platnosti prihlaseni
 		if ($values->remember) {
 			$this->getUser()->setExpiration('14 days', FALSE);
 		} else {
 			$this->getUser()->setExpiration('20 minutes', TRUE);
 		}
-
+        
+		// prihlas uzivatele
 		try {
 			$this->getUser()->login($values->username, $values->password);
-			$this->redirect('Homepage:');
+			$this->redirect('Homepage:'); //uspesne prihlaseni
 
-		} catch (Nette\Security\AuthenticationException $e) {
+		} catch (Nette\Security\AuthenticationException $e) { // neuspesne prihlaseni
 			$form->addError($e->getMessage());
 		}
 	}
@@ -57,7 +59,7 @@ class SignPresenter extends BasePresenter
 	public function actionOut()
 	{
 		$this->getUser()->logout();
-		$this->flashMessage('You have been signed out.');
+		$this->flashMessage('Byl jste odhlášen/a.');
 		$this->redirect('in');
 	}
 

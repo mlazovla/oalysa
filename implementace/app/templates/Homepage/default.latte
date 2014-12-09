@@ -1,14 +1,49 @@
-{* This is the welcome page, you can delete it *}
+{block header}
+	{if $isLoggedIn}
+    	<a n:href="Sign:out">Odhlásit se</a>
+	{else}
+    	<a n:href="Sign:in">Přihlásit</a>
+	{/if}
+{/block}
 
 {block content}
-	<h1 n:block="title">OA Lysá</h1>
-
-	<ul class="navig">
-	    <li><a n:href="Homepage:">Home</a></li>
-	    {if loggedIn}
-	        <li><a n:href="Sign:out">Odhlásit {$user->username}</a></li>
-	    {else}
-	        <li><a n:href="Sign:in">Přihlásit</a></li>
-    {/if}
-	</ul>
+	<h1 n:block="title">Home</h1>
+	
+	<div id="navigation">
+		<h2>Navigace</h2>
+		<ul class="navig">
+		    <li><a n:href="Homepage:">Home</a></li>
+		</ul>
+	</div>
+	
+	<div id="news">
+	<h2>Novinky</h2>
+		{if count($news) > 0}
+			{foreach $news as $n}
+				<div>
+					<span class="date">{$n->created_at|date:'%d.%m.%Y %H:%M'}</span>
+					<span class="owner">{$n->user->name}</span>
+					<span class="content">{$n->content}</span>
+				</div>
+			{/foreach}
+		{else}
+			Žádné novinky nebyly načteny.
+		{/if}
+	</div>
 {/block}
+
+{block menu}
+	{if $isLoggedIn}
+		<h2>škola</h2>
+			{if count($subjects) > 0}
+				<ul>
+				{foreach $subjects as $s}
+						<li><a href="{link Subject:show $s->id}" title="{$s->name}">{$s->shortcut}</a></li>
+				{/foreach}
+				</ul>
+			{else}
+				Žádné předměty nebyly načteny.
+			{/if}
+	{/if}
+{/block}
+
