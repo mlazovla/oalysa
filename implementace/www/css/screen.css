@@ -79,3 +79,9 @@ header a {
 }
 
 footer {background-color: #AAA;}
+
+div {
+	margin: 5px 5px;
+	border: 1px solid silver;
+	background: #DDD;
+}

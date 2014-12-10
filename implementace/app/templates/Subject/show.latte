@@ -1,0 +1,27 @@
+{block menu}
+	{if $subject}
+		<h2>{$subject->shortcut}</h2>
+		{if count($grades)>0}
+			<ul>
+				{foreach $grades as $g}
+					<li><a href="{link SubjectGrade:show $subject->id, $g->id}">{$g->name}</a></li>
+				{/foreach}
+			</ul>
+		{else}
+		<p>Nebyly načteny žádné ročníky.</p>
+		{/if}
+	{else}
+	
+	{/if}
+
+{/block}
+
+
+{block content}
+	{if $subject}
+		<h1 n:block="title">{$subject->name}</h1>
+		{$subject->description}
+	{else}
+		<p>Předmět se nepodařilo načíst. <a n:href="Homepage:">Zpět na Homepage</a></p>
+	{/if}
+{/block}

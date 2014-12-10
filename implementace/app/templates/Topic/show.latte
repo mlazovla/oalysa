@@ -1,0 +1,32 @@
+{block menu}
+	{if $subject}
+		<h2>{$subject->shortcut} - {$grade->name}</h2>
+		{if count($topics)>0}
+			<ul>
+				{foreach $topics as $t}
+					<li{if $t->id == $topic->id} class="active"{/if}><a href="{link Topic:show $t->id}">{$t->name}</a></li>
+				{/foreach}
+			</ul>
+		{else}
+		<p>Nebyla načtena žádná témata.</p>
+		{/if}
+	{else}
+	
+	{/if}
+
+{/block}
+
+
+{block content}
+	{if $topic}
+		<h1 n:block="title">{$topic->name}</h1>
+		<div id="topicAnotation">
+			{$topic->anotation}
+		</div>
+		<div id="topicContent">
+			{$topic->content}
+		</div>
+	{else}
+		<p>Téma se nepodařilo načíst. <a n:href="Homepage:">Zpět na Homepage</a></p>
+	{/if}
+{/block}

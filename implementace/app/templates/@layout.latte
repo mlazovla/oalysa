@@ -19,9 +19,27 @@
 <body>
 	<script> document.documentElement.className+=' js' </script>
 
-	<header>{block header}{/block}{block userInfo}{/block}</header>
+	<header>
+		{block header}{/block}
+		{block userInfo}
+			{if $isLoggedIn}
+				{$currentUser['id']} (<span class="role">{$currentUser['role']}</span>)
+				<a n:href="Sign:out">Odhlásit se</a>
+			{/if}
+		{/block}
+	</header>
 	
-	<div class="menu">{block menu}{/block}</div>
+	<div id="navigation">
+		<h2>Navigace</h2>
+		<ul class="navig">
+		    <li><a n:href="Homepage:">Home</a></li>
+		</ul>
+	</div>
+	
+	
+	<div id="menu">{block menu}{/block}</div>
+	
+	
 	
 	<div id="content">
 		<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
