@@ -13,7 +13,6 @@ use App\Model\Grade;
  */
 class TopicPresenter extends BasePresenter
 {
-    private $database;
 
     public function __construct(Nette\Database\Context $database)
     {

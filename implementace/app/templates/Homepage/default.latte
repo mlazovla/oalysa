@@ -1,7 +1,5 @@
 {block header}
-	{if $isLoggedIn}
-    	<a n:href="Sign:out">Odhlásit se</a>
-	{else}
+	{if !$isLoggedIn}
     	<a n:href="Sign:in">Přihlásit</a>
 	{/if}
 {/block}

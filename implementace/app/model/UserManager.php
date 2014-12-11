@@ -3,7 +3,6 @@
 namespace App\Model;
 
 use Nette,
-	Nette\Utils\Strings,
 	Nette\Security\Passwords;
 
 
@@ -40,7 +39,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 		list($username, $password) = $credentials;
 		
 		$row = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_NAME, $username)->fetch();
-
+        
 		if (!$row) {
 			throw new Nette\Security\AuthenticationException('The username is incorrect.', self::IDENTITY_NOT_FOUND);
 
@@ -55,7 +54,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 
 		$arr = $row->toArray();
 		unset($arr[self::COLUMN_PASSWORD_HASH]);
-		return new Nette\Security\Identity($row[self::COLUMN_ID], $row[self::COLUMN_ROLE], $arr);
+		return new Nette\Security\Identity($row[self::COLUMN_ID], $row[self::COLUMN_ROLE]->name, $arr);
 	}
 
 

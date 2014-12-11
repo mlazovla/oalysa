@@ -23,7 +23,7 @@
 		{block header}{/block}
 		{block userInfo}
 			{if $isLoggedIn}
-				{$currentUser['id']} (<span class="role">{$currentUser['role']}</span>)
+				{$currentUser['name']} (<span class="role">{$currentUser['role']->name}</span>)
 				<a n:href="Sign:out">Odhlásit se</a>
 			{/if}
 		{/block}

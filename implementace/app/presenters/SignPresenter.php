@@ -46,6 +46,7 @@ class SignPresenter extends BasePresenter
 		}
         
 		// prihlas uzivatele
+		
 		try {
 			$this->getUser()->login($values->username, $values->password);
 			$this->redirect('Homepage:'); //uspesne prihlaseni

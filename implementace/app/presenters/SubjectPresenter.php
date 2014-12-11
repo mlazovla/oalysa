@@ -16,7 +16,6 @@ use App\Model\Subject2Grade;
  */
 class SubjectPresenter extends BasePresenter
 {
-    private $database;
     
     public function __construct(Nette\Database\Context $database)
     {

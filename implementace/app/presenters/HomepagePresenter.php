@@ -14,8 +14,6 @@ use App\Model\Subject;
  */
 class HomepagePresenter extends BasePresenter
 {
-
-    private $database;
     
     public function __construct(Nette\Database\Context $database)
     {

@@ -6,7 +6,7 @@ namespace App\Model;
  * Třída obstarávající přístup do databázovou tabulku s údaji o jednotlivých novinkách.
  * Převzaté datové položky z databáze:
  *  - int id
- *  - DateTime created_at FK
+ *  - DateTime created_at
  *  - int user_id FK
  *  - text content
  */
@@ -20,3 +20,4 @@ class News extends \Nette\Database\Table\Selection {
         $this->db = $database;
     }
 }
+
