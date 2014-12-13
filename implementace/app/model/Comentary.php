@@ -22,4 +22,14 @@ class Comentary extends \Nette\Database\Table\Selection {
                 $database->getDatabaseReflection());
         $this->db = $database;
     }
+
+    /**
+     * Get all comentary in selected topic
+     * @param int $topic_id
+     * @return Comentary[]
+     */
+    public function getByTopic($topic_id) {
+        return $this->where('topic_id', $topic_id)->order('created_at DESC');
+    }
+    
 }

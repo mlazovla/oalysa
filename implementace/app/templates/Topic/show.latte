@@ -18,15 +18,84 @@
 
 
 {block content}
-	{if $topic}
-		<h1 n:block="title">{$topic->name}</h1>
-		<div id="topicAnotation">
-			{$topic->anotation}
-		</div>
-		<div id="topicContent">
-			{$topic->content}
-		</div>
+	<div id="topic">
+		{if $topic}
+			<h1 n:block="title">{$topic->name}</h1>
+			
+			<div id="notation">
+				{$topic->anotation}
+			</div>
+			<div id="content">
+				{$topic->content|noescape}
+			</div>
+		{else}
+			<p>Téma se nepodařilo načíst. <a n:href="Homepage:">Zpět na Homepage</a></p>
+		{/if}
+	</div>
+
+	<div id="attachements">
+	<h2>Přílohy</h2>
+		{if $attachements and count($attachements)>0}
+			<table>
+				<thead>
+					<tr><th>Název</th><th>Nástroje</th><th>Vlastník</th><th>Nahráno</th><th>Popis</th></tr>
+				</thead>
+				<tbody>
+					{foreach $attachements as $a}
+						<tr>
+							<td class="name"><a href="{$basePath}/attachements/{$a->file}" title="Stáhnout/Otevřít {$a->name}">{$a->name}</a></td>
+							<td class="tools">
+								<a href="{$basePath}attachements/{$a->file}" class="buttonDownload">Stáhnout</a>
+								{if $a->user_id == $currentUser['id']}<a n:href="Attachement:delete $a->id" class="buttonDelete">Smazat</a>{/if}								
+							</td>
+							<td class="owner">{$a->user->name}</td>
+							<td class="timeDate">{$a->created_at|date:'%d.%m.%Y %H:%M'}</td>
+							<td class="description">{$a->description}</td>
+						</tr>
+					{/foreach}
+				</tbody>
+			</table>
+		{else}
+			<p>K tomuto tématu nejsou přiloženy žádné přílohy.</p>
+		{/if}		
+	</div>
+
+	<div id="comentaries">
+	<h2>Komentáře</h2>
+	{if $comentaries}
+		{foreach $comentaries as $c}
+			<div class="comentar">
+				{if $c->comentary != null}
+				<a name="comentary{$c->id}"></a>
+				<div class="question">
+					<span class="user">{$c->comentary->user->name}</span>
+					<span class="date">{$c->comentary->created_at}</span>
+					<a href="#comentary{$c->comentary->id}" title="Ukázat komentář." class="buttonShow">Ukázat</a>
+					napsal: {$c->comentary->content|truncate:50}					
+				</div>
+				{/if}
+				<div class="answer">
+					<span class="user">{$c->user->name}</span>
+					<span class="date">{$c->created_at|date:'%d.%m.%Y %H:%M'}</span>
+					<a
+						class="buttonAnswer_on"
+						href="#comment"
+						title="Odpovědět"
+						onClick="
+							setInputValueById('frm-comentaryForm-answer_on','{$c->id}');
+							setElementValueById('answer_on_message', '{$c->content|truncate:30}');
+					">Odpovědět</a>
+					<span class="content">{$c->content}</span>
+				</div>
+			</div>
+		{/foreach}
 	{else}
-		<p>Téma se nepodařilo načíst. <a n:href="Homepage:">Zpět na Homepage</a></p>
+		<p>K tomuto tématu nejsou zatím žádné komentáře.</p>
 	{/if}
+		<div id="comentaryForm">
+			<a name='comment'></a>
+			<span id="answer_on_message"></span>
+			{control comentaryForm}
+		</div>
+	</div>
 {/block}

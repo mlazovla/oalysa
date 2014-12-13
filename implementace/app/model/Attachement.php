@@ -14,13 +14,21 @@ namespace App\Model;
  *  
  */
 class Attachement extends \Nette\Database\Table\Selection {
-    private $table = "Action";
+    private $table = "Attachement";
     private $db;
-    const SAVE_DIR = "../attachements/";
+    /**
+     * The Path in $basePath
+     * @var string
+     */
+    const SAVE_DIR = "attachements/";
     
     public function __construct(\Nette\Database\Context $database) {
         parent::__construct($database->getConnection(), $this->table, 
                 $database->getDatabaseReflection());
         $this->db = $database;
+    }
+    
+    public function getByTopic($topicId) {
+        return $this->where('topic_id', $topicId);
     }
 }

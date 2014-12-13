@@ -83,5 +83,11 @@ footer {background-color: #AAA;}
 div {
 	margin: 5px 5px;
 	border: 1px solid silver;
-	background: #DDD;
+	background: rgba(0,0,0,0.05);
+}
+
+/************************/
+/* comentary */
+#comentaries .comentar .content {
+	white-space: pre;
 }
