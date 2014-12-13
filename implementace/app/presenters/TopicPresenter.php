@@ -65,6 +65,11 @@ class TopicPresenter extends BasePresenter
     }
     
     public function renderDownloadAttachement($attachementId) {
+        if (!$this->user->isLoggedIn()) {
+            $this->redirect('Homepage:');
+            return;
+        }
+        
         $attachement = new Attachement($this->database);
  
         $path = $attachement->getPathById($attachementId);
@@ -81,6 +86,11 @@ class TopicPresenter extends BasePresenter
     }
     
     public function renderOpenAttachement($attachementId) {
+        if (!$this->user->isLoggedIn()) {
+            $this->redirect('Homepage:');
+            return;
+        }
+            
         $attachement = new Attachement($this->database);
  
         $path = $attachement->getPathById($attachementId);
