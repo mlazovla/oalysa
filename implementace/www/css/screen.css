@@ -91,3 +91,10 @@ div {
 #comentaries .comentar .content {
 	white-space: pre;
 }
+
+
+/************************/
+/* attachement */
+#attachements .type img {
+	height: 20px;
+}

@@ -38,14 +38,16 @@
 		{if $attachements and count($attachements)>0}
 			<table>
 				<thead>
-					<tr><th>Název</th><th>Nástroje</th><th>Vlastník</th><th>Nahráno</th><th>Popis</th></tr>
+					<tr><th>Typ</th><th>Název</th><th>Nástroje</th><th>Vlastník</th><th>Nahráno</th><th>Popis</th></tr>
 				</thead>
 				<tbody>
 					{foreach $attachements as $a}
 						<tr>
-							<td class="name"><a href="{$basePath}/attachements/{$a->file}" title="Stáhnout/Otevřít {$a->name}">{$a->name}</a></td>
+							<td class="type"><img src="{$basePath}/images/icons/files/{$a->mimeType|replace:'/','-'}.png" title="{$a->mimeType}">
+							<td class="name"><span title="Stáhnout/Otevřít {$a->name}">{$a->name}</span></td>
 							<td class="tools">
-								<a href="{$basePath}attachements/{$a->file}" class="buttonDownload">Stáhnout</a>
+								<a n:href="Topic:openAttachement $a->id" class="buttonOpen">Otevřít</a>								
+								<a n:href="Topic:downloadAttachement $a->id" class="buttonDownload" download>Stáhnout</a>
 								{if $a->user_id == $currentUser['id']}<a n:href="Attachement:delete $a->id" class="buttonDelete">Smazat</a>{/if}								
 							</td>
 							<td class="owner">{$a->user->name}</td>

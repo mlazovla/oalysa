@@ -64,6 +64,38 @@ class TopicPresenter extends BasePresenter
         
     }
     
+    public function renderDownloadAttachement($attachementId) {
+        $attachement = new Attachement($this->database);
+ 
+        $path = $attachement->getPathById($attachementId);
+        $filename = $attachement->get($attachementId)->file;
+        header('Content-Transfer-Encoding: binary');  // For Gecko browsers mainly
+        header('Last-Modified: ' . $attachement->get($attachementId)->created_at . ' GMT');
+        header('Accept-Ranges: bytes');  // Allow support for download resume
+        header('Content-Length: ' . filesize($path));  // File size
+        header('Content-Encoding: none');
+        header('Content-Type: ' . $attachement->get($attachementId)->mimeType);  // Change the mime type if the file is not PDF
+        header('Content-Disposition: attachment; filename=' . $filename);  // Make the browser display the Save As dialog
+        readfile($path);  // This is necessary in order to get it to actually download the file, otherwise it will be 0Kb
+        exit();
+    }
+    
+    public function renderOpenAttachement($attachementId) {
+        $attachement = new Attachement($this->database);
+ 
+        $path = $attachement->getPathById($attachementId);
+        $filename = $attachement->get($attachementId)->file;
+                
+        header('Content-type: $attachement->get($attachementId)->mimeType');
+        header('Content-Disposition: inline; filename="' . $filename . '"');
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Length: ' . filesize($path));
+        header('Accept-Ranges: bytes');
+        
+        @readfile($path);
+        exit();
+    }
+    
     protected function createComponentComentaryForm()
     {
         $form = new Nette\Application\UI\Form;
