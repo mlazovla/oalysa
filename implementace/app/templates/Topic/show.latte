@@ -79,14 +79,16 @@
 				<div class="answer">
 					<span class="user">{$c->user->name}</span>
 					<span class="date">{$c->created_at|date:'%d.%m.%Y %H:%M'}</span>
-					<a
-						class="buttonAnswer_on"
-						href="#comment"
-						title="Odpovědět"
-						onClick="
-							setInputValueById('frm-comentaryForm-answer_on','{$c->id}');
-							setElementValueById('answer_on_message', '{$c->content|truncate:30}');
-					">Odpovědět</a>
+					{if $user_allowed_to_write_coments}
+						<a
+							class="buttonAnswer_on"
+							href="#comment"
+							title="Odpovědět"
+							onClick="
+								setInputValueById('frm-comentaryForm-answer_on','{$c->id}');
+								setElementValueById('answer_on_message', '{$c->content|truncate:30}');
+						">Odpovědět</a>
+					{/if}
 					<span class="content">{$c->content}</span>
 				</div>
 			</div>
@@ -95,9 +97,11 @@
 		<p>K tomuto tématu nejsou zatím žádné komentáře.</p>
 	{/if}
 		<div id="comentaryForm">
+			{if $user_allowed_to_write_coments}
 			<a name='comment'></a>
 			<span id="answer_on_message"></span>
-			{control comentaryForm}
+				{control comentaryForm}
+			{/if}
 		</div>
 	</div>
 {/block}

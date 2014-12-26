@@ -8,6 +8,7 @@ use App\Model\Subject;
 use App\Model\Grade;
 use App\Model\Comentary;
 use App\Model\Attachement;
+use App\Model\MyAuthorizator;
 
 
 /**
@@ -26,12 +27,15 @@ class TopicPresenter extends BasePresenter
      * @param int $subjectId
      */
     public function renderShow($topicId)
-    {
-        // Neprihlaseny uzivatel
-        if (!$this->user->isLoggedIn()) {
+    {        
+        // Neopravneny uzivatel
+        if (!$this->user->loggedIn || !$this->user->isAllowed('topic','read')) {
+            $this->flashMessage('Nemáte oprávnění číst články.', 'warning');
             $this->redirect('Homepage:');
             return;
         }
+        
+        
 
         $subject = new Subject($this->database);
         $grade = new Grade($this->database);
@@ -49,24 +53,31 @@ class TopicPresenter extends BasePresenter
             $this->template->topics = $topic->where('Subject2Grade.grade_id', $gradeId);
         }
         
-        /**
-         * @var Comentary $comentary
-         */
-        $comentary = new Comentary($this->database);
-        $this->template->comentaries = $comentary->getByTopic($topicId);
-
-        /**
-         * @var Attachement $attachement
-         */
-        $attachement = new Attachement($this->database);
-        $this->template->attachements = $attachement->getByTopic($topicId);
+        if ($this->user->isAllowed('attachement', 'read')) {   
+            /**
+             * @var Attachement $attachement
+             */
+            $attachement = new Attachement($this->database);
+            $this->template->attachements = $attachement->getByTopic($topicId);
+        }
+        
+        if ($this->user->isAllowed('comentary', 'read')) {        
+            /**
+             * @var Comentary $comentary
+             */
+            $comentary = new Comentary($this->database);
+            $this->template->comentaries = $comentary->getByTopic($topicId);
+        }
+        
+        $this->template->user_allowed_to_write_coments = $this->user->isAllowed('selfComentary', 'insert');
         
         
     }
     
     public function renderDownloadAttachement($attachementId) {
-        if (!$this->user->isLoggedIn()) {
+        if (!$this->user->isAllowed('attachement', 'read')) {
             $this->redirect('Homepage:');
+            $this->flashMessage('Nemáte oprávnění číst přílohu článku.','warning');
             return;
         }
         
@@ -86,11 +97,12 @@ class TopicPresenter extends BasePresenter
     }
     
     public function renderOpenAttachement($attachementId) {
-        if (!$this->user->isLoggedIn()) {
+        if (!$this->user->isAllowed('attachement', 'read')) {
             $this->redirect('Homepage:');
+            $this->flashMessage('Nemáte oprávnění číst přílohu článku.','warning');
             return;
         }
-            
+                    
         $attachement = new Attachement($this->database);
  
         $path = $attachement->getPathById($attachementId);
@@ -120,14 +132,19 @@ class TopicPresenter extends BasePresenter
     }
     
     public function comentaryFormSucceeded($form)
-    {
-        if (!$this->user->isLoggedIn()) {
-            $this->redirect('Homepage:');
+    {                
+        $values = $form->getValues();
+        
+        $authorizator = new MyAuthorizator();
+        $authorizator->injectDatabase($this->database);
+        $this->user->setAuthorizator($authorizator);
+        if (!$this->user->isAllowed('selfComentary', 'insert')) {
+            $this->flashMessage('Nemáte oprávnění komentovat články.','warning');
+            $this->redirect('show', $values->topic_id);
             return;
         }
         
-        $values = $form->getValues();
-        $answer_on = (is_numeric($values['answer_on'])) ? $values['answer_on'] : null;
+        $answer_on = (is_numeric($values['answer_on'])) ? $values['answer_on'] : null; 
         
         $comentary = new Comentary($this->database);
         $comentary->insert(

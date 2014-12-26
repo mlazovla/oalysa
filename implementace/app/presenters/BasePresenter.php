@@ -23,10 +23,18 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
         $this->template->isLoggedIn = $this->user->isLoggedIn();
         if ($this->user->isLoggedIn()) 
         {
+            $authorizator = new \App\Model\MyAuthorizator;
+            $authorizator->injectDatabase($this->database);
+            $this->user->setAuthorizator($authorizator);
+             if(!$this->user->isAllowed('login')) {
+                $this->user->logout();
+                $this->flashMessage('Nemáte oprávnění se přihlásit. Obraťte se na administrátora webu.', 'warning');
+             }
+            
             $row = $this->database->table('User')->get($this->user->identity->getId());
             $currentUser = $row;
            
-            $this->template->currentUser = $currentUser;            
+            $this->template->currentUser = $currentUser;    
         }
     }
     
