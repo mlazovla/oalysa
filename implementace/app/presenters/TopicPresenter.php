@@ -9,6 +9,7 @@ use App\Model\Grade;
 use App\Model\Comentary;
 use App\Model\Attachement;
 use App\Model\MyAuthorizator;
+use Tester\Runner\CommandLine;
 
 
 /**
@@ -33,10 +34,8 @@ class TopicPresenter extends BasePresenter
             $this->flashMessage('Nemáte oprávnění číst články.', 'warning');
             $this->redirect('Homepage:');
             return;
-        }
-        
-        
-
+        }  
+                
         $subject = new Subject($this->database);
         $grade = new Grade($this->database);
         $topic = new Topic($this->database);
@@ -69,7 +68,9 @@ class TopicPresenter extends BasePresenter
             $this->template->comentaries = $comentary->getByTopic($topicId);
         }
         
-        $this->template->user_allowed_to_write_coments = $this->user->isAllowed('selfComentary', 'insert');
+        $this->template->isAllowedToWriteComents = $this->user->isAllowed('selfComentary', 'insert');
+        $this->template->isAllowedToDeleteSelfComent = $this->user->isAllowed('selfComentary','delete');
+        $this->template->isAllowedToDeleteAnyComent = $this->user->isAllowed('comentary','delete');
         
         
     }
@@ -156,8 +157,38 @@ class TopicPresenter extends BasePresenter
             )
         );
     
-        $this->flashMessage("Díky za komentář.", 'success');
+        $this->flashMessage("Komentář přidán.", 'success');
         $this->redirect('show', $values->topic_id);
+    }
+    
+    public function actionDeleteComent($coment_id) {
+        $authorizator = new MyAuthorizator();
+        $authorizator->injectDatabase($this->database);
+        $this->user->setAuthorizator($authorizator);
+        $coment = new Comentary($this->database);
+        $owner_id = $coment->get($coment_id)->user->id;
+        $topic_id = $coment->get($coment_id)->topic->id;
+        if ($this->user->id == $owner_id) { // Vlastni komentar
+            if (!$this->user->isAllowed('selfComentary', 'delete')) {
+                $this->flashMessage('Nemáte oprávnění odstranit vlastní komentář.','warning');
+                $this->redirect('show', $topic_id);
+            } 
+            $coment = new Comentary($this->database);
+            $coment->where('id', $coment_id)->delete(); 
+            $this->flashMessage('Komentář byl odstraněn.');
+            $this->redirect('show', $topic_id);     
+        }
+        else { // komentar libovolneho uzivatele
+            if (!$this->user->isAllowed('comentary', 'delete')) {
+                $this->flashMessage('Nemáte oprávnění mazat komentáře.','warning');
+                $this->redirect('show', $topic_id);
+                return;
+            }
+            $coment = new Comentary($this->database);
+            $coment->where('id', $coment_id)->delete();
+            $this->flashMessage('Komentář byl odstraněn.');
+            $this->redirect('show', $topic_id);
+        }
     }
     
 }

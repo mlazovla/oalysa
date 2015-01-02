@@ -79,7 +79,7 @@
 				<div class="answer">
 					<span class="user">{$c->user->name}</span>
 					<span class="date">{$c->created_at|date:'%d.%m.%Y %H:%M'}</span>
-					{if $user_allowed_to_write_coments}
+					{if $isAllowedToWriteComents}
 						<a
 							class="buttonAnswer_on"
 							href="#comment"
@@ -89,6 +89,9 @@
 								setElementValueById('answer_on_message', '{$c->content|truncate:30}');
 						">Odpovědět</a>
 					{/if}
+					{if ($isAllowedToDeleteAnyComent || ($isAllowedToDeleteSelfComent && $c->user->id == $currentUser['id']))}
+						<a n:href="deleteComent $c->id" class="buttonDelete">X</a>
+					{/if}
 					<span class="content">{$c->content}</span>
 				</div>
 			</div>
@@ -97,7 +100,7 @@
 		<p>K tomuto tématu nejsou zatím žádné komentáře.</p>
 	{/if}
 		<div id="comentaryForm">
-			{if $user_allowed_to_write_coments}
+			{if $isAllowedToWriteComents}
 			<a name='comment'></a>
 			<span id="answer_on_message"></span>
 				{control comentaryForm}
