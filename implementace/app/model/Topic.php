@@ -31,4 +31,13 @@ class Topic extends \Nette\Database\Table\Selection {
     public function getGrade($idTopic) {
         return $this->get($idTopic)->subject2grade->grade;
     }
+    
+    public function safeDelete($topic_id) {
+        $attachement = new Attachement($this->db);
+        $attachements = $attachement->select('id')->where('topic_id', $topic_id)->fetchAll();
+        foreach($attachements as $a) {
+            $attachement->safeDelete($a['id']);
+        }
+        $this->where('id', $topic_id)->delete();
+    }
 }

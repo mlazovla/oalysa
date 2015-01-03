@@ -86,6 +86,16 @@ div {
 	background: rgba(0,0,0,0.05);
 }
 
+*[class^='button'] {
+	font-family: 'Arial';
+	font-weight: lighter;
+	padding: 0.2em 0.5em 0.2em 0.5em;
+	background-color: #334;
+	border: 1px solid black;
+	color:white;
+	
+}
+
 /************************/
 /* comentary */
 #comentaries .comentar .content {
@@ -97,4 +107,14 @@ div {
 /* attachement */
 #attachements .type img {
 	height: 20px;
+}
+
+/************************/
+/* topic */
+#topic #frm-topicForm-name {
+	font-size: 150%;
+}
+
+#topic #frm-topicForm-content {
+	height: 15em;
 }

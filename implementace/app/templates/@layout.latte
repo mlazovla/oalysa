@@ -13,12 +13,30 @@
 	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/screen.css">
 	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
 	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
+
+	<script src="{$basePath}/js/tinymce/tinymce.min.js"></script>
+	<script>
+tinymce.init({l}
+    selector: "textarea#frm-topicForm-anotation, textarea#frm-topicForm-content",
+    theme: "modern",
+    skin: 'charcoal',
+    language : 'cs',
+    plugins: [
+        "advlist autolink lists link image charmap preview hr anchor pagebreak",
+        "searchreplace wordcount visualblocks visualchars code fullscreen",
+        "insertdatetime media nonbreaking save table contextmenu directionality",
+        "emoticons template paste textcolor colorpicker textpattern"
+    ],
+    toolbar: "undo redo | styleselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link preview",
+    image_advtab: true,
+{r});
+	</script>
+
 	{block head}{/block}
 </head>
 
 <body>
 	<script> document.documentElement.className+=' js' </script>
-
 	<header>
 		{block header}{/block}
 		{block userInfo}

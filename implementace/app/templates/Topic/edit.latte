@@ -1,0 +1,24 @@
+{block menu}
+	{if $subject}
+		<h2>{$subject->shortcut} - {$grade->name}</h2>
+		{if count($topics)>0}
+			<ul>
+				{foreach $topics as $t}
+					<li{if $t->id == $topic->id} class="active"{/if}><a href="{link Topic:show $t->id}">{$t->name}</a></li>
+				{/foreach}
+			</ul>
+		{else}
+		<p>Nebyla načtena žádná témata.</p>
+		{/if}
+	{else}
+	
+	{/if}
+
+{/block}
+
+
+{block content}
+	<div id="topic">
+
+	</div>
+{/block}

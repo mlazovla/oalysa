@@ -25,11 +25,15 @@ class SubjectGradePresenter extends BasePresenter
      */
     public function renderShow($subjectId, $gradeId=null)
     {
-        // Neprihlaseny uzivatel
-        if (!$this->user->isLoggedIn()) {
+        // Neprihlaseny nebo neopravneny uzivatel        
+        if (!$this->user->isLoggedIn() || !$this->user->isAllowed('topic', 'read')) {
+            $this->flashMessage('Nemáte oprávnění číst články.', 'warning');
             $this->redirect('Homepage:');
             return;
         }
+        
+        
+        
 
         $subject = new Subject($this->database);
         $grade = new Grade($this->database);
@@ -37,7 +41,10 @@ class SubjectGradePresenter extends BasePresenter
         
         $this->template->subject = $subject->get($subjectId);
         $this->template->grade = $grade->get($gradeId);
-        
+
+        $this->template->isAllowedToEditTopic = $this->user->isAllowed('topic', 'insert');
+        $this->template->isAllowedToDeleteAnyTopic = $this->user->isAllowed('topic', 'delete');
+        $this->template->isAllowedToDeleteSelfTopic = $this->user->isAllowed('selfTopic', 'delete');
         
         if ($gradeId == null) {
             $this->template->topics = null;

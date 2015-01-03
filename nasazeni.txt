@@ -1,0 +1,4 @@
+Pro správné fungování příloh je potřeba nastavit přístupová
+práva složky data tímto příkazem:
+
+chmod -R 773 data

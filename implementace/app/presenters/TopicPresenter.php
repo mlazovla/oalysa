@@ -10,6 +10,7 @@ use App\Model\Comentary;
 use App\Model\Attachement;
 use App\Model\MyAuthorizator;
 use Tester\Runner\CommandLine;
+use App\Model\Subject2Grade;
 
 
 /**
@@ -17,6 +18,8 @@ use Tester\Runner\CommandLine;
  */
 class TopicPresenter extends BasePresenter
 {
+    //-------------------------------------------------------------------------
+    // SHOW TOPIC
     
     public function __construct(Nette\Database\Context $database)
     {
@@ -68,10 +71,12 @@ class TopicPresenter extends BasePresenter
             $this->template->comentaries = $comentary->getByTopic($topicId);
         }
         
+        // Opravneni
         $this->template->isAllowedToWriteComents = $this->user->isAllowed('selfComentary', 'insert');
         $this->template->isAllowedToDeleteSelfComent = $this->user->isAllowed('selfComentary','delete');
         $this->template->isAllowedToDeleteAnyComent = $this->user->isAllowed('comentary','delete');
-        
+        $this->template->isAllowedToDeleteAnyTopic = $this->user->isAllowed('topic', 'delete');
+        $this->template->isAllowedToDeleteSelfTopic = $this->user->isAllowed('selfTopic', 'delete');
         
     }
     
@@ -85,7 +90,7 @@ class TopicPresenter extends BasePresenter
         $attachement = new Attachement($this->database);
  
         $path = $attachement->getPathById($attachementId);
-        $filename = $attachement->get($attachementId)->file;
+        $filename = $attachement->get($attachementId)->name;
         header('Content-Transfer-Encoding: binary');  // For Gecko browsers mainly
         header('Last-Modified: ' . $attachement->get($attachementId)->created_at . ' GMT');
         header('Accept-Ranges: bytes');  // Allow support for download resume
@@ -107,8 +112,8 @@ class TopicPresenter extends BasePresenter
         $attachement = new Attachement($this->database);
  
         $path = $attachement->getPathById($attachementId);
-        $filename = $attachement->get($attachementId)->file;
-                
+        $filename = $attachement->get($attachementId)->name;
+                        
         header('Content-type: $attachement->get($attachementId)->mimeType');
         header('Content-Disposition: inline; filename="' . $filename . '"');
         header('Content-Transfer-Encoding: binary');
@@ -190,5 +195,132 @@ class TopicPresenter extends BasePresenter
             $this->redirect('show', $topic_id);
         }
     }
+
     
-}
+    //-----------------------------------------------------------------------
+    // EDIT TOPIC
+    //
+    
+    public function renderNew($subjectId, $gradeId) {
+        $authorizator = new MyAuthorizator();
+        $authorizator->injectDatabase($this->database);
+        $this->user->setAuthorizator($authorizator);
+        
+        if (!$this->user->isAllowed('topic', 'insert')) {
+            $this->flashMessage('Nemáte oprávnění psát články.','warning');
+            $this->redirect("Homepage:");
+        }
+        
+        $subject = new Subject($this->database);
+        $grade = new Grade($this->database);
+        
+        $this->template->subject = $subject->get($subjectId);
+        $this->template->grade = $grade->get($gradeId);
+        
+        
+        
+    }
+
+    protected function createComponentTopicForm()
+    {
+        $form = new Nette\Application\UI\Form;
+        
+        $form->addText('name', 'nadpis:', 60, 127)->setRequired();
+        
+        $form->addTextArea('anotation', 'anotace:');
+        
+        $form->addTextArea('content', 'článek:');
+        
+        $form->addHidden('subject_id', $this->getHttpRequest()->getQuery('subjectId'));
+        $form->addHidden('grade_id', $this->getHttpRequest()->getQuery('gradeId'));
+        
+        $form->addCheckbox('enableDiscussion', 'Povolit pod tématem diskuzi:')->setValue(1);
+
+        $form->addMultiUpload('attachements', 'Přílohy:');
+        
+        $form->addSubmit('send', 'Přidat článek');
+        $form->onSuccess[] = $this->topicFormSucceeded;
+    
+        return $form;
+    }
+    
+    
+    public function topicFormSucceeded($form)
+    {
+        $values = $form->getValues();
+    
+        $authorizator = new MyAuthorizator();
+        $authorizator->injectDatabase($this->database);
+        $this->user->setAuthorizator($authorizator);
+        if (!$this->user->isAllowed('topic', 'insert')) {
+            $this->flashMessage('Nemáte oprávnění psát články.','warning');
+            $this->redirect("Homepage:");
+        }
+        if (!$this->user->isAllowed('attachement', 'insert')) {
+            $this->flashMessage('Nemáte oprávnění přidat přílohu.','warning');
+            $this->redirect("Homepage:");
+        }
+        
+        $s2g = new Subject2Grade($this->database);
+        $s2g_id = $s2g->getRelationId($values['subject_id'], $values['grade_id']);
+                
+        $topic = new Topic($this->database);
+        $topic->insert(
+            array(
+                'user_id' => $this->user->getIdentity()->id,
+                'anotation'=> $values['anotation'],
+                'content'=> $values['content'],
+                'name'=> $values['name'],
+                'enableDiscussion'=> $values['enableDiscussion'],                
+                'content' => $values['content'],
+                'subject2grade_id' => $s2g_id
+            )
+        );
+        $lastTopic = $topic->select('id')->order('id DESC')->limit(1)->fetch();  
+        
+        if (!$s2g_id) {
+            $this->flashMessage('Během ukládání došlo k chybě. Článek byl uložen, ale nebyl přiřazen k žádnému předmětu ani ročníku.','error');
+        }
+        else {
+            $this->flashMessage("Článek <b>". $values['name'] ."</b> byl přidán.", 'success');
+        }
+        
+        $attachement = new Attachement($this->database);
+        foreach ($values['attachements'] as $f)
+        {            
+            if (!$attachement->insertFile($f, $lastTopic['id'], $this->user->id))
+                $this->flashMessage('Nepodařilo se uložit přílohu: ' . $f->getName());
+        }
+        
+        
+        $this->redirect('show', $lastTopic['id']);
+    }
+    
+    public function actionDeleteTopic($topic_id) {
+        $authorizator = new MyAuthorizator();
+        $authorizator->injectDatabase($this->database);
+        $this->user->setAuthorizator($authorizator);
+        
+        $topic = new Topic($this->database);
+        
+        $isAllowedToDeleteThis = 
+            (
+                $this->user->isAllowed('topic', 'delete') || 
+                    ($this->user->isAllowed('selfTopic', 'delete') && $topic->get($topic_id)->user_id == $this->user->id)
+            ) && 
+                $this->user->isAllowed('attachement', 'delete');
+            
+                
+        if (!$isAllowedToDeleteThis) {
+            $this->flashMessage('Nemáte oprávnění smazat tento článek.','warning');
+            $this->redirect('show', $topic_id);
+            return;
+        }              
+        
+        $topic = new Topic($this->database);
+        $topic->safeDelete($topic_id);
+        $this->flashMessage('Článek byl odstraněn včetně všech příloh.');
+        $this->redirect('Homepage:');       
+    }
+    
+};    

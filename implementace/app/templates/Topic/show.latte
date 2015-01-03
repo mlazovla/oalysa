@@ -23,7 +23,7 @@
 			<h1 n:block="title">{$topic->name}</h1>
 			
 			<div id="notation">
-				{$topic->anotation}
+				{$topic->anotation|noescape}
 			</div>
 			<div id="content">
 				{$topic->content|noescape}

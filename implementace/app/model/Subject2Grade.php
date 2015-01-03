@@ -18,4 +18,9 @@ class Subject2Grade extends \Nette\Database\Table\Selection {
                 $database->getDatabaseReflection());
         $this->db = $database;
     }
+    
+    public function getRelationId($subject_id, $grade_id) {
+        $res = $this->where('subject_id', $subject_id)->where('grade_id', $grade_id)->fetch();
+        return $res['id'];
+    }
 }
