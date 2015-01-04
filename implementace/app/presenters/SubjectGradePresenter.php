@@ -31,9 +31,7 @@ class SubjectGradePresenter extends BasePresenter
             $this->redirect('Homepage:');
             return;
         }
-        
-        
-        
+          
 
         $subject = new Subject($this->database);
         $grade = new Grade($this->database);

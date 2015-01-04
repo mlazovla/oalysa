@@ -1,0 +1,72 @@
+\select@language {czech}
+\select@language {czech}
+\contentsline {subsection}{Odkaz na tuto pr{\' a}ci}{viii}{section*.1}
+\contentsline {chapter}{{\' U}vod}{1}{chapter*.5}
+\contentsline {section}{Motivace}{1}{section*.6}
+\contentsline {section}{Struktura pr\IeC {\'a}ce}{1}{section*.7}
+\contentsline {chapter}{\chapternumberline {1}C\IeC {\'\i }l pr\IeC {\'a}ce}{3}{chapter.1}
+\contentsline {section}{\numberline {1.1}Existuj\IeC {\'\i }c\IeC {\'\i } syst\IeC {\'e}my}{3}{section.1.1}
+\contentsline {subsection}{\numberline {1.1.1}EDUX}{3}{subsection.1.1.1}
+\contentsline {subsection}{\numberline {1.1.2}Moodle}{4}{subsection.1.1.2}
+\contentsline {subsection}{\numberline {1.1.3}Dokuwiki}{4}{subsection.1.1.3}
+\contentsline {subsection}{\numberline {1.1.4}St\IeC {\'a}vaj\IeC {\'\i }c\IeC {\'\i } syst\IeC {\'e}m}{5}{subsection.1.1.4}
+\contentsline {subsection}{\numberline {1.1.5}Z\IeC {\'a}v\IeC {\v e}r}{5}{subsection.1.1.5}
+\contentsline {chapter}{\chapternumberline {2}Anal\IeC {\'y}za}{7}{chapter.2}
+\contentsline {section}{\numberline {2.1}Po\IeC {\v z}adavky zadavatele OA Lys\IeC {\'a} nad Labem}{7}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Funk\IeC {\v c}n\IeC {\'\i } po\IeC {\v z}adavky}{7}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Nefunk\IeC {\v c}n\IeC {\'\i } po\IeC {\v z}adavky}{8}{subsection.2.1.2}
+\contentsline {section}{\numberline {2.2}U\IeC {\v z}ivatelsk\IeC {\'e} rozhran\IeC {\'\i }}{8}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Anketa}{8}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Typy webov\IeC {\'y}ch str\IeC {\'a}nek}{8}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.3}Wireframe}{10}{subsection.2.2.3}
+\contentsline {section}{\numberline {2.3}C\IeC {\'\i }lov\IeC {\'e} skupiny}{11}{section.2.3}
+\contentsline {section}{\numberline {2.4}Persony}{11}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}U\IeC {\v c}itel}{11}{subsection.2.4.1}
+\contentsline {paragraph}{U\IeC {\v c}itel - Lucie \IeC {\v S}ikulov\IeC {\'a}, 29 let}{11}{section*.8}
+\contentsline {paragraph}{U\IeC {\v c}itel - Jana Nov\IeC {\'a}kov\IeC {\'a}, 45 let}{13}{section*.9}
+\contentsline {subsection}{\numberline {2.4.2}\IeC {\v Z}\IeC {\'a}k}{13}{subsection.2.4.2}
+\contentsline {paragraph}{\IeC {\v Z}\IeC {\'a}k - Kate\IeC {\v r}ina Nov\IeC {\'a}, 18 let}{13}{section*.10}
+\contentsline {paragraph}{\IeC {\v Z}\IeC {\'a}k - Jan Nov\IeC {\'a}k, 16 let}{13}{section*.11}
+\contentsline {section}{\numberline {2.5}V\IeC {\'y}b\IeC {\v e}r frameworku}{14}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}Motivace k pou\IeC {\v z}it\IeC {\'\i } frameworku}{14}{subsection.2.5.1}
+\contentsline {section}{\numberline {2.6}Model}{14}{section.2.6}
+\contentsline {subsection}{\numberline {2.6.1}Dom\IeC {\'e}nov\IeC {\'y} model}{14}{subsection.2.6.1}
+\contentsline {subsection}{\numberline {2.6.2}P\IeC {\v r}\IeC {\'\i }stup z Nette}{15}{subsection.2.6.2}
+\contentsline {section}{\numberline {2.7}Controller}{15}{section.2.7}
+\contentsline {section}{\numberline {2.8}View}{15}{section.2.8}
+\contentsline {chapter}{\chapternumberline {3}N\IeC {\'a}vrh}{17}{chapter.3}
+\contentsline {section}{\numberline {3.1}Dom\IeC {\'e}nov\IeC {\'y} model}{17}{section.3.1}
+\contentsline {section}{\numberline {3.2}Role a opr\IeC {\'a}vn\IeC {\v e}n\IeC {\'\i }}{17}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Statistika}{19}{subsection.3.2.1}
+\contentsline {section}{\numberline {3.3}Objektov\IeC {\'y} n\IeC {\'a}vrh}{20}{section.3.3}
+\contentsline {chapter}{\chapternumberline {4}Realizace}{21}{chapter.4}
+\contentsline {section}{\numberline {4.1}Pou\IeC {\v z}it\IeC {\'e} technologie}{21}{section.4.1}
+\contentsline {section}{\numberline {4.2}Postup}{21}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}P\IeC {\v r}\IeC {\'\i }prava datab\IeC {\'a}ze}{21}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Autentifikace a autorizace u\IeC {\v z}ivatele}{22}{subsection.4.2.2}
+\contentsline {subsection}{\numberline {4.2.3}Struktura p\IeC {\v r}edm\IeC {\v e}t, ro\IeC {\v c}n\IeC {\'\i }k a t\IeC {\'e}ma}{22}{subsection.4.2.3}
+\contentsline {subsection}{\numberline {4.2.4}Koment\IeC {\'a}\IeC {\v r}e}{22}{subsection.4.2.4}
+\contentsline {subsection}{\numberline {4.2.5}P\IeC {\v r}\IeC {\'\i }lohy}{22}{subsection.4.2.5}
+\contentsline {subsection}{\numberline {4.2.6}P\IeC {\v r}i\IeC {\v r}azen\IeC {\'\i } opr\IeC {\'a}vn\IeC {\v e}n\IeC {\'\i }}{22}{subsection.4.2.6}
+\contentsline {subsection}{\numberline {4.2.7}Spr\IeC {\'a}va t\IeC {\'e}mat}{22}{subsection.4.2.7}
+\contentsline {subsection}{\numberline {4.2.8}Spr\IeC {\'a}va p\IeC {\v r}edm\IeC {\v e}t\IeC {\r u}}{22}{subsection.4.2.8}
+\contentsline {subsection}{\numberline {4.2.9}Spr\IeC {\'a}va \IeC {\'u}\IeC {\v c}tu}{23}{subsection.4.2.9}
+\contentsline {subsection}{\numberline {4.2.10}Spr\IeC {\'a}va skupin u\IeC {\v z}ivatel\IeC {\r u}}{23}{subsection.4.2.10}
+\contentsline {subsection}{\numberline {4.2.11}Newsletter}{23}{subsection.4.2.11}
+\contentsline {subsection}{\numberline {4.2.12}Log a statistiky}{23}{subsection.4.2.12}
+\contentsline {subsection}{\numberline {4.2.13}Design}{23}{subsection.4.2.13}
+\contentsline {section}{\numberline {4.3}Testov\IeC {\'a}n\IeC {\'\i }}{23}{section.4.3}
+\contentsline {section}{\numberline {4.4}Nasazen\IeC {\'\i }}{24}{section.4.4}
+\contentsline {section}{\numberline {4.5}Screenshoty}{24}{section.4.5}
+\contentsline {chapter}{Z{\' a}v{\v e}r}{27}{chapter*.12}
+\contentsline {chapter}{Literatura}{29}{section*.14}
+\contentsline {appendix}{\chapternumberline {A}Seznam pou\IeC {\v z}it\IeC {\'y}ch zkratek}{31}{appendix.A}
+\contentsline {appendix}{\chapternumberline {B}Reposit\IeC {\'a}\IeC {\v r}}{33}{appendix.B}
+\contentsline {appendix}{\chapternumberline {C}P\IeC {\v r}\IeC {\'\i }ru\IeC {\v c}ky}{35}{appendix.C}
+\contentsline {section}{\numberline {C.1}U\IeC {\v z}ivatelsk\IeC {\'a} p\IeC {\v r}\IeC {\'\i }ru\IeC {\v c}ka}{35}{section.C.1}
+\contentsline {subsection}{\numberline {C.1.1}Jsem \IeC {\v z}\IeC {\'a}k}{35}{subsection.C.1.1}
+\contentsline {subsection}{\numberline {C.1.2}Jsem u\IeC {\v c}itel}{35}{subsection.C.1.2}
+\contentsline {appendix}{\chapternumberline {D}Uk\IeC {\'a}zka zdrojov\IeC {\'e}ho k\IeC {\'o}du}{37}{appendix.D}
+\contentsline {section}{\numberline {D.1}Model}{37}{section.D.1}
+\contentsline {section}{\numberline {D.2}Presenter}{39}{section.D.2}
+\contentsline {section}{\numberline {D.3}Latte \IeC {\v s}ablona}{42}{section.D.3}
