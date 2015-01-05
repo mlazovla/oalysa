@@ -61,12 +61,14 @@
 \contentsline {chapter}{Z{\' a}v{\v e}r}{27}{chapter*.12}
 \contentsline {chapter}{Literatura}{29}{section*.14}
 \contentsline {appendix}{\chapternumberline {A}Seznam pou\IeC {\v z}it\IeC {\'y}ch zkratek}{31}{appendix.A}
-\contentsline {appendix}{\chapternumberline {B}Reposit\IeC {\'a}\IeC {\v r}}{33}{appendix.B}
-\contentsline {appendix}{\chapternumberline {C}P\IeC {\v r}\IeC {\'\i }ru\IeC {\v c}ky}{35}{appendix.C}
-\contentsline {section}{\numberline {C.1}U\IeC {\v z}ivatelsk\IeC {\'a} p\IeC {\v r}\IeC {\'\i }ru\IeC {\v c}ka}{35}{section.C.1}
-\contentsline {subsection}{\numberline {C.1.1}Jsem \IeC {\v z}\IeC {\'a}k}{35}{subsection.C.1.1}
-\contentsline {subsection}{\numberline {C.1.2}Jsem u\IeC {\v c}itel}{35}{subsection.C.1.2}
-\contentsline {appendix}{\chapternumberline {D}Uk\IeC {\'a}zka zdrojov\IeC {\'e}ho k\IeC {\'o}du}{37}{appendix.D}
-\contentsline {section}{\numberline {D.1}Model}{37}{section.D.1}
-\contentsline {section}{\numberline {D.2}Presenter}{39}{section.D.2}
-\contentsline {section}{\numberline {D.3}Latte \IeC {\v s}ablona}{42}{section.D.3}
+\contentsline {appendix}{\chapternumberline {B}P\IeC {\v r}ilo\IeC {\v z}en\IeC {\'e} CD}{33}{appendix.B}
+\contentsline {appendix}{\chapternumberline {C}Reposit\IeC {\'a}\IeC {\v r}}{35}{appendix.C}
+\contentsline {appendix}{\chapternumberline {D}P\IeC {\v r}\IeC {\'\i }ru\IeC {\v c}ky}{37}{appendix.D}
+\contentsline {section}{\numberline {D.1}U\IeC {\v z}ivatelsk\IeC {\'a} p\IeC {\v r}\IeC {\'\i }ru\IeC {\v c}ka}{37}{section.D.1}
+\contentsline {subsection}{\numberline {D.1.1}Jsem \IeC {\v z}\IeC {\'a}k}{37}{subsection.D.1.1}
+\contentsline {subsection}{\numberline {D.1.2}Jsem u\IeC {\v c}itel}{37}{subsection.D.1.2}
+\contentsline {section}{\numberline {D.2}Administr\IeC {\'a}torsk\IeC {\'a} p\IeC {\v r}\IeC {\'\i }ru\IeC {\v c}ka}{39}{section.D.2}
+\contentsline {appendix}{\chapternumberline {E}Uk\IeC {\'a}zka zdrojov\IeC {\'e}ho k\IeC {\'o}du}{41}{appendix.E}
+\contentsline {section}{\numberline {E.1}Model}{41}{section.E.1}
+\contentsline {section}{\numberline {E.2}Presenter}{43}{section.E.2}
+\contentsline {section}{\numberline {E.3}Latte \IeC {\v s}ablona}{46}{section.E.3}
