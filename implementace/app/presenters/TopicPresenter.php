@@ -52,7 +52,7 @@ class TopicPresenter extends BasePresenter
             $this->template->topics = null;
         }
         else {
-            $this->template->topics = $topic->where('Subject2Grade.grade_id', $gradeId);
+            $this->template->topics = $topic->where('subject2grade_id', $gradeId);
         }
         
         if ($this->user->isAllowed('attachement', 'read')) {   
