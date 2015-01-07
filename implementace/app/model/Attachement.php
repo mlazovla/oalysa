@@ -71,8 +71,8 @@ class Attachement extends \Nette\Database\Table\Selection {
     
     public function safeDelete($attachement_id) {
         $attachement = new Attachement($this->db);
-        $a = $attachement->where('id', $attachement_id)->feth();
-        $filename = self::SAVE_DIR . $attachement_id . '.' . $ext;
+        $a = $attachement->where('id', $attachement_id)->fetch();
+        $filename = self::SAVE_DIR . $attachement_id . '.' . $a['extension'];
         if (file_exists($filename)) {
             unlink($filename);
         }
