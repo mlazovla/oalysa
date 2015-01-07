@@ -78,6 +78,7 @@ class TopicPresenter extends BasePresenter
         $this->template->isAllowedToDeleteAnyTopic = $this->user->isAllowed('topic', 'delete');
         $this->template->isAllowedToDeleteSelfTopic = $this->user->isAllowed('selfTopic', 'delete');
         $this->template->isAllowedToInsertAttachement = $this->user->isAllowed('attachement', 'insert');
+        $this->template->isAllowedToUpdateAttachement = $this->user->isAllowed('attachement', 'update');
         $this->template->isAllowedToDeleteAttachement = $this->user->isAllowed('attachement', 'delete');
         
     }
@@ -185,19 +186,13 @@ class TopicPresenter extends BasePresenter
     {
         $form = new Nette\Application\UI\Form;
         
-        $form->addText('name', 'nadpis:', 60, 127)->setRequired();
-        
+        $form->addText('name', 'nadpis:', 60, 127)->setRequired();        
         $form->addTextArea('anotation', 'anotace:');
-        
         $form->addTextArea('content', 'článek:');
-        
         $form->addHidden('subject_id', $this->getHttpRequest()->getQuery('subjectId'));
         $form->addHidden('grade_id', $this->getHttpRequest()->getQuery('gradeId'));
-        
         $form->addCheckbox('enableDiscussion', 'Povolit pod tématem diskuzi:')->setValue(1);
-
-        $form->addMultiUpload('attachements', 'Přílohy:');
-        
+        $form->addMultiUpload('attachements', 'Přílohy:');      
         $form->addSubmit('send', 'Přidat článek');
         $form->onSuccess[] = $this->topicFormSucceeded;
     

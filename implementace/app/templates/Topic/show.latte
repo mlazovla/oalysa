@@ -43,12 +43,14 @@
 				<tbody>
 					{foreach $attachements as $a}
 						<tr>
-							<td class="type"><img src="{$basePath}/images/icons/files/{$a->mimeType|replace:'/','-'}.png" title="{$a->mimeType}">
+							<td class="type"><img src="{$basePath}/images/icons/files/{$a->extension}.png" title="{$a->mimeType}">
 							<td class="name"><span title="Stáhnout/Otevřít {$a->name}">{$a->name}</span></td>
 							<td class="tools">
 								<a n:href="Attachement:open $a->id" class="buttonOpen">Otevřít</a>								
 								<a n:href="Attachement:download $a->id" class="buttonDownload" download>Stáhnout</a>
+								{if $isAllowedToUpdateAttachement}<a n:href="Attachement:update $a->id" class="buttonEdit" download>Upravit</a>{/if}
 								{if $isAllowedToDeleteAttachement}<a onclick="return(confirm('Opravdu chcete smazat tuto přílohu?'));" n:href="Attachement:delete $a->id" class="buttonDelete">Smazat</a>{/if}								
+
 							</td>
 							<td class="owner">{$a->user->name}</td>
 							<td class="timeDate">{$a->created_at|date:'%d.%m.%Y %H:%M'}</td>

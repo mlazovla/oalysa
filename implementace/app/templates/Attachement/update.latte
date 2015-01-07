@@ -1,0 +1,38 @@
+{block menu}
+	{if $subject}
+		<h2>{$subject->shortcut} - {$grade->name}</h2>
+		{if count($topics)>0}
+			<ul>
+				{foreach $topics as $t}
+					<li{if $t->id == $topic->id} class="active"{/if}><a href="{link Topic:show $t->id}">{$t->name}</a></li>
+				{/foreach}
+			</ul>
+		{else}
+		<p>Nebyla načtena žádná témata.</p>
+		{/if}
+	{else}
+	
+	{/if}
+
+{/block}
+
+
+{block content}
+	
+	<h1 n:block="title">{$topic->name}</h1>
+			
+	<div id="notation">
+		{$topic->anotation|noescape}
+	</div>
+
+	<div id="attachementUpdate">
+		<h2>Upravit přílohu {$attachement->name}</h2>
+
+		<a n:href="Topic:show $topic->id" class="buttonCancel">Zrušit editaci</a>
+		<a n:href="Attachement:open $attachement->id" class="buttonOpen">Otevřít</a>								
+		<a n:href="Attachement:download $attachement->id" class="buttonDownload" download>Stáhnout</a>
+		<a onclick="return(confirm('Opravdu chcete smazat tuto přílohu?'));" n:href="Attachement:delete $attachement->id" class="buttonDelete">Smazat</a>
+
+		{control attachementUpdateForm}
+	</div>	
+{/block}

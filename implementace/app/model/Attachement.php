@@ -64,11 +64,47 @@ class Attachement extends \Nette\Database\Table\Selection {
         return self::getExtensionByName($filename);
     }
     
+    /**
+     * Get file extension from filename
+     * @param string $filename
+     * @return string
+     */
     public static function getExtensionByName($filename) {
         $tmp = explode('.', $filename);
         return end($tmp);
     }
+
+    /**
+     * Check file name if is valid
+     * @param string $filename
+     * @return bool
+     */
+    public static function checkFilename($filename) {
+        //$preg = '(\S|[^\\&\*\'\^"<`]|[ ])+';
+        //return preg_match($preg, trim($filename));
+        return true;
+    }
     
+    
+    /**
+     * Get file name without extension from filename
+     * @param string $filename
+     * @return string
+     */
+    public static function getNameWithoutExtension($filename) {
+        $tmp = explode('.', $filename);
+        
+        if (count($tmp) < 2) { // without extension
+            return $filename;
+        }
+        
+        return substr($filename, 0, -( strlen(end($tmp))+1 ));
+    }
+    
+    /**
+     * SafeDelete deletes record in database and also file from filesystem
+     * @param int $attachement_id
+     */
     public function safeDelete($attachement_id) {
         $attachement = new Attachement($this->db);
         $a = $attachement->where('id', $attachement_id)->fetch();
@@ -80,10 +116,13 @@ class Attachement extends \Nette\Database\Table\Selection {
     }
     
     /**
-     * Save file and insert information into database
-     * @param FileUpload $file
-     * @param int $topic_id
-     * 
+     * Save file into filesystem and insert information into database.
+     * Checks extension and gives file mime type.
+     * @param FileUpload $file 
+     * @param int $topic_id assigned topic
+     * @param int $user_id owner of file
+     * @param string $description
+     * @return bool success
      */
     public function insertFile(FileUpload $file, $topic_id, $user_id, $description = null) {
         $attachement = new Attachement($this->db);
