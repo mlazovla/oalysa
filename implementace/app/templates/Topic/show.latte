@@ -46,9 +46,9 @@
 							<td class="type"><img src="{$basePath}/images/icons/files/{$a->mimeType|replace:'/','-'}.png" title="{$a->mimeType}">
 							<td class="name"><span title="Stáhnout/Otevřít {$a->name}">{$a->name}</span></td>
 							<td class="tools">
-								<a n:href="Topic:openAttachement $a->id" class="buttonOpen">Otevřít</a>								
-								<a n:href="Topic:downloadAttachement $a->id" class="buttonDownload" download>Stáhnout</a>
-								{if $a->user_id == $currentUser['id']}<a n:href="Attachement:delete $a->id" class="buttonDelete">Smazat</a>{/if}								
+								<a n:href="Attachement:open $a->id" class="buttonOpen">Otevřít</a>								
+								<a n:href="Attachement:download $a->id" class="buttonDownload" download>Stáhnout</a>
+								{if $isAllowedToDeleteAttachement}<a onclick="return(confirm('Opravdu chcete smazat tuto přílohu?'));" n:href="Attachement:delete $a->id" class="buttonDelete">Smazat</a>{/if}								
 							</td>
 							<td class="owner">{$a->user->name}</td>
 							<td class="timeDate">{$a->created_at|date:'%d.%m.%Y %H:%M'}</td>
@@ -59,7 +59,15 @@
 			</table>
 		{else}
 			<p>K tomuto tématu nejsou přiloženy žádné přílohy.</p>
-		{/if}		
+		{/if}
+		
+		{* Insert an attachement *}
+		{if $isAllowedToInsertAttachement}
+			<div id="attachementForm">
+				<h3>Připojit přílohy</h3>	
+				{control attachementForm}
+			</div>
+		{/if}
 	</div>
 
 	<div id="comentaries">
@@ -90,7 +98,7 @@
 						">Odpovědět</a>
 					{/if}
 					{if ($isAllowedToDeleteAnyComent || ($isAllowedToDeleteSelfComent && $c->user->id == $currentUser['id']))}
-						<a n:href="deleteComent $c->id" class="buttonDelete">X</a>
+						<a n:href="deleteComent $c->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tento komentář?'));">X</a>
 					{/if}
 					<span class="content">{$c->content}</span>
 				</div>

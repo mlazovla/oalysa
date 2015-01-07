@@ -77,52 +77,12 @@ class TopicPresenter extends BasePresenter
         $this->template->isAllowedToDeleteAnyComent = $this->user->isAllowed('comentary','delete');
         $this->template->isAllowedToDeleteAnyTopic = $this->user->isAllowed('topic', 'delete');
         $this->template->isAllowedToDeleteSelfTopic = $this->user->isAllowed('selfTopic', 'delete');
+        $this->template->isAllowedToInsertAttachement = $this->user->isAllowed('attachement', 'insert');
+        $this->template->isAllowedToDeleteAttachement = $this->user->isAllowed('attachement', 'delete');
         
     }
     
-    public function renderDownloadAttachement($attachementId) {
-        if (!$this->user->isAllowed('attachement', 'read')) {
-            $this->redirect('Homepage:');
-            $this->flashMessage('Nemáte oprávnění číst přílohu článku.','warning');
-            return;
-        }
-        
-        $attachement = new Attachement($this->database);
- 
-        $path = $attachement->getPathById($attachementId);
-        $filename = $attachement->get($attachementId)->name;
-        header('Content-Transfer-Encoding: binary');  // For Gecko browsers mainly
-        header('Last-Modified: ' . $attachement->get($attachementId)->created_at . ' GMT');
-        header('Accept-Ranges: bytes');  // Allow support for download resume
-        header('Content-Length: ' . filesize($path));  // File size
-        header('Content-Encoding: none');
-        header('Content-Type: ' . $attachement->get($attachementId)->mimeType);  // Change the mime type if the file is not PDF
-        header('Content-Disposition: attachment; filename=' . $filename);  // Make the browser display the Save As dialog
-        readfile($path);  // This is necessary in order to get it to actually download the file, otherwise it will be 0Kb
-        exit();
-    }
-    
-    public function renderOpenAttachement($attachementId) {
-        if (!$this->user->isAllowed('attachement', 'read')) {
-            $this->redirect('Homepage:');
-            $this->flashMessage('Nemáte oprávnění číst přílohu článku.','warning');
-            return;
-        }
-                    
-        $attachement = new Attachement($this->database);
- 
-        $path = $attachement->getPathById($attachementId);
-        $filename = $attachement->get($attachementId)->name;
-                        
-        header('Content-type: $attachement->get($attachementId)->mimeType');
-        header('Content-Disposition: inline; filename="' . $filename . '"');
-        header('Content-Transfer-Encoding: binary');
-        header('Content-Length: ' . filesize($path));
-        header('Accept-Ranges: bytes');
-        
-        @readfile($path);
-        exit();
-    }
+
     
     protected function createComponentComentaryForm()
     {
@@ -296,6 +256,10 @@ class TopicPresenter extends BasePresenter
         $this->redirect('show', $lastTopic['id']);
     }
     
+    /**
+     * Delete topic by id
+     * @param int $topic_id
+     */
     public function actionDeleteTopic($topic_id) {
         $authorizator = new MyAuthorizator();
         $authorizator->injectDatabase($this->database);
@@ -323,4 +287,60 @@ class TopicPresenter extends BasePresenter
         $this->redirect('Homepage:');       
     }
     
+    /**
+     * Form to add Attachement
+     * @return \Nette\Application\UI\Form
+     */
+    protected function createComponentAttachementForm()
+    {
+        $form = new Nette\Application\UI\Form;
+       
+        $form->addHidden('topic_id', $this->getHttpRequest()->getQuery('topicId'));
+    
+        $form->addMultiUpload('attachements', 'Přílohy:');
+    
+        $form->addSubmit('send', 'Přidat přílohu');
+        $form->onSuccess[] = $this->attachementFormSucceeded;
+    
+        return $form;
+    }
+    
+    /**
+     * Solving attachement form
+     * @param \Nette\Application\UI\Form $form
+     */
+    public function attachementFormSucceeded($form)
+    {
+        $values = $form->getValues();
+    
+        $authorizator = new MyAuthorizator();
+        $authorizator->injectDatabase($this->database);
+        $this->user->setAuthorizator($authorizator);
+        if (!$this->user->isAllowed('attachement', 'insert')) {
+            $this->flashMessage('Nemáte oprávnění přidat přílohu.','warning');
+            $this->redirect("Topic:show ". $values['topic_id']);
+        }
+    
+        $res = array();
+        $attachement = new Attachement($this->database);
+        foreach ($values['attachements'] as $f)
+        {
+            if (!$attachement->insertFile($f, $values['topic_id'], $this->user->id))
+                $this->flashMessage('Nepodařilo se uložit přílohu: ' . $f->getName(), 'warning');
+            else {
+                $res[] = $f->getName();
+            }
+        }
+    
+        $message = '';
+        if (count($res) != 0) {
+            foreach ($res as $r) {
+                $message .= $r . ', ';
+            }
+            $message = substr($message, 0, -2);
+            $this->flashMessage('Přílohy: ' . $message .' byly úspěšně nahrány.');
+        }
+    
+        $this->redirect('show', $values['topic_id']);
+    }
 };    

@@ -24,7 +24,7 @@ class Attachement extends \Nette\Database\Table\Selection {
      * @var string
      */
     const SAVE_DIR = "../data/attachements/";
-    const ENABLED_EXTENSION = "doc docx xls xlsx jpg jpeg png zip ppt pptx pdf";
+    const ENABLED_EXTENSION = "doc docx xls xlsx jpg jpeg png zip ppt pptx pdf txt";
     
     public function __construct(\Nette\Database\Context $database) {
         parent::__construct($database->getConnection(), $this->table, 
@@ -97,16 +97,16 @@ class Attachement extends \Nette\Database\Table\Selection {
         
         // reseni mime typu
         switch ($ext) {
-            case "pdf": $mime = "application/pdf"; break;
-            case "jpg": $mime = "image/jpeg"; break;
+            case "pdf" : $mime = "application/pdf"; break;
+            case "jpg" : $mime = "image/jpeg"; break;
             case "jpeg": $mime = "image/jpeg"; break;
-            case "png": $mime = "image/png"; break;
-            case "zip": $mime = "application/zip"; break;
-            case "rar": $mime = "application/x-rar-compressed"; break;
-            case "doc": $mime = "application/msword"; break;
+            case "png" : $mime = "image/png"; break;
+            case "zip" : $mime = "application/zip"; break;
+            case "rar" : $mime = "application/x-rar-compressed"; break;
+            case "doc" : $mime = "application/msword"; break;
             case "docx": $mime = "application/pdf"; break;
-            case "ppt": $mime =  "application/vnd.ms-powerpoint"; break;
-            case "xls": $mime =  "application/vnd.ms-excel"; break;
+            case "ppt" : $mime = "application/vnd.ms-powerpoint"; break;
+            case "xls" : $mime = "application/vnd.ms-excel"; break;
             case "xlsx": $mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"; break;
             case "xltx": $mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.template"; break;
             case "potx": $mime = "application/vnd.openxmlformats-officedocument.presentationml.template"; break;
@@ -117,6 +117,7 @@ class Attachement extends \Nette\Database\Table\Selection {
             case "dotx": $mime = "application/vnd.openxmlformats-officedocument.wordprocessingml.template"; break;
             case "xlam": $mime = "application/vnd.ms-excel.addin.macroEnabled.12"; break;
             case "xlsb": $mime = "application/vnd.ms-excel.sheet.binary.macroEnabled.12"; break;
+            case "txt" : $mime = "text/plain"; break;
             default: $mime = "application/octet-stream"; // a binary file
         }
                 
