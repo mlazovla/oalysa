@@ -7,6 +7,7 @@ class MyAuthorizator extends \Nette\Object
 implements \Nette\Security\IAuthorizator
 {
     private $database;
+    private $roles;
     
     const GARANTED_PRIVILEGIES_TABLE = 'garantedprivilegies';
     const ROLE_COLUMB = 'role';
@@ -33,7 +34,9 @@ implements \Nette\Security\IAuthorizator
             return true;
 
         $roleModel = new Role($this->database);
-        $roles = $roleModel->getAllParents($role);
+        if (!$this->roles) {
+            $this->roles = $roleModel->getAllParents($role);
+        }
         $tmp = $this->database->table(self::RESOURCE_TABLE)->select('id')->where('name', $resource)->limit(1)->fetch();
         $resource_id = $tmp['id'];
         $tmp = $this->database->table(self::PRIVILEGE_TABLE)->select('id')->where('name', $privilege)->limit(1)->fetch();
@@ -45,7 +48,7 @@ implements \Nette\Security\IAuthorizator
 
         
         $role_ids[] = $roleModel->roleName2id($role);
-        foreach ($roles as $r) {
+        foreach ($this->roles as $r) {
             $role_ids[] = $r['id'];
         }
         

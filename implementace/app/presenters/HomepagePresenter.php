@@ -2,12 +2,12 @@
 
 namespace App\Presenters;
 
-use Nette,
-    App\Model;
+use Nette, App\Model;
 use App\Model\User;
 use App\Model\News;
 use App\Model\Subject;
 
+use App\Model\MyAuthorizator;
 
 /**
  * Homepage presenter.
@@ -39,9 +39,63 @@ class HomepagePresenter extends BasePresenter
 
 		    $subjects = new Subject($this->database);
 		    $this->template->subjects = $subjects->select('*')->order('shortcut');
+            
+		    $this->template->isAllowedInsertNew = $this->user->isAllowed('news', 'insert');
+		    $this->template->isAllowedDeleteNew = $this->user->isAllowed('news', 'delete');
+		    
 		}
-		
-	   
 	}
+	
+	protected function createComponentNewsForm()
+	{
+	    $form = new Nette\Application\UI\Form;
+	    $form->addTextArea('content', 'novinka:')->setRequired();
+	    $form->addSubmit('send', 'Přidat');
+	    $form->onSuccess[] = $this->newsFormSucceeded;
+	
+	    return $form;
+	}
+	
+	public function newsFormSucceeded($form)
+	{
+	    $values = $form->getValues();
+	
+	    $authorizator = new MyAuthorizator();
+	    $authorizator->injectDatabase($this->database);
+	    $this->user->setAuthorizator($authorizator);
+	    if (!$this->user->isAllowed('news', 'insert')) {
+	        $this->flashMessage('Nemáte oprávnění přidávat novinky.','warning');
+	        $this->redirect('Homepage:');
+	        return;
+	    }
+	
+	    $news = new News($this->database);
+	    $news->insert(
+	        array(
+	            'user_id' => $this->user->getId(),
+	            'content' => $values['content'],
+	        )
+	    );
+	
+	    $this->flashMessage("Novinka přidána.", 'success');
+	    $this->redirect('Homepage:');
+	}
+	
+	public function actionDeleteNews($news_id) {
+	    $authorizator = new MyAuthorizator();
+	    $authorizator->injectDatabase($this->database);
+	    $this->user->setAuthorizator($authorizator);
+	     
+	    if (!$this->user->isAllowed('news', 'delete')) {
+	        $this->flashMessage('Nemáte oprávnění mazat novinky.','warning');
+	        $this->redirect('Homepage:');
+	        return;
+	    }
+	    $news = new News($this->database);
+	    $news->where('id', $news_id)->delete();
+	    $this->flashMessage('Novinka smazána.','success');
+	    $this->redirect('Homepage:');  
+	}
+	
 
 }

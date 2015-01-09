@@ -12,12 +12,15 @@ use App\Model\MyAuthorizator;
 use Tester\Runner\CommandLine;
 use App\Model\Subject2Grade;
 
+use Nette\Application\BadRequestException;
 
 /**
  * Topic presenter.
  */
 class TopicPresenter extends BasePresenter
 {
+    private $topic;
+    
     //-------------------------------------------------------------------------
     // SHOW TOPIC
     
@@ -42,10 +45,11 @@ class TopicPresenter extends BasePresenter
         $subject = new Subject($this->database);
         $grade = new Grade($this->database);
         $topic = new Topic($this->database);
-
+        $this->topic = $topic->get($topicId);
+        
         $this->template->subject = $topic->getSubject($topicId);
         $this->template->grade = $topic->getGrade($topicId);
-        $this->template->topic = $topic->get($topicId);
+        $this->template->topic = $this->topic;
 
         $gradeId = $topic->getGrade($topicId)->id;
         if ($gradeId == null) {
@@ -72,7 +76,7 @@ class TopicPresenter extends BasePresenter
         }
         
         // Opravneni
-        $this->template->isAllowedToWriteComents = $this->user->isAllowed('selfComentary', 'insert');
+        $this->template->isAllowedToWriteComents = $this->user->isAllowed('selfComentary', 'insert') && $this->topic->enableDiscussion;
         $this->template->isAllowedToDeleteSelfComent = $this->user->isAllowed('selfComentary','delete');
         $this->template->isAllowedToDeleteAnyComent = $this->user->isAllowed('comentary','delete');
         $this->template->isAllowedToDeleteAnyTopic = $this->user->isAllowed('topic', 'delete');
@@ -101,12 +105,14 @@ class TopicPresenter extends BasePresenter
     public function comentaryFormSucceeded($form)
     {                
         $values = $form->getValues();
+        $this->topic = new Topic($this->database);
+        $this->topic = $this->topic->get($values->topic_id);
         
         $authorizator = new MyAuthorizator();
         $authorizator->injectDatabase($this->database);
         $this->user->setAuthorizator($authorizator);
-        if (!$this->user->isAllowed('selfComentary', 'insert')) {
-            $this->flashMessage('Nemáte oprávnění komentovat články.','warning');
+        if (!$this->user->isAllowed('selfComentary', 'insert') || !$this->topic->enableDiscussion) {
+            $this->flashMessage('Článek nelze komentovat. Buď nemáte dostatečná oprávnění nebo je diskuze zakázána.','warning');
             $this->redirect('show', $values->topic_id);
             return;
         }
@@ -159,7 +165,7 @@ class TopicPresenter extends BasePresenter
 
     
     //-----------------------------------------------------------------------
-    // EDIT TOPIC
+    // NEW/EDIT/DELETE TOPIC
     //
     
     public function renderNew($subjectId, $gradeId) {
@@ -338,4 +344,128 @@ class TopicPresenter extends BasePresenter
     
         $this->redirect('show', $values['topic_id']);
     }
+    
+    /**
+     * Render update topic
+     * @param int $topicId
+     */
+    public function renderUpdate($topicId) {
+        $this->topic = new Topic($this->database);
+        $this->topic = $this->topic->where('id', $topicId)->fetch();
+        
+        $allowed = false;
+        if ($this->topic->user_id == $this->user->id) {
+            $allowed = $this->user->isAllowed('selfTopic', 'update');
+        }
+        if (!$allowed) {
+            $allowed = $this->user->isAllowed('topic', 'update');
+        }
+
+        if (!$allowed) {
+            $this->flashMessage('Nemáte oprávnění upravovat tento článek.','warning');
+            $this->redirect('Topic:show', $topicId);
+            return;
+        }
+        
+        if (!$this->topic) { // kontrola existence záznamu
+            throw new BadRequestException;
+        }
+    
+        $subject = new Subject($this->database);
+        $grade = new Grade($this->database);
+        $topic = new Topic($this->database);
+    
+        $this->template->subject = $topic->getSubject($topicId);
+        $this->template->grade = $topic->getGrade($topicId);
+        $this->template->topic = $topic->get($topicId);
+    
+        $gradeId = $topic->getGrade($topicId)->id;
+        if ($gradeId == null) {
+            $this->template->topics = null;
+        }
+        else {
+            $this->template->topics = $topic->where('subject2grade_id', $gradeId);
+        }
+    
+        $this['topicUpdateForm']->setDefaults(array(
+            'id' => $this->topic->id,
+            'name' => $this->topic->name,
+            'anotation' => $this->topic->anotation,
+            'content' => $this->topic->content,
+            'enableDiscussion' => $this->topic->enableDiscussion,
+        )); // nastavení výchozích hodnot
+    }
+    
+    /**
+     * Form to edit topic TopicUpdate
+     */
+    protected function createComponentTopicUpdateForm()
+    {
+    
+        $form = new Nette\Application\UI\Form;
+        $form->addText('name', 'nadpis:', 60, 127)->setRequired();        
+        $form->addTextArea('anotation', 'anotace:');
+        $form->addTextArea('content', 'článek:');
+        $form->addHidden('id', '');
+        $form->addCheckbox('enableDiscussion', 'Povolit pod tématem diskuzi:')->setValue(1);
+        $form->addSubmit('send', 'Uložit');
+        
+        $form->onSuccess[] = callback($this, 'topicUpdateFormSucceeded');
+        return $form;
+    }
+    
+    /**
+     * Attachement update
+     * @form attachementForm
+     */
+    public function topicUpdateFormSucceeded($form)
+    {
+        // data z formulare
+        $values = $form->getValues();
+    
+        // nacitani z databaze
+        $this->topic = new Topic($this->database);
+        $this->topic = $this->topic->where('id', $values['id'])->fetch();
+        
+        // kontrola opravneni
+        $authorizator = new MyAuthorizator();
+        $authorizator->injectDatabase($this->database);
+        $this->user->setAuthorizator($authorizator);
+      
+        $allowed = false;
+           
+        if ($this->topic->user_id == $this->user->id) { // vlastni clanek
+            $allowed = $this->user->isAllowed('selfTopic', 'update');
+        }
+        if (!$allowed) { // libovilny clanek
+            $allowed = $this->user->isAllowed('topic', 'update');
+        }
+        
+        if (!$allowed) { // uzivatel neni opravnen upravovat clanek
+            $this->flashMessage('Nemáte oprávnění upravovat tento článek.','warning');
+            $this->redirect('Topic:show', $values['id']);
+            return;
+        }
+        
+        // kontrola existence zaznamu
+        if (!$this->topic) { 
+            throw new BadRequestException;
+        }
+    
+    
+        $this->topic = new Topic($this->database);
+        $this->topic->where('id', $values['id'])->update(
+            array(
+                'name' => $values['name'],
+                'anotation' => $values['anotation'],
+                'content' => $values['content'],
+                'enableDiscussion' => $values['enableDiscussion'],
+            )
+        );
+    
+        $this->flashMessage('Článek '. $values['name'] .' byl upraven.', 'success');
+        $this->redirect('Topic:show', $values['id']);
+    }
+    
+    
 };    

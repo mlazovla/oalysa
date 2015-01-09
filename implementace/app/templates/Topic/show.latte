@@ -22,6 +22,12 @@
 		{if $topic}
 			<h1 n:block="title">{$topic->name}</h1>
 			
+			<div class="tools">
+				<a n:href="topic:new $topic->id" class="buttonNew">Nový</a>
+				<a n:href="topic:update $topic->id" class="buttonEdit">Upravit</a>
+				<a n:href="topic:deleteTopic $topic->id" class="buttonDelete">Smazat</a>
+			</div>
+
 			<div id="notation">
 				{$topic->anotation|noescape}
 			</div>
@@ -72,49 +78,51 @@
 		{/if}
 	</div>
 
-	<div id="comentaries">
-	<h2>Komentáře</h2>
-	{if $comentaries}
-		{foreach $comentaries as $c}
-			<div class="comentar">
-				{if $c->comentary != null}
-				<a name="comentary{$c->id}"></a>
-				<div class="question">
-					<span class="user">{$c->comentary->user->name}</span>
-					<span class="date">{$c->comentary->created_at}</span>
-					<a href="#comentary{$c->comentary->id}" title="Ukázat komentář." class="buttonShow">Ukázat</a>
-					napsal: {$c->comentary->content|truncate:50}					
+	{if $topic->enableDiscussion}
+		<div id="comentaries">
+		<h2>Komentáře</h2>
+		{if $comentaries}
+			{foreach $comentaries as $c}
+				<div class="comentar">
+					{if $c->comentary != null}
+					<a name="comentary{$c->id}"></a>
+					<div class="question">
+						<span class="user">{$c->comentary->user->name}</span>
+						<span class="date">{$c->comentary->created_at}</span>
+						<a href="#comentary{$c->comentary->id}" title="Ukázat komentář." class="buttonShow">Ukázat</a>
+						napsal: {$c->comentary->content|truncate:50}					
+					</div>
+					{/if}
+					<div class="answer">
+						<span class="user">{$c->user->name}</span>
+						<span class="date">{$c->created_at|date:'%d.%m.%Y %H:%M'}</span>
+						{if $isAllowedToWriteComents}
+							<a
+								class="buttonAnswer_on"
+								href="#comment"
+								title="Odpovědět"
+								onClick="
+									setInputValueById('frm-comentaryForm-answer_on','{$c->id}');
+									setElementValueById('answer_on_message', '{$c->content|truncate:30}');
+							">Odpovědět</a>
+						{/if}
+						{if ($isAllowedToDeleteAnyComent || ($isAllowedToDeleteSelfComent && $c->user->id == $currentUser['id']))}
+							<a n:href="deleteComent $c->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tento komentář?'));">X</a>
+						{/if}
+						<span class="content">{$c->content}</span>
+					</div>
 				</div>
+			{/foreach}
+		{else}
+			<p>K tomuto tématu nejsou zatím žádné komentáře.</p>
+		{/if}
+			<div id="comentaryForm">
+				{if $isAllowedToWriteComents}
+				<a name='comment'></a>
+				<span id="answer_on_message"></span>
+					{control comentaryForm}
 				{/if}
-				<div class="answer">
-					<span class="user">{$c->user->name}</span>
-					<span class="date">{$c->created_at|date:'%d.%m.%Y %H:%M'}</span>
-					{if $isAllowedToWriteComents}
-						<a
-							class="buttonAnswer_on"
-							href="#comment"
-							title="Odpovědět"
-							onClick="
-								setInputValueById('frm-comentaryForm-answer_on','{$c->id}');
-								setElementValueById('answer_on_message', '{$c->content|truncate:30}');
-						">Odpovědět</a>
-					{/if}
-					{if ($isAllowedToDeleteAnyComent || ($isAllowedToDeleteSelfComent && $c->user->id == $currentUser['id']))}
-						<a n:href="deleteComent $c->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tento komentář?'));">X</a>
-					{/if}
-					<span class="content">{$c->content}</span>
-				</div>
 			</div>
-		{/foreach}
-	{else}
-		<p>K tomuto tématu nejsou zatím žádné komentáře.</p>
-	{/if}
-		<div id="comentaryForm">
-			{if $isAllowedToWriteComents}
-			<a name='comment'></a>
-			<span id="answer_on_message"></span>
-				{control comentaryForm}
-			{/if}
 		</div>
-	</div>
+	{/if}
 {/block}

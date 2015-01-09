@@ -9,7 +9,6 @@ use App\Model\Subject;
 use App\Model\Grade;
 use App\Model\MyAuthorizator;
 
-
 use Nette\Application\BadRequestException;
 
 
@@ -26,7 +25,7 @@ class AttachementPresenter extends BasePresenter
     }
 
     /**
-     * Render update page
+     * Render update attachement
      * @param int $attachementId
      */
     public function renderUpdate($attachementId) {
@@ -96,6 +95,7 @@ class AttachementPresenter extends BasePresenter
         
         $topic_id = $this->attachement->topic_id;
         $ext = $this->attachement->extension;
+        $name = $this->attachement->name;
         
         $authorizator = new MyAuthorizator();
         $authorizator->injectDatabase($this->database);
@@ -122,7 +122,7 @@ class AttachementPresenter extends BasePresenter
                )
             );
     
-        $this->flashMessage('Příloha '. $this->attachement->name .' byla upravena.', 'success');
+        $this->flashMessage('Příloha '. $name .' byla upravena ('. $values['name'] .').', 'success');
         $this->redirect('Topic:show', $topic_id);
     }
     

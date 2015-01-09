@@ -71,7 +71,7 @@ class Attachement extends \Nette\Database\Table\Selection {
      */
     public static function getExtensionByName($filename) {
         $tmp = explode('.', $filename);
-        return end($tmp);
+        return strtolower(end($tmp));
     }
 
     /**
@@ -82,7 +82,7 @@ class Attachement extends \Nette\Database\Table\Selection {
     public static function checkFilename($filename) {
         //$preg = '(\S|[^\\&\*\'\^"<`]|[ ])+';
         //return preg_match($preg, trim($filename));
-        return true;
+        return true; // filename is only on webpage
     }
     
     
