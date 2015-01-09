@@ -1,0 +1,64 @@
+{block content}
+	<div id="acount">
+		<h1 n:block="title">Správa účtu {$acount->name}</h1>
+
+		<table class="selfAcount">
+			<tr>
+				<th>Uživatelské jméno:</th>
+				<td>{$acount->username}</td>
+			</tr>
+			<tr>
+				<th>Jméno:</th>
+				<td>{$acount->name}</td>
+			</tr>
+			<tr>
+				<th>Heslo:</th>
+				<td><a n:href="acount:updatePassword $acount->id" class="buttonUpdate">Změnit</a></td>
+			</tr>
+
+			<tr>
+				<th>Ročník:</th>
+				<td>{if $acount->grade}{$acount->grade->name}{else}<span class="note">není zvolen</span>{/if}</td>
+			</tr>
+			<tr>
+				<th>Email:</th>
+				<td>{$acount->email} <a n:href="acount:updateEmail $acount->id" class="buttonUpdate">Upravit</a></td>
+			</tr>
+			<tr>
+				<th>Role:</th>
+				<td>{$acount->role->name}</td>
+			</tr>
+		</table>
+	</div>
+
+	{if $isAllowedReadAcount}
+	<div>
+		<h2>Ostatní účty</h2>
+		<table class="grid">
+		<thead>
+			<tr>
+				<th>Jméno</th><th>Uživatelské jméno</th><th>Ročník</th><th>Email</th><th>Role</th><th>Nástroje</th>
+			</tr>
+		</thead>
+		<tbody>
+			{foreach $acounts as $a}
+				<tr>
+					<td>{$a->name}</td>
+					<td>{$a->username}</td>
+					<td>{if $a->grade}{$a->grade->name}{else}<span class="note">není zvolen</span>{/if}</td>
+					<td>{$a->email}</td>
+					<td>{$a->role->name}</td>
+					<td>
+						<a n:href="acount:show $a->id" class="buttonOpen">Otevřít</a>
+						<a n:if="isAllowedResetPasswordAcount" n:href="acount:resetPassword $a->id" class="buttonUpdate" onclick="return(confirm('Opravdu chcete resetovat heslo?'));">Reset hesla</a>
+						<a n:if="isAllowedUpdateAcount" n:href="acount:update $a->id" class="buttonUpdate">Upravit</a>
+						<a n:if="isAllowedDeleteAcount" n:href="acount:delete $a->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tuto přílohu?'));">Smazat</a>
+					</td>
+				</tr>
+			{/foreach}
+		</tbody>
+		</table>
+	</div>
+	{/if}		
+	
+{/block}

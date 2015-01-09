@@ -25,7 +25,7 @@
 			<div class="tools">
 				<a n:href="topic:new $topic->id" class="buttonNew">Nový</a>
 				<a n:href="topic:update $topic->id" class="buttonEdit">Upravit</a>
-				<a n:href="topic:deleteTopic $topic->id" class="buttonDelete">Smazat</a>
+				<a n:href="topic:deleteTopic $topic->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tuto přílohu?'));">Smazat</a>
 			</div>
 
 			<div id="notation">

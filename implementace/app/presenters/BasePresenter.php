@@ -4,6 +4,7 @@ namespace App\Presenters;
 
 use Nette, App\Model;
 use Nette\Database\Context;
+use App\Model\MyAuthorizator;
 
 
 /**
@@ -36,6 +37,12 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
            
             $this->template->currentUser = $currentUser;    
         }
+    }
+    
+    protected function setMyAutorizator() {
+        $authorizator = new MyAuthorizator();
+        $authorizator->injectDatabase($this->database);
+        $this->user->setAuthorizator($authorizator);   
     }
     
 }
