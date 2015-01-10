@@ -26,6 +26,7 @@ class AcountPresenter extends BasePresenter
 	       ->select('id, username, name')
 	       ->wherePrimary($this->user->id)->get($this->user->id);
 		
+	    $isAllowedReadAcount = false;
 		if ($this->user->isLoggedIn()) {
 		    $isAllowedReadAcount = $this->user->isAllowed('acount', 'read');
 		    $this->template->isAllowedReadAcount = $isAllowedReadAcount;
@@ -33,6 +34,9 @@ class AcountPresenter extends BasePresenter
 		    $this->template->isAllowedUpdateAcount = $this->user->isAllowed('acount', 'update');
 		    $this->template->isAllowedDeleteAcount = $this->user->isAllowed('acount', 'delete');
 		    $this->template->isAllowedResetPasswordAcount = $this->user->isAllowed('acount', 'resetPassword');    
+		}
+		else {
+		    $this->redirect('Homepage:');
 		}
 		
 		$this->template->acount = $this->acount->get($this->user->id);
@@ -44,6 +48,42 @@ class AcountPresenter extends BasePresenter
 		    $this->template->acounts = $acounts;
 		}
 	}
+		
+	public function renderShow($acountId)
+	{
+	    if (!$this->user->isLoggedIn()) {
+	       $this->redirect('Homepage:');
+	    }
+	    $this->template->user = $this->database->table('User')
+	    ->select('id, username, name')
+	    ->wherePrimary($this->user->id)->get($this->user->id);
+	
+        $isAllowedReadAcount = $this->user->isAllowed('acount', 'read');
+        if (!$isAllowedReadAcount) {
+            $this->flashMessage('Nemáte oprávnění si prohlížet cizí účty.','warning');
+            $this->redirect('Acount:');
+            return;
+        }
+        
+        $this->template->isAllowedReadAcount = $isAllowedReadAcount;
+        $this->template->isAllowedInsertAcount = $this->user->isAllowed('acount', 'insert');
+        $this->template->isAllowedUpdateAcount = $this->user->isAllowed('acount', 'update');
+        $this->template->isAllowedDeleteAcount = $this->user->isAllowed('acount', 'delete');
+        $this->template->isAllowedResetPasswordAcount = $this->user->isAllowed('acount', 'resetPassword');
+	
+	    $this->template->acount = $this->acount->get($acountId);
+	
+	    $acounts = array();
+	    if ($isAllowedReadAcount) {
+	        $this->acount = new Acount($this->database);
+	        $acounts = $this->acount->order('grade.name, name');
+	        $this->template->acounts = $acounts;
+	    }
+	    
+	}
+
+	
+
 	
 	protected function createComponentNewsForm()
 	{

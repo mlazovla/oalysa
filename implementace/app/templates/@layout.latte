@@ -47,16 +47,18 @@ tinymce.init({l}
 		{/block}
 	</header>
 	
-	<div id="navigation">
-		<h2>Navigace</h2>
-		<ul class="navig">
-		    <li><a n:href="Homepage:">Home</a></li>
-		    <li><a n:href="Acount:">Účet</a></li>		    
-		</ul>
-	</div>
+	{block navigation}
+		<div n:if="$isLoggedIn" id="navigation">
+			<h2>Navigace</h2>
+			<ul class="navig">
+			    <li><a n:href="Homepage:">Home</a></li>
+			    <li><a n:href="Acount:">Účet</a></li>		    
+			</ul>
+		</div>
+	{/block}
 	
 	
-	<div id="menu">{block menu}{/block}</div>
+	{block menu}{/block}
 	
 	
 	

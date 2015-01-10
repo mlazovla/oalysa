@@ -1,4 +1,5 @@
 {block menu}
+<div id="menu">
 	{if $subject}
 		<h2>{$subject->shortcut} - {$grade->name}</h2>
 		{if $isAllowedToEditTopic}
@@ -19,7 +20,7 @@
 	{else}
 	
 	{/if}
-
+</div>
 {/block}
 
 

@@ -30,6 +30,7 @@
 {/block}
 
 {block menu}
+	<div id="menu">
 	{if $isLoggedIn}
 		<h2>škola</h2>
 			{if count($subjects) > 0}
@@ -42,5 +43,6 @@
 				Žádné předměty nebyly načteny.
 			{/if}
 	{/if}
+	</div>
 {/block}
 
