@@ -21,4 +21,16 @@ class Acount extends \Nette\Database\Table\Selection {
                 $database->getDatabaseReflection());
         $this->db = $database;
     }
+    
+    public function add($username, $password, $role_id, $name="", $email="") {
+        $acount = new Acount($this->db);       
+        if ($acount->where('username', $username)->count('id') != 0) {
+            return false;
+        }
+        else {
+            $user = new UserManager($this->db);
+            $user->add($username, $password, $role_id, $name, $email);
+            return true;
+        }        
+    }
 }

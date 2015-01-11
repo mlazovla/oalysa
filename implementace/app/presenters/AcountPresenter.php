@@ -6,6 +6,8 @@ use Nette, App\Model;
 use App\Model\User;
 use App\Model\MyAuthorizator;
 use App\Model\Acount;
+use App\Model\Role;
+use Nette\Utils\Random;
 
 /**
  * Acount presenter  
@@ -13,6 +15,7 @@ use App\Model\Acount;
 class AcountPresenter extends BasePresenter
 {
     private $acount;
+    const defaultRole = 2;
     
     public function __construct(Nette\Database\Context $database)
     {
@@ -85,54 +88,56 @@ class AcountPresenter extends BasePresenter
 	
 
 	
-	protected function createComponentNewsForm()
+	protected function createComponentAcountForm()
 	{
 	    $form = new Nette\Application\UI\Form;
-	    $form->addTextArea('content', 'novinka:')->setRequired();
-	    $form->addSubmit('send', 'Přidat');
-	    $form->onSuccess[] = $this->newsFormSucceeded;
-	
+	    $form->addText('name', 'Jméno:')->setRequired();
+	    $form->addText('username', 'Uživatelské jméno:')->setRequired();
+	    $form->addText('password', 'Heslo:')->setRequired();
+	    $form->addText('email', 'Email:'); 
+	    
+	    $role = new Role($this->database);
+	    $role = $role->select('id, name');
+	    $roles = array();
+	    foreach ($role as $r) {
+	        $roles[$r->id] = $r->name;
+	    }
+	    $form->addSelect('role_id', 'Role:', $roles)->setValue(self::defaultRole);
+
+	    $form->addSubmit('send', 'Založit účet')->setValue('send');
+	     
+	    $form->onSuccess[] = $this->acountFormSucceeded;
+	     
 	    return $form;
 	}
 	
-	public function newsFormSucceeded($form)
+	public function acountFormSucceeded($form)
 	{
 	    $values = $form->getValues();
-	
-	    if (!$this->user->isAllowed('news', 'insert')) {
-	        $this->flashMessage('Nemáte oprávnění přidávat novinky.','warning');
-	        $this->redirect('Homepage:');
+	    $this->setMyAutorizator();
+	    
+	    if (!$this->user->isAllowed('acount', 'insert')) {
+	        $this->flashMessage('Nemáte oprávnění přidávat uživatelské účty.','warning');
+	        $this->redirect('Acount:');
 	        return;
 	    }
-	
-	    $news = new News($this->database);
-	    $news->insert(
-	        array(
-	            'user_id' => $this->user->getId(),
-	            'content' => $values['content'],
-	        )
-	    );
-	
-	    $this->flashMessage("Novinka přidána.", 'success');
-	    $this->redirect('Homepage:');
-	}
-	
-	public function actionDeleteNews($news_id) {
-	    $authorizator = new MyAuthorizator();
-	    $authorizator->injectDatabase($this->database);
-	    $this->user->setAuthorizator($authorizator);
-	     
-	    if (!$this->user->isAllowed('news', 'delete')) {
-	        $this->flashMessage('Nemáte oprávnění mazat novinky.','warning');
-	        $this->redirect('Homepage:');
-	        return;
+
+	    $this->acount = new Acount($this->database);
+	    $username = $values['username'];
+	    $randMax = 9;
+	    while(!$this->acount->add($username, $values['password'], $values['role_id'], $values['name'], $values['email'])) {
+	        $username = $values['username'] . rand(1,$randMax++);
 	    }
-	    $news = new News($this->database);
-	    $news->where('id', $news_id)->delete();
-	    $this->flashMessage('Novinka smazána.','success');
-	    $this->redirect('Homepage:');  
+	    if ($username == $values['username']) {
+	        $this->flashMessage("Účet ". $values->username ." (". $values->name .") přidán.", 'success'); 	         
+	    }
+	    else {  
+	        $this->flashMessage("Zadané uživatelské jméno \"". $values->username ."\" již existuje. ". $values['name'] ." byl uložen pod uživatelským jménem \"$username\".", 'warning');
+	         
+	    }
+	    $this->redirect('Acount:new');
+
 	}
-	
 	
 
 }

@@ -52,7 +52,7 @@
 						<a n:href="acount:show $a->id" class="buttonOpen">Otevřít</a>
 						<a n:if="isAllowedUpdateAcount" n:href="acount:update $a->id" class="buttonUpdate">Upravit</a>
 						<a n:if="isAllowedResetPasswordAcount" n:href="acount:resetPassword $a->id" class="buttonUpdate" onclick="return(confirm('Opravdu chcete resetovat heslo?'));">Reset hesla</a>
-						<a n:if="isAllowedDeleteAcount" n:href="acount:delete $a->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tuto přílohu?'));">Smazat</a>
+						<a n:if="isAllowedDeleteAcount" n:href="acount:delete $a->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tento účet?'));">Smazat</a>
 					</td>
 				</tr>
 			{/foreach}
