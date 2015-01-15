@@ -1,8 +1,9 @@
+
 {block content}
 	<div id="acount">
 		<h1 n:block="title">Správa účtu {$acount->name}</h1>
 
-		<table class="selfAcount">
+		<table class="acount">
 			<tr>
 				<th>Uživatelské jméno:</th>
 				<td>{$acount->username}</td>
@@ -12,28 +13,34 @@
 				<td>{$acount->name}</td>
 			</tr>
 			<tr>
-				<th>Heslo:</th>
-				<td><a n:href="acount:updatePassword $acount->id" class="buttonUpdate">Změnit</a></td>
-			</tr>
-
-			<tr>
 				<th>Ročník:</th>
 				<td>{if $acount->grade}{$acount->grade->name}{else}<span class="note">není zvolen</span>{/if}</td>
 			</tr>
 			<tr>
 				<th>Email:</th>
-				<td>{$acount->email} <a n:href="acount:updateEmail $acount->id" class="buttonUpdate">Upravit</a></td>
+				<td><a href="mailto:{$acount->email}">{$acount->email}</a></td>
 			</tr>
 			<tr>
 				<th>Role:</th>
 				<td>{$acount->role->name}</td>
 			</tr>
+			<tr>
+			<tr n:if="$isAllowedShowInitPasswordAcount">
+				<th>Počáteční heslo:</th>
+				<td id="selfInitPassword">
+					<button class="buttonShow" onclick="loadToElement({link Acount:showInitPassword $acount->id}, 'selfInitPassword');">Ukázat počáteční heslo</button>
+				</td>
+			</tr>
+
 		</table>
 	</div>
 
 	{if $isAllowedReadAcount}
 	<div>
 		<h2>Ostatní účty</h2>
+		<a n:if="$isAllowedInsertAcount" n:href="acount:new" class="buttonInsert">Nový</a>
+		<a n:if="$isAllowedInsertAcount" n:href="acount:batch" class="buttonInsert">Dávkové zpracování</a>
+
 		<table class="grid">
 		<thead>
 			<tr>
@@ -50,9 +57,16 @@
 					<td>{$a->role->name}</td>
 					<td>
 						<a n:href="acount:show $a->id" class="buttonOpen">Otevřít</a>
-						<a n:if="isAllowedUpdateAcount" n:href="acount:update $a->id" class="buttonUpdate">Upravit</a>
-						<a n:if="isAllowedResetPasswordAcount" n:href="acount:resetPassword $a->id" class="buttonUpdate" onclick="return(confirm('Opravdu chcete resetovat heslo?'));">Reset hesla</a>
-						<a n:if="isAllowedDeleteAcount" n:href="acount:delete $a->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tento účet?'));">Smazat</a>
+						<a n:if="$isAllowedResetPasswordAcount" n:href="acount:resetPassword $a->id" class="buttonUpdate" onclick="return(confirm('Opravdu chcete resetovat heslo?'));">Reset hesla</a>
+						<a n:if="$isAllowedUpdateAcount" n:href="acount:update $a->id" class="buttonUpdate">Upravit</a>
+						<a n:if="$isAllowedDeleteAcount" n:href="acount:delete $a->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tento účet?'));">Smazat</a>
+						<span id="initPassword_{$a->id}" n:if="$isAllowedShowInitPasswordAcount"> 
+							<button href="Acount:showInitPassword $a->id"
+								class="buttonShow"
+								onclick="loadToElement({link Acount:showInitPassword $a->id}, 'initPassword_{$a->id}');" >
+								Ukázat počáteční heslo
+							</button>
+						</span>
 					</td>
 				</tr>
 			{/foreach}
@@ -60,5 +74,6 @@
 		</table>
 	</div>
 	{/if}		
+		
 	
 {/block}

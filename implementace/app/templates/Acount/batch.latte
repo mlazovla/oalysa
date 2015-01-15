@@ -1,0 +1,50 @@
+{block content}
+	<div id="acount">
+		<h1 n:block="title">Vytvořit účty dávkou</h1>
+		<a n:href="Acount:" class="buttonCancel">Zrušit</a>
+
+		{control batchForm}
+	</div>
+
+	{if $isAllowedReadAcount && count($acounts) > 0}
+	<div class="tools">
+		<a n:href="Acount:activateAcounts" class="buttonConfirm" onclick="return(confirm('Přidat nové účty?'));">Potvrdit celou dávku</a>
+		<a n:href="Acount:removeDeactivatedAcounts" class="buttonCancel" onclick="return(confirm('Opravdu chcete odstranit celou dávku?'));">Zrušit celou dávku</a>
+	</a>
+
+	<div>
+		<h2>Účty v dávce</h2>
+
+		<table class="grid">
+		<thead>
+			<tr>
+				<th>Jméno</th><th>Uživatelské jméno</th><th>Ročník</th><th>Email</th><th>Role</th><th>Nástroje</th>
+			</tr>
+		</thead>
+		<tbody>
+			{foreach $acounts as $a}
+				<tr>
+					<td>{$a->name}</td>
+					<td>{$a->username}</td>
+					<td>{if $a->grade}{$a->grade->name}{else}<span class="note">není zvolen</span>{/if}</td>
+					<td>{$a->email}</td>
+					<td>{$a->role->name}</td>
+					<td>
+						<a n:if="$isAllowedReadAcount" n:href="acount:show $a->id" class="buttonOpen">Otevřít</a>
+						<a n:if="$isAllowedUpdateAcount" n:href="acount:update $a->id" class="buttonUpdate">Upravit</a>
+						<a n:if="$isAllowedDeleteAcount" n:href="acount:delete $a->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tento účet?'));">Smazat</a>
+						<span id="initPassword_{$a->id}" n:if="$isAllowedShowInitPasswordAcount"> 
+							<button href="Acount:showInitPassword $a->id"
+								class="buttonOpen"
+								onclick="loadToElement({link Acount:showInitPassword $a->id}, 'initPassword_{$a->id}');" >
+								Ukázat počáteční heslo
+							</button>
+						</span>
+					</td>
+				</tr>
+			{/foreach}
+		</tbody>
+		</table>
+	</div>
+	{/if}
+{/block}

@@ -10,7 +10,7 @@
 				{foreach $topics as $t}
 					<li>
 						<a href="{link Topic:show $t->id}">{$t->name}</a>
-						{if $isAllowedToDeleteAnyTopic || ($isAllowedToDeleteSelfTopic && $currentUser['id'] == $t->user->id)}<a n:href="Topic:DeleteTopic $t->id" class="buttonDeleteTopic">smazat</a>{/if}
+						{if $isAllowedToDeleteAnyTopic || ($isAllowedToDeleteSelfTopic && $currentUser['id'] == $t->user->id)}<a n:href="Topic:DeleteTopic $t->id" class="buttonDelete"  onclick="return(confirm('Opravdu chcete smazat tento komentář?'));">smazat</a>{/if}
 					</li>
 				{/foreach}
 			</ul>

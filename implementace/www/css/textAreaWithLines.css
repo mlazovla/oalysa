@@ -1,0 +1,17 @@
+   #frm-batchForm-batch{
+      width:500px;
+      height:510px;
+   }
+   .textAreaWithLines{
+      font-family:courier;      
+      border:1px solid #F00;
+      
+   }
+   .textAreaWithLines textarea,.textAreaWithLines div{
+      border:0px;
+      line-height:120%;
+      font-size:12px;
+   }
+   .lineObj{
+      color:#328;
+   }

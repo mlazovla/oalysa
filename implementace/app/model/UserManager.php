@@ -38,7 +38,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 	{
 		list($username, $password) = $credentials;
 		
-		$row = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_NAME, $username)->fetch();
+		$row = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_NAME, $username)->where('activate', 1)->fetch();
         
 		if (!$row) {
 			throw new Nette\Security\AuthenticationException('The username is incorrect.', self::IDENTITY_NOT_FOUND);
@@ -64,15 +64,27 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 	 * @param  string
 	 * @return void
 	 */
-	public function add($username, $password, $role_id = null, $name="", $email="")
+	public function add($username, $password, $role_id = null, $name="", $grade_id=null, $email="", $activate=1)
 	{
+	    $pass = ($password == '' && $activate == 0) ? $password : Passwords::hash($password);
 		$this->database->table(self::TABLE_NAME)->insert(array(
 			self::COLUMN_NAME => $username,
-			self::COLUMN_PASSWORD_HASH => Passwords::hash($password),
+			self::COLUMN_PASSWORD_HASH => $pass,
 		    'name' => $name,
 		    'email' => $email,
-		    'role_id' => $role_id
+		    'role_id' => $role_id,
+		    'grade_id' => $grade_id,
+		    'activate' => $activate
 		));
+	}
+		
+	/**
+	 * Make hash from user defined password
+	 * @param string $password
+	 * @return string
+	 */
+	public static function hashPassword($password) {
+	    return Passwords::hash($password);
 	}
 
 }

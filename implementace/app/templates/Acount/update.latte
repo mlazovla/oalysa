@@ -1,0 +1,9 @@
+{block content}
+	<div id="acount">
+		<h1 n:block="title">Upravit účet {$acount->username}</h1>
+		<a n:href="Acount:show $acount->id" class="buttonCancel">Zrušit</a>
+
+		{control updateAcountForm}
+		
+	</div>	
+{/block}

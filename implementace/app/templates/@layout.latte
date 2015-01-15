@@ -12,9 +12,13 @@
 
 	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/screen.css">
 	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
+	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/textAreaWithLines.css">
+
 	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
 
 	<script src="{$basePath}/js/tinymce/tinymce.min.js"></script>
+	<script src="{$basePath}/js/textAreaWithLines.js"></script>	
+
 	<script>
 tinymce.init({l}
     selector: "textarea#frm-topicForm-anotation, textarea#frm-topicForm-content, textarea#frm-topicUpdateForm-anotation, textarea#frm-topicUpdateForm-content",
@@ -30,6 +34,8 @@ tinymce.init({l}
     toolbar: "undo redo | styleselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link preview",
     image_advtab: true,
 {r});
+
+   
 	</script>
 
 	{block head}{/block}
@@ -76,7 +82,10 @@ tinymce.init({l}
 	<script src="{$basePath}/js/jquery.js"></script>
 	<script src="{$basePath}/js/netteForms.js"></script>
 	<script src="{$basePath}/js/main.js"></script>
-	<script src="{$basePath}/js/myScripts.js"></script>	
+	<script src="{$basePath}/js/myScripts.js"></script>
+	<script>
+		createTextAreaWithLines('frm-batchForm-batch');
+	</script>
 	{/block}
 	
 	<footer>

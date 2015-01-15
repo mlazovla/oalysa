@@ -31,6 +31,10 @@
 
 {block menu}
 	<div id="menu">
+		<div class="tools" n:if="$isAllowedInsertSubject">
+		<a n:href="Subject:insert" n:if="$isAllowedInsertSubject" class="buttonInsert">Přidat předmět</a>
+	</div>
+
 	{if $isLoggedIn}
 		<h2>škola</h2>
 			{if count($subjects) > 0}

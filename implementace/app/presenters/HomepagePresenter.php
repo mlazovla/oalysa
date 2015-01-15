@@ -42,7 +42,7 @@ class HomepagePresenter extends BasePresenter
             
 		    $this->template->isAllowedInsertNew = $this->user->isAllowed('news', 'insert');
 		    $this->template->isAllowedDeleteNew = $this->user->isAllowed('news', 'delete');
-		    
+		    $this->template->isAllowedInsertSubject = $this->user->isAllowed('subject', 'insert');
 		}
 	}
 	

@@ -262,16 +262,20 @@ class TopicPresenter extends BasePresenter
      * @param int $topic_id
      */
     public function actionDeleteTopic($topic_id) {
-        $authorizator = new MyAuthorizator();
-        $authorizator->injectDatabase($this->database);
-        $this->user->setAuthorizator($authorizator);
+        $this->setMyAutorizator();
         
-        $topic = new Topic($this->database);
-        
+        $this->topic = new Topic($this->database);
+        $this->topic = $this->topic->get($topic_id);
+        $s2g_id = $this->topic['subject2grade_id'];
+        $s2g = new Subject2Grade($this->database);
+        $s2g = $s2g->get($s2g_id);
+        $subjectId = (string)$s2g['subject_id'];
+        $gradeId = (string)$s2g['grade_id'];
+                
         $isAllowedToDeleteThis = 
             (
                 $this->user->isAllowed('topic', 'delete') || 
-                    ($this->user->isAllowed('selfTopic', 'delete') && $topic->get($topic_id)->user_id == $this->user->id)
+                    ($this->user->isAllowed('selfTopic', 'delete') && $this->topic->user_id == $this->user->id)
             ) && 
                 $this->user->isAllowed('attachement', 'delete');
             
@@ -282,10 +286,12 @@ class TopicPresenter extends BasePresenter
             return;
         }              
         
+        
+        
         $topic = new Topic($this->database);
         $topic->safeDelete($topic_id);
         $this->flashMessage('Článek byl odstraněn včetně všech příloh.');
-        $this->redirect('Homepage:');       
+        $this->redirect('SubjectGrade:show', array($subjectId, $gradeId));       
     }
     
     /**

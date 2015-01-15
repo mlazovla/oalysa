@@ -59,7 +59,7 @@
 								{if $isAllowedToDeleteAttachement}<a onclick="return(confirm('Opravdu chcete smazat tuto přílohu?'));" n:href="Attachement:delete $a->id" class="buttonDelete">Smazat</a>{/if}								
 
 							</td>
-							<td class="owner">{$a->user->name}</td>
+							<td class="owner" n:if="isset($a->user)">{$a->user->name}</td>
 							<td class="timeDate">{$a->created_at|date:'%d.%m.%Y %H:%M'}</td>
 							<td class="description">{$a->description}</td>
 						</tr>
@@ -88,14 +88,14 @@
 					{if $c->comentary != null}
 					<a name="comentary{$c->id}"></a>
 					<div class="question">
-						<span class="user">{$c->comentary->user->name}</span>
+						<span class="user" n:if="isset($a->user)">{$c->comentary->user->name}</span>
 						<span class="date">{$c->comentary->created_at}</span>
 						<a href="#comentary{$c->comentary->id}" title="Ukázat komentář." class="buttonShow">Ukázat</a>
 						napsal: {$c->comentary->content|truncate:50}					
 					</div>
 					{/if}
 					<div class="answer">
-						<span class="user">{$c->user->name}</span>
+						<span class="user" n:if="isset($a->user)">{$c->user->name}</span>
 						<span class="date">{$c->created_at|date:'%d.%m.%Y %H:%M'}</span>
 						{if $isAllowedToWriteComents}
 							<a
@@ -107,7 +107,7 @@
 									setElementValueById('answer_on_message', '{$c->content|truncate:30}');
 							">Odpovědět</a>
 						{/if}
-						{if ($isAllowedToDeleteAnyComent || ($isAllowedToDeleteSelfComent && $c->user->id == $currentUser['id']))}
+						{if ($isAllowedToDeleteAnyComent || ($isAllowedToDeleteSelfComent && $c->user_id == $currentUser['id']))}
 							<a n:href="deleteComent $c->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tento komentář?'));">X</a>
 						{/if}
 						<span class="content">{$c->content}</span>

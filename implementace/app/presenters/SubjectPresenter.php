@@ -40,9 +40,9 @@ class SubjectPresenter extends BasePresenter
         $this->template->subject = $subject->get($subjectId);
         
         $this->template->grades = $subject->getGrades($subjectId);
-        
-        
-        
-        
+
     }
+    
+    
+    
 }
