@@ -29,7 +29,7 @@
 				<a n:href="topic:deleteTopic $topic->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tuto přílohu?'));">Smazat</a>
 			</div>
 
-			<div id="notation">
+			<div id="anotation">
 				{$topic->anotation|noescape}
 			</div>
 			<div id="content">
@@ -59,7 +59,7 @@
 								{if $isAllowedToDeleteAttachement}<a onclick="return(confirm('Opravdu chcete smazat tuto přílohu?'));" n:href="Attachement:delete $a->id" class="buttonDelete">Smazat</a>{/if}								
 
 							</td>
-							<td class="owner" n:if="isset($a->user)">{$a->user->name}</td>
+							<td class="owner" n:if="isset($a->user)">{if $a->user}{$a->user->name}{else}<i>není</i>{/if}</td>
 							<td class="timeDate">{$a->created_at|date:'%d.%m.%Y %H:%M'}</td>
 							<td class="description">{$a->description}</td>
 						</tr>

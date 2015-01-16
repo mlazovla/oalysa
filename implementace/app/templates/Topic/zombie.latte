@@ -1,0 +1,40 @@
+{block content}
+
+<div id="topic">
+		<h2 n:block="title">Nepřiřazená témata</h2>
+
+
+
+		{if $topics and count($topics)>0}
+			<table>
+				<thead>
+					<tr><th>Název</th><th>Nástroje</th><th>Původní autor</th><th>Vytvořeno</th><th>Popis</th></tr>
+				</thead>
+				<tbody>
+					{foreach $topics as $t}
+						<tr>
+							<td class="name">{$t->name}</td>
+							<td class="tools">
+								<a n:href="Topic:show $t->id" class="buttonOpen">Otevřít</a>								
+								<a n:if="$isAllowedToUpdateTopic" n:href="Topic:attach $t->id" class="buttonEdit" download>Přiřadit</a>
+								{if $isAllowedToDeleteAnyTopic || ($isAllowedToDeleteSelfTopic && $currentUser['id'] == $t->user->id)}<a n:href="Topic:DeleteTopic $t->id" class="buttonDelete"  onclick="return(confirm('Opravdu chcete smazat téma {$t->name}?'));">smazat</a>{/if}
+
+							</td>
+							<td class="owner" n:if="isset($t->user)">
+								{if $t->user}{$t->user->name}{else}<i>není</i>{/if}
+							</td>
+							<td class="timeDate">
+								{$t->created_at|date:'%d.%m.%Y %H:%M'}
+							</td>
+						</tr>
+					{/foreach}
+				</tbody>
+			</table>
+		{else}
+			<p>Výborně, v systému se nepohybují žádné zombie (nepřiřazená témata).</p>
+		{/if}
+
+
+</div>
+
+{/block}

@@ -13,6 +13,7 @@ CREATE TABLE `Action` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+TRUNCATE `Action`;
 
 DROP TABLE IF EXISTS `attachement`;
 CREATE TABLE `attachement` (
@@ -31,20 +32,17 @@ CREATE TABLE `attachement` (
   CONSTRAINT `attachement_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+TRUNCATE `attachement`;
 INSERT INTO `attachement` (`id`, `name`, `mimeType`, `extension`, `topic_id`, `user_id`, `description`, `created_at`) VALUES
-(1, 'Diktát ze čtvrtka',  'application/pdf',  '1-1-diktat-ze-ctvrtka.pdf',  1,  1,  'Nejtežší diktát ever!',  '2014-12-13 11:26:59'),
-(2, 'Mlazovsky.pdf',  'application/pdf',  'pdf',  23, 2,  NULL, '2015-01-03 13:34:23'),
-(4, 'Mlazovsky.pdf',  'application/pdf',  'pdf',  25, 2,  NULL, '2015-01-03 13:35:50'),
-(5, 'Mlazovsky.pdf',  'application/pdf',  'pdf',  26, 2,  NULL, '2015-01-03 13:41:38'),
+(1, 'Diktát ze čtvrtka',  'application/pdf',  '1-1-diktat-ze-ctvrtka.pdf',  1,  NULL, 'Nejtežší diktát ever!',  '2014-12-13 11:26:59'),
 (9, 'pdf.png',  'image/png',  'png',  NULL, 2,  NULL, '2015-01-03 13:58:24'),
 (12,  'pdf.png',  'image/png',  'png',  NULL, 2,  NULL, '2015-01-03 14:02:13'),
-(14,  'pdf.png',  'image/png',  'png',  NULL, 1,  NULL, '2015-01-04 13:13:31'),
-(15,  'Mlazovsky.pdf',  'application/pdf',  'pdf',  33, 1,  'bakule', '2015-01-04 13:14:25'),
-(16,  'pdf.png',  'image/png',  'png',  33, 1,  'obrázek pdfka',  '2015-01-04 13:14:25'),
-(32,  'pdf.png',  'image/png',  'png',  34, 1,  'Obyčejná obrázková příloha. ', '2015-01-07 09:08:18'),
-(33,  'thesis (kopie).pdf', 'application/pdf',  'pdf',  34, 1,  NULL, '2015-01-07 09:08:18'),
-(35,  'obrázek.png',  'image/png',  'png',  35, 1,  'Ne kecám, není.',  '2015-01-07 10:18:53'),
-(36,  'thesis.pdf', 'application/pdf',  'pdf',  35, 1,  'bakule', '2015-01-07 10:18:53');
+(14,  'pdf.png',  'image/png',  'png',  NULL, NULL, NULL, '2015-01-04 13:13:31'),
+(15,  'Mlazovsky.pdf',  'application/pdf',  'pdf',  33, NULL, 'bakule', '2015-01-04 13:14:25'),
+(16,  'pdf.png',  'image/png',  'png',  33, NULL, 'obrázek pdfka',  '2015-01-04 13:14:25'),
+(33,  'thesis (kopie).pdf', 'application/pdf',  'pdf',  NULL, NULL, NULL, '2015-01-07 09:08:18'),
+(35,  'obrázek.png',  'image/png',  'png',  35, NULL, 'Ne kecám, není.',  '2015-01-07 10:18:53'),
+(36,  'thesis.pdf', 'application/pdf',  'pdf',  35, NULL, 'bakule', '2015-01-07 10:18:53');
 
 DROP TABLE IF EXISTS `comentary`;
 CREATE TABLE `comentary` (
@@ -59,19 +57,20 @@ CREATE TABLE `comentary` (
   KEY `topic_id` (`topic_id`),
   KEY `answer_on` (`comentary_id`),
   CONSTRAINT `comentary_ibfk_4` FOREIGN KEY (`topic_id`) REFERENCES `Topic` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `comentary_ibfk_5` FOREIGN KEY (`comentary_id`) REFERENCES `comentary` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `comentary_ibfk_6` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
+  CONSTRAINT `comentary_ibfk_7` FOREIGN KEY (`comentary_id`) REFERENCES `comentary` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `comentary_ibfk_8` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+TRUNCATE `comentary`;
 INSERT INTO `comentary` (`id`, `user_id`, `topic_id`, `comentary_id`, `created_at`, `content`) VALUES
 (3, 2,  1,  NULL, '2014-12-13 10:08:37',  'Díky'),
 (4, 2,  1,  NULL, '2014-12-13 10:09:18',  'Díky'),
 (6, 2,  1,  NULL, '2014-12-13 10:42:21',  'Už ano'),
-(9, 1,  1,  6,  '2015-01-04 12:18:14',  'už ne'),
-(10,  1,  1,  NULL, '2015-01-04 12:33:06',  'komentář'),
-(11,  1,  1,  NULL, '2015-01-04 12:33:37',  'koment'),
-(12,  1,  1,  NULL, '2015-01-04 12:33:48',  'wert'),
-(13,  1,  1,  NULL, '2015-01-04 12:34:24',  'rrrrrrr');
+(9, NULL, 1,  6,  '2015-01-04 12:18:14',  'už ne'),
+(10,  NULL, 1,  NULL, '2015-01-04 12:33:06',  'komentář'),
+(11,  NULL, 1,  NULL, '2015-01-04 12:33:37',  'koment'),
+(12,  NULL, 1,  NULL, '2015-01-04 12:33:48',  'wert'),
+(13,  NULL, 1,  NULL, '2015-01-04 12:34:24',  'rrrrrrr');
 
 DROP TABLE IF EXISTS `garantedprivilegies`;
 CREATE TABLE `garantedprivilegies` (
@@ -88,6 +87,7 @@ CREATE TABLE `garantedprivilegies` (
   CONSTRAINT `garantedprivilegies_ibfk_7` FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Garants privilegies on resource for role.';
 
+TRUNCATE `garantedprivilegies`;
 INSERT INTO `garantedprivilegies` (`id`, `role_id`, `privilege_id`, `resource_id`) VALUES
 (1, 7,  1,  4),
 (2, 7,  5,  4),
@@ -113,7 +113,8 @@ INSERT INTO `garantedprivilegies` (`id`, `role_id`, `privilege_id`, `resource_id
 (23,  4,  2,  8),
 (24,  4,  4,  8),
 (25,  4,  1,  9),
-(27,  4,  1,  10);
+(27,  4,  1,  10),
+(28,  7,  1,  11);
 
 DROP TABLE IF EXISTS `grade`;
 CREATE TABLE `grade` (
@@ -127,6 +128,7 @@ CREATE TABLE `grade` (
   CONSTRAINT `grade_ibfk_1` FOREIGN KEY (`grade_id`) REFERENCES `grade` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+TRUNCATE `grade`;
 INSERT INTO `grade` (`id`, `name`, `grade_id`) VALUES
 (1, '1. ročník',  2),
 (2, '2. ročník',  3),
@@ -150,6 +152,7 @@ CREATE TABLE `log` (
   CONSTRAINT `FK_Log_User` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+TRUNCATE `log`;
 
 DROP TABLE IF EXISTS `news`;
 CREATE TABLE `news` (
@@ -162,6 +165,7 @@ CREATE TABLE `news` (
   CONSTRAINT `news_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+TRUNCATE `news`;
 INSERT INTO `news` (`id`, `created_at`, `content`, `user_id`) VALUES
 (1, '2014-12-09 13:35:29',  'Web byl spuštěn v pilotním provozu na localhostu.',  2);
 
@@ -172,6 +176,7 @@ CREATE TABLE `privilege` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+TRUNCATE `privilege`;
 INSERT INTO `privilege` (`id`, `name`) VALUES
 (1, 'read'),
 (2, 'insert'),
@@ -188,6 +193,7 @@ CREATE TABLE `resource` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Resources of pages';
 
+TRUNCATE `resource`;
 INSERT INTO `resource` (`name`, `id`) VALUES
 ('comentary', 1),
 ('topic', 2),
@@ -198,7 +204,8 @@ INSERT INTO `resource` (`name`, `id`) VALUES
 ('selfTopic', 7),
 ('news',  8),
 ('acount',  9),
-('initPassword',  10);
+('initPassword',  10),
+('subject', 11);
 
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
@@ -211,6 +218,7 @@ CREATE TABLE `role` (
   CONSTRAINT `role_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+TRUNCATE `role`;
 INSERT INTO `role` (`id`, `name`, `role_id`, `assignable`) VALUES
 (1, 'Guest',  NULL, 0),
 (2, 'Žák',  7,  1),
@@ -229,9 +237,12 @@ CREATE TABLE `Subject` (
   UNIQUE KEY `UQ_subject_shortcut` (`shortcut`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Table of school subject';
 
+TRUNCATE `Subject`;
 INSERT INTO `Subject` (`id`, `shortcut`, `name`, `description`) VALUES
 (1, 'MAT',  'Matematika', 'Hrátky s čísly.'),
-(2, 'ČJ', 'Český jazyk',  'Diktátky, literatura a jedním slovem zlo.');
+(2, 'ČJ', 'Český jazyk',  'Diktátky, literatura a jedním slovem zlo.'),
+(4, 'FYZ',  'Fyzika', '<p>Houbeles, fyzika .</p>'),
+(5, 'CHE',  'Chemie', '<p>vařen&iacute;</p>');
 
 DROP TABLE IF EXISTS `subject2grade`;
 CREATE TABLE `subject2grade` (
@@ -245,6 +256,7 @@ CREATE TABLE `subject2grade` (
   CONSTRAINT `subject2grade_ibfk_5` FOREIGN KEY (`Grade_id`) REFERENCES `grade` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+TRUNCATE `subject2grade`;
 INSERT INTO `subject2grade` (`id`, `Subject_id`, `Grade_id`) VALUES
 (1, 1,  1),
 (2, 1,  2),
@@ -252,7 +264,13 @@ INSERT INTO `subject2grade` (`id`, `Subject_id`, `Grade_id`) VALUES
 (4, 1,  4),
 (5, 2,  1),
 (6, 2,  2),
-(7, 2,  3);
+(7, 2,  3),
+(9, 5,  2),
+(10,  5,  3),
+(11,  5,  4),
+(12,  1,  2),
+(13,  1,  3),
+(16,  4,  4);
 
 DROP TABLE IF EXISTS `topic`;
 CREATE TABLE `topic` (
@@ -267,38 +285,19 @@ CREATE TABLE `topic` (
   PRIMARY KEY (`id`),
   KEY `subject2grade_id` (`subject2grade_id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `FK_Topic_User` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `topic_ibfk_1` FOREIGN KEY (`subject2grade_id`) REFERENCES `Subject2Grade` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+  CONSTRAINT `topic_ibfk_2` FOREIGN KEY (`subject2grade_id`) REFERENCES `subject2grade` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `topic_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+TRUNCATE `topic`;
 INSERT INTO `topic` (`id`, `name`, `created_at`, `subject2grade_id`, `user_id`, `anotation`, `content`, `enableDiscussion`) VALUES
-(1, 'Diktáty',  '2014-12-10 20:43:19',  7,  1,  'Nejlepší procvičení gramatiky najdete v této kapitole!', 'V této kapitole si můžete procvičit psaní velkých a malých písmen, psaní měkkého a tvrdého i,í/y,ý. Najdete zde výběr vzorových diktátů pro třetí ročníky gymnáziíí a SOŠ.', 1),
+(1, 'Diktáty',  '2014-12-10 20:43:19',  7,  NULL, 'Nejlepší procvičení gramatiky najdete v této kapitole!', 'V této kapitole si můžete procvičit psaní velkých a malých písmen, psaní měkkého a tvrdého i,í/y,ý. Najdete zde výběr vzorových diktátů pro třetí ročníky gymnáziíí a SOŠ.', 1),
 (2, 'Karel Čapek',  '2015-01-02 20:09:07',  7,  2,  '<p>anotace ke Karel Čapek</p>',  '<p>čl&aacute;nek&nbsp;ke Karel Čapek</p>', 1),
 (3, 'Karel Čapek',  '2015-01-02 20:17:03',  7,  2,  '<p>anotace ke Karel Čapek</p>',  '<p>čl&aacute;nek&nbsp;ke Karel Čapek</p>', 1),
 (4, 'Karel Čapek',  '2015-01-02 20:19:23',  7,  2,  '<p>anotace ke Karel Čapek</p>',  '<p>čl&aacute;nek&nbsp;ke Karel Čapek</p>', 1),
-(7, 'pokus',  '2015-01-03 13:20:09',  4,  2,  '', '', 1),
-(8, 'pokus',  '2015-01-03 13:20:31',  4,  2,  '', '', 1),
-(9, 'pokus',  '2015-01-03 13:21:26',  4,  2,  '', '', 1),
-(10,  'pokus',  '2015-01-03 13:22:10',  4,  2,  '', '', 1),
-(11,  'pokus2', '2015-01-03 13:22:30',  4,  2,  '', '', 1),
-(12,  'dalsi',  '2015-01-03 13:24:40',  4,  2,  '', '', 1),
-(13,  'dalsi',  '2015-01-03 13:26:28',  4,  2,  '', '', 1),
-(14,  'dalsi',  '2015-01-03 13:27:03',  4,  2,  '', '', 1),
-(15,  'dalsi',  '2015-01-03 13:27:32',  4,  2,  '', '', 1),
-(16,  'dalsi',  '2015-01-03 13:29:56',  4,  2,  '', '', 1),
-(17,  'dalsi',  '2015-01-03 13:30:57',  4,  2,  '', '', 1),
-(18,  'dalsi',  '2015-01-03 13:31:23',  4,  2,  '', '', 1),
-(19,  'GHJG', '2015-01-03 13:32:37',  4,  2,  '', '', 1),
-(20,  'GHJG', '2015-01-03 13:32:58',  4,  2,  '', '', 1),
-(21,  'GHJG', '2015-01-03 13:33:54',  4,  2,  '', '', 1),
-(22,  'GHJG', '2015-01-03 13:34:10',  4,  2,  '', '', 1),
-(23,  'GHJG', '2015-01-03 13:34:23',  4,  2,  '', '', 1),
-(24,  'GHJG', '2015-01-03 13:35:11',  4,  2,  '', '', 1),
-(25,  'GHJG', '2015-01-03 13:35:50',  4,  2,  '', '', 1),
-(26,  'GHJG', '2015-01-03 13:41:38',  4,  2,  '', '', 1),
-(33,  'test rychlosti', '2015-01-04 13:14:25',  3,  1,  '<p>testov&aacute;n&iacute; rychlosti je důležit&eacute;</p>',  '<p><span style=\"color: #ff00ff;\">testov&aacute;n&iacute; rychlosti je důležit&eacute; pro zji&scaron;těn&iacute; jak dobře jsem web navrhl.</span></p>', 1),
-(34,  'Test příloh',  '2015-01-07 08:04:43',  1,  1,  '<p>Toto t&eacute;ma obsahuje PDF př&iacute;lohu a obyčejnou př&iacute;lohu.</p>',  '<p>Toto t&eacute;ma obsahuje PDF př&iacute;lohu a obyčejnou př&iacute;lohu. Testuje jejich ukl&aacute;d&aacute;n&iacute; otev&iacute;r&aacute;n&iacute;, přid&aacute;v&aacute;n&iacute; a maz&aacute;n&iacute; ;-)</p>\n<p>&nbsp;</p>\n<p>A jako ucitel jsem to poctive upravil :-)</p>',  1),
-(35,  'test příloh',  '2015-01-07 10:18:53',  5,  1,  '<p>testing, testing...</p>', '', 1);
+(33,  'test rychlosti', '2015-01-04 13:14:25',  3,  NULL, '<p>testov&aacute;n&iacute; rychlosti je důležit&eacute;</p>',  '<p><span style=\"color: #ff00ff;\">testov&aacute;n&iacute; rychlosti je důležit&eacute; pro zji&scaron;těn&iacute; jak dobře jsem web navrhl.</span></p>', 1),
+(35,  'test příloh',  '2015-01-07 10:18:53',  5,  NULL, '<p>testing, testing...</p>', '', 1),
+(36,  'Archimédův zákon', '2015-01-16 13:01:19',  16, 28, '<p>Těleso do vody blablabla</p>',  '', 1);
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
@@ -318,16 +317,11 @@ CREATE TABLE `user` (
   CONSTRAINT `user_ibfk_2` FOREIGN KEY (`grade_id`) REFERENCES `grade` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+TRUNCATE `user`;
 INSERT INTO `user` (`id`, `username`, `password`, `name`, `email`, `role_id`, `grade_id`, `activate`) VALUES
-(1, 'mlazovla', '$2y$10$4d5x44vMU9KtK3cvQjqsQ.NpSEroOBNRxTb3PnANp7SMw9aHYYudm', 'Vladimír Mlázovský', 'vml@seznam.cz',  5,  NULL, 1),
 (2, 'admin',  '$2y$10$kI9ykVyWDW.slvwpcK//vuY3vhstkZUwAotRzMNxsQqcP07xWWNka', 'Administrátor',  'admin@oalysa.cz',  5,  NULL, 1),
 (3, 'blocked',  '$2y$10$4d5x44vMU9KtK3cvQjqsQ.NpSEroOBNRxTb3PnANp7SMw9aHYYudm', 'Zablokovaný účet', 'blocked@user.com', 6,  1,  1),
-(4, 'prohlidka',  '$2y$10$4d5x44vMU9KtK3cvQjqsQ.NpSEroOBNRxTb3PnANp7SMw9aHYYudm', 'Prohlídka webu', 'prohlidka@test.com', 7,  1,  1),
-(5, 'zak',  '$2y$10$PWuRjooLBuH8nnelTTDo6.sncbrAr30frTBd8pIinvj3GfrtG2Cqq', 'Žák',  'zak@test.com', 2,  1,  1),
 (6, 'ucitel', '$2y$10$4d5x44vMU9KtK3cvQjqsQ.NpSEroOBNRxTb3PnANp7SMw9aHYYudm', 'Pan Garison',  'ucitel@test.com',  4,  NULL, 1),
-(25,  'petrs',  '$2y$10$h1s394qC/Ir6dwkVPvuW/uBlaf.Unip/U3w/gnhhs.dTjM6lEJ1bW', 'Petr Soukal',  '', 2,  1,  0),
-(26,  'dasas',  '$2y$10$GpMQo7p5.77dkEhEV3QJ/eeWxeTrSYmO2IdWjmcDIiCe/HVSZCMzW', 'Dáša Suchá', '', 2,  1,  0),
-(27,  'simekz', '$2y$10$LqzP46WtXJ7CDwOw27V8MelkW9KVzuWFRHPhs.1LuOCbHJcJN/wo2', 'Šimek Žvýkal', '', 2,  1,  0),
 (28,  'vml',  '$2y$10$5/3VJ0tjpOaQEx/pn9G1Su/yYNsX7xIA4j3olVXy6WNOQ7lK85VJq', 'Mlázovský Vladimír', 'vml@seznam.cz',  5,  NULL, 1),
 (29,  'cjmikey',  '$2y$10$fpDOtzOO.uCeRWw2vtzRY.fo9z0EFEIGwrjztVxgcrWg9UdeGE0LS', 'Frank Michal', '', 5,  NULL, 1);
 
@@ -343,6 +337,7 @@ CREATE TABLE `User2UsersGroup` (
   CONSTRAINT `user2usersgroup_ibfk_2` FOREIGN KEY (`UsersGroup_id`) REFERENCES `UsersGroup` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci COMMENT='Decomposition of Users in UsersGroups.';
 
+TRUNCATE `User2UsersGroup`;
 
 DROP TABLE IF EXISTS `UsersGroup`;
 CREATE TABLE `UsersGroup` (
@@ -351,5 +346,6 @@ CREATE TABLE `UsersGroup` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+TRUNCATE `UsersGroup`;
 
--- 2015-01-14 13:39:20
+-- 2015-01-16 14:23:59

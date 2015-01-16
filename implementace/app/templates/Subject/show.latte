@@ -1,6 +1,10 @@
 {block menu}
 <div id="menu">
 	{if $subject}
+	<div class="tools">
+		<a n:if="$isAllowedToUpdateSubject" n:href="Subject:update $subject->id" class="buttonUpdate">Upravit</a>
+		<a n:if="$isAllowedToDeleteSubject" n:href="Subject:delete $subject->id" class="buttonDelete">Smazat</a>
+	</div>
 		<h2>{$subject->shortcut}</h2>
 		{if count($grades)>0}
 			<ul>
@@ -21,7 +25,7 @@
 {block content}
 	{if $subject}
 		<h1 n:block="title">{$subject->name}</h1>
-		{$subject->description}
+		{$subject->description|noescape}
 	{else}
 		<p>Předmět se nepodařilo načíst. <a n:href="Homepage:">Zpět na Homepage</a></p>
 	{/if}

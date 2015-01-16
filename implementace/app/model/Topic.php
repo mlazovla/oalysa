@@ -25,11 +25,11 @@ class Topic extends \Nette\Database\Table\Selection {
     }
     
     public function getSubject($idTopic) {
-        return $this->get($idTopic)->subject2grade->subject;
+        return $this->get($idTopic)->subject2grade == null ? null : $this->get($idTopic)->subject2grade->subject;
     }
     
     public function getGrade($idTopic) {
-        return $this->get($idTopic)->subject2grade->grade;
+        return $this->get($idTopic)->subject2grade == null ? null : $this->get($idTopic)->subject2grade->grade;
     }
     
     public function safeDelete($topic_id) {

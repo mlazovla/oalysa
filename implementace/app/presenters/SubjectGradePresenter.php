@@ -51,6 +51,5 @@ class SubjectGradePresenter extends BasePresenter
             $this->template->topics = $topic->where('Subject2Grade.grade_id', $gradeId)->where('Subject2Grade.subject_id', $subjectId);
         } 
 
-
     }
 }

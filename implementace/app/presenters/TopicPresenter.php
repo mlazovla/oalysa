@@ -51,7 +51,12 @@ class TopicPresenter extends BasePresenter
         $this->template->grade = $topic->getGrade($topicId);
         $this->template->topic = $this->topic;
 
-        $gradeId = $topic->getGrade($topicId)->id;
+        $grade = $topic->getGrade($topicId);
+        if ($grade != null)
+            $gradeId = $grade->id;
+        else
+            $gradeId = null;
+        
         if ($gradeId == null) {
             $this->template->topics = null;
         }
@@ -87,7 +92,29 @@ class TopicPresenter extends BasePresenter
         
     }
     
-
+    /**
+     * Prepare data to display topic what does not attached to subject and grade
+     */
+    public function renderZombie()
+    {
+        // Neopravneny uzivatel
+        if (!$this->user->loggedIn || !$this->user->isAllowed('topic','read')) {
+            $this->flashMessage('Nemáte oprávnění číst články.', 'warning');
+            $this->redirect('Homepage:');
+            return;
+        }
+        
+        // Zombie temata
+        $this->topic = new Topic($this->database);
+        $this->template->topics = $this->topic->where('subject2grade_id', null);
+        
+        // Opravneni
+        $this->template->isAllowedToUpdateTopic = $this->user->isAllowed('topic', 'update');
+        $this->template->isAllowedToDeleteAnyTopic = $this->user->isAllowed('topic', 'delete');
+        $this->template->isAllowedToDeleteSelfTopic = $this->user->isAllowed('selfTopic', 'delete');
+    
+    }
+    
     
     protected function createComponentComentaryForm()
     {
@@ -243,7 +270,7 @@ class TopicPresenter extends BasePresenter
             $this->flashMessage('Během ukládání došlo k chybě. Článek byl uložen, ale nebyl přiřazen k žádnému předmětu ani ročníku.','error');
         }
         else {
-            $this->flashMessage("Článek <b>". $values['name'] ."</b> byl přidán.", 'success');
+            $this->flashMessage("Článek ". $values['name'] ." byl přidán.", 'success');
         }
         
         $attachement = new Attachement($this->database);
@@ -421,8 +448,8 @@ class TopicPresenter extends BasePresenter
     }
     
     /**
-     * Attachement update
-     * @form attachementForm
+     * Topic update
+     * @form topicUpdateFormForm
      */
     public function topicUpdateFormSucceeded($form)
     {
@@ -472,6 +499,102 @@ class TopicPresenter extends BasePresenter
         $this->flashMessage('Článek '. $values['name'] .' byl upraven.', 'success');
         $this->redirect('Topic:show', $values['id']);
     }
+
     
+    /**
+     * Attach an topic to Subject and Grade
+     * @param int $subjectId
+     */
+    public function renderAttach($subjectId)
+    {
+        // Neopravneny uzivatel
+        if (!$this->user->loggedIn || !$this->user->isAllowed('topic','update')) {
+            $this->flashMessage('Nemáte oprávnění přiřazovat témata.', 'warning');
+            $this->redirect('Homepage:');
+            return;
+        }
+    
+        $this->topic = new Topic($this->database);
+        $this->template->topic = $this->topic->get($subjectId);
+        
+        $this['attachTopicForm']->setDefaults(array('id'=>$subjectId));
+    }
+    
+    
+    protected function createComponentAttachTopicForm()
+    {
+        $form = new Nette\Application\UI\Form;
+    
+        $s2g = new Subject2Grade($this->database);
+        $s2g = $s2g->order('subject.shortcut ASC, grade.name ASC');
+
+        $radioList = array();
+        foreach($s2g as $r) {
+            $radioList[$r->id]= $r->subject->shortcut .' '. $r->grade->name;
+        }
+        
+        $form->addRadioList('subject2grade', 'Přiřadit téma k:', $radioList)->setRequired();
+        
+        $form->addSubmit('send', 'Přiřadit');
+
+        $form->addHidden('id');
+
+        $form->onSuccess[] = callback($this, 'attachTopicFormSucceeded');
+        
+        return $form;
+    }
+
+    /**
+     * Attach topic to Subject and Grade
+     * @form attachTopicForm
+     */
+    public function attachTopicFormSucceeded($form)
+    {
+        // data z formulare
+        $values = $form->getValues();
+        
+        // nacitani z databaze
+        $this->topic = new Topic($this->database);
+        $this->topic = $this->topic->where('id', $values['id'])->fetch();
+        $s2g = new Subject2Grade($this->database);
+        $s2g = $s2g->get($values['subject2grade']);
+        
+        // kontrola opravneni
+        $this->setMyAutorizator();
+        
+        $allowed = false;
+         
+        if ($this->topic->user_id == $this->user->id) { // vlastni clanek
+            $allowed = $this->user->isAllowed('selfTopic', 'update');
+        }
+        if (!$allowed) { // libovilny clanek
+            $allowed = $this->user->isAllowed('topic', 'update');
+        }
+        
+        if (!$allowed) { // uzivatel neni opravnen upravovat clanek
+            $this->flashMessage('Nemáte oprávnění upravovat tento článek.','warning');
+            $this->redirect('Topic:show', $values['id']);
+            return;
+        }
+        
+        // kontrola existence zaznamu
+        if (!$this->topic) {
+            throw new BadRequestException('Téma neexistuje.');
+        }
+        if (!$s2g) {
+            throw new BadRequestException('Neexistuje spojení předmět a ročník.');
+        }
+        
+        // zapis zmen
+        $this->topic = new Topic($this->database);
+        $this->topic->where('id', $values['id'])->update(
+            array(
+                'subject2grade_id' => $values['subject2grade']
+            )
+        );
+        
+        $this->flashMessage('Článek '. $this->topic->name .' byl přiřazen.', 'success');
+        $this->redirect('Topic:show', $values['id']);        
+    }
     
 };    
