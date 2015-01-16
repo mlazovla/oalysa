@@ -84,11 +84,13 @@ class TopicPresenter extends BasePresenter
         }
         
         // Opravneni
-        $this->template->isAllowedToWriteComents = $this->user->isAllowed('selfComentary', 'insert') && $this->topic->enableDiscussion;
-        $this->template->isAllowedToDeleteSelfComent = $this->user->isAllowed('selfComentary','delete');
-        $this->template->isAllowedToDeleteAnyComent = $this->user->isAllowed('comentary','delete');
-        $this->template->isAllowedToDeleteAnyTopic = $this->user->isAllowed('topic', 'delete');
-        $this->template->isAllowedToDeleteSelfTopic = $this->user->isAllowed('selfTopic', 'delete');
+        $this->template->isAllowedToWriteComents =      $this->user->isAllowed('selfComentary', 'insert') && $this->topic->enableDiscussion;
+        $this->template->isAllowedToDeleteSelfComent =  $this->user->isAllowed('selfComentary','delete');
+        $this->template->isAllowedToDeleteAnyComent =   $this->user->isAllowed('comentary','delete');
+        $this->template->isAllowedToDeleteAnyTopic =    $this->user->isAllowed('topic', 'delete');
+        $this->template->isAllowedToDeleteSelfTopic =   $this->user->isAllowed('selfTopic', 'delete');
+        $this->template->isAllowedToInsertTopic =       $this->user->isAllowed('topic', 'insert');
+        $this->template->isAllowedToUpdateTopic =       $this->user->isAllowed('topic', 'update');
         $this->template->isAllowedToInsertAttachement = $this->user->isAllowed('attachement', 'insert');
         $this->template->isAllowedToUpdateAttachement = $this->user->isAllowed('attachement', 'update');
         $this->template->isAllowedToDeleteAttachement = $this->user->isAllowed('attachement', 'delete');
@@ -461,7 +463,7 @@ class TopicPresenter extends BasePresenter
     
     /**
      * Topic update
-     * @form topicUpdateFormForm
+     * @form topicUpdateForm
      */
     public function topicUpdateFormSucceeded($form)
     {
@@ -479,10 +481,10 @@ class TopicPresenter extends BasePresenter
       
         $allowed = false;
            
-        if ($this->topic->user_id == $this->user->id) { // vlastni clanek
+        if (!$this->topic->user_id || $this->topic->user_id == $this->user->id) { // vlastni clanek
             $allowed = $this->user->isAllowed('selfTopic', 'update');
         }
-        if (!$allowed) { // libovilny clanek
+        if (!$allowed) { // libovolny clanek
             $allowed = $this->user->isAllowed('topic', 'update');
         }
         
@@ -496,17 +498,20 @@ class TopicPresenter extends BasePresenter
         if (!$this->topic) { 
             throw new BadRequestException;
         }
-    
-    
-        $this->topic = new Topic($this->database);
-        $this->topic->where('id', $values['id'])->update(
-            array(
+        
+        $updateArray = array(
                 'name' => $values['name'],
                 'anotation' => $values['anotation'],
                 'content' => $values['content'],
                 'enableDiscussion' => $values['enableDiscussion'],
-            )
-        );
+            );
+        if (!$this->topic->user_id) { // článek nemá autora
+            $updateArray['user_id'] = $this->user->id; 
+        }
+        
+    
+        $this->topic = new Topic($this->database);
+        $this->topic->where('id', $values['id'])->update($updateArray);
     
         $this->flashMessage('Článek '. $values['name'] .' byl upraven.', 'success');
         $this->redirect('Topic:show', $values['id']);

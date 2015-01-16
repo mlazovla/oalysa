@@ -21,12 +21,22 @@
 {block content}
 	<div id="topic">
 		{if $topic}
+			<div class="info">
+				<span n:if="$topic->user" class="author">{$topic->user->name}</span>
+				<span class="date">{$topic->created_at|date:'d.m.Y H:i'}</span>
+			</div>
 			<h1 n:block="title">{$topic->name}</h1>
 			
 			<div class="tools">
-				<a n:href="topic:new $topic->id" class="buttonNew">Nový</a>
-				<a n:href="topic:update $topic->id" class="buttonEdit">Upravit</a>
-				<a n:href="topic:deleteTopic $topic->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tuto přílohu?'));">Smazat</a>
+				<a n:if="isAllowedToInsertTopic" n:href="Topic:new $topic->subject2grade->subject->id, $topic->subject2grade->grade->id" class="buttonNew">Nový</a>
+				<a n:if="isAllowedToUpdateTopic" n:href="Topic:update $topic->id" class="buttonEdit">Upravit</a>
+				<a n:if="$isAllowedToDeleteAnyTopic || ($topic->user && $isAllowedToDeleteSelfTopic && $currentUser['id'] == $topic->user->id)"
+					n:href="Topic:deleteTopic $topic->id"
+					class="buttonDelete"
+					onclick="return(confirm('Opravdu chcete smazat toto téma?'));
+				">
+					Smazat
+				</a>
 			</div>
 
 			<div id="anotation">
