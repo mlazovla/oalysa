@@ -39,10 +39,16 @@ class SubjectGradePresenter extends BasePresenter
         
         $this->template->subject = $subject->get($subjectId);
         $this->template->grade = $grade->get($gradeId);
-
-        $this->template->isAllowedToEditTopic = $this->user->isAllowed('topic', 'insert');
+        
+        $isAllowedToEditTopic = $this->user->isAllowed('topic', 'insert');
+        $this->template->isAllowedToEditTopic = $isAllowedToEditTopic;
         $this->template->isAllowedToDeleteAnyTopic = $this->user->isAllowed('topic', 'delete');
         $this->template->isAllowedToDeleteSelfTopic = $this->user->isAllowed('selfTopic', 'delete');
+        
+        $notAssignedTopicCount = 0;
+        if ($isAllowedToEditTopic) {
+            $this->template->notAssignedTopicCount = $topic->getZombieCount();
+        }    
         
         if ($gradeId == null) {
             $this->template->topics = null;

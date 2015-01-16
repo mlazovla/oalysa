@@ -12,7 +12,7 @@
 		{if count($news) > 0}
 			{foreach $news as $n}
 				<div>
-					<a n:href="deleteNews $n->id" class="buttonDelete">Smazat</a>
+					<a n:href="deleteNews $n->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat novinku?'));">Smazat</a>
 					<span class="date">{$n->created_at|date:'%d.%m.%Y %H:%M'}</span>
 					<span class="owner">{$n->user->name}</span>
 					<span class="content">{$n->content}</span>
@@ -31,11 +31,11 @@
 
 {block menu}
 	<div id="menu">
-		<div class="tools" n:if="$isAllowedInsertSubject">
-		<a n:href="Subject:insert" n:if="$isAllowedInsertSubject" class="buttonInsert">Přidat předmět</a>
-	</div>
-
 	{if $isLoggedIn}
+		<div class="tools">
+			<a n:href="Subject:insert" n:if="$isAllowedInsertSubject" class="buttonInsert">Přidat předmět</a>
+		</div>
+
 		<h2>škola</h2>
 			{if count($subjects) > 0}
 				<ul>

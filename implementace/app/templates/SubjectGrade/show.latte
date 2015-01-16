@@ -4,7 +4,7 @@
 		<h2>{$subject->shortcut} - {$grade->name}</h2>
 		<div class="tools">
 			<a n:if="$isAllowedToEditTopic" n:href="Topic:new $subject->id, $grade->id" class="buttonInsert">Přidat téma</a>
-			<a n:if="$isAllowedToEditTopic" n:href="Topic:zombie" class="buttonOpen">Zobrazit nepřiřazená témata</a>
+			<a n:if="$isAllowedToEditTopic && $notAssignedTopicCount > 0" n:href="Topic:zombie" class="buttonOpen">Zobrazit nepřiřazená témata ({$notAssignedTopicCount})</a>
 		</div>
 		{if count($topics)>0}
 			<ul>

@@ -2,8 +2,9 @@
 <div id="menu">
 	{if $subject}
 	<div class="tools">
+		<a n:if="$isAllowedToEditTopic && $notAssignedTopicCount > 0" n:href="Topic:zombie" class="buttonOpen">Zobrazit nepřiřazená témata ({$notAssignedTopicCount})</a>
 		<a n:if="$isAllowedToUpdateSubject" n:href="Subject:update $subject->id" class="buttonUpdate">Upravit</a>
-		<a n:if="$isAllowedToDeleteSubject" n:href="Subject:delete $subject->id" class="buttonDelete">Smazat</a>
+		<a n:if="$isAllowedToDeleteSubject" n:href="Subject:delete $subject->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat celý předmět?'));">Smazat</a>
 	</div>
 		<h2>{$subject->shortcut}</h2>
 		{if count($grades)>0}

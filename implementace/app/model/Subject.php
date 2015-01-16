@@ -28,18 +28,6 @@ class Subject extends \Nette\Database\Table\Selection {
      */
     public function getGrades($subjectId) {
         $s2g = new Subject2Grade($this->db);
-        $temp = $s2g->where('Subject_id = '. $subjectId);
-        if ($temp == null) return null;
-        
-        /**
-         * @var Grade[] $grades
-         */
-        $grades = null;
-        foreach ($temp as $t) {
-            $temp2 = new Grade($this->db);
-            $grades[] = $t->grade;
-            //$grades[] = $temp2->get($t->grade_id);
-        }
-        return $grades;       
+        return $s2g->select('grade.name, grade.id')->where('subject_id', $subjectId)->order('grade.name');      
     }
 }

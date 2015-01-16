@@ -300,10 +300,12 @@ class TopicPresenter extends BasePresenter
         $this->topic = $this->topic->get($topic_id);
         $s2g_id = $this->topic['subject2grade_id'];
         $s2g = new Subject2Grade($this->database);
-        $s2g = $s2g->get($s2g_id);
+        $s2g = $s2g->get($s2g_id);     
         $subjectId = (string)$s2g['subject_id'];
         $gradeId = (string)$s2g['grade_id'];
-                
+
+        
+        
         $isAllowedToDeleteThis = 
             (
                 $this->user->isAllowed('topic', 'delete') || 
@@ -323,7 +325,12 @@ class TopicPresenter extends BasePresenter
         $topic = new Topic($this->database);
         $topic->safeDelete($topic_id);
         $this->flashMessage('Článek byl odstraněn včetně všech příloh.');
-        $this->redirect('SubjectGrade:show', array($subjectId, $gradeId));       
+        if ($subjectId && $gradeId) {
+            $this->redirect('SubjectGrade:show', array($subjectId, $gradeId));
+        }
+        else {
+            $this->redirect('Topic:zombie');
+        }       
     }
     
     /**

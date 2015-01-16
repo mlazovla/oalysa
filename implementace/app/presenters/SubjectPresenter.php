@@ -12,6 +12,7 @@ use App\Model\Subject2Grade;
 use Nette\Forms\Form;
 use Nette\Neon\Exception;
 use Nette\Security\AuthenticationException;
+use App\Model\Topic;
 
 
 /**
@@ -41,7 +42,9 @@ class SubjectPresenter extends BasePresenter
             $this->flashMessage('Nemáte oprávnění prohlížet předměty.','warning');
             $this->redirect('Homepage:');
         }
-            
+
+        $isAllowedToEditTopic = $this->user->isAllowed('topic', 'update');
+        $this->template->isAllowedToEditTopic = $isAllowedToEditTopic;
         $this->template->isAllowedToDeleteSubject = $this->user->isAllowed('subject', 'delete');
         $this->template->isAllowedToUpdateSubject = $this->user->isAllowed('subject', 'update');       
         
@@ -51,6 +54,13 @@ class SubjectPresenter extends BasePresenter
         $this->template->subject = $subject->get($subjectId);
         
         $this->template->grades = $subject->getGrades($subjectId);
+        
+        $topic = new Topic($this->database);
+        $notAssignedTopicCount = 0;
+        if ($isAllowedToEditTopic) {
+            $this->template->notAssignedTopicCount = $topic->getZombieCount();
+        }
+        
 
     }
     
@@ -192,7 +202,8 @@ class SubjectPresenter extends BasePresenter
         $subject2grade = new Subject2Grade($this->database);
         $subject2grade->updateRelations($values['id'], $values['grades']);        
     
-        $this->flashMessage('Předmět upraven.', 'success');
+        $this->flashMessage('Předmět '.$values['name'].' upraven.', 'success');
+        $this->redirect('Subject:show',$values['id']);
     
     }    
     
@@ -225,11 +236,12 @@ class SubjectPresenter extends BasePresenter
         $subject2grade = $subject2grade->select('grade_id')->where('subject_id', $subjectId);
         
         $grade = new Grade($this->database);
-        $grade = $grade->where('id', $subject2grade);
+        $grade = $grade->select('id');
         
         $grades = array();
-        foreach($grade as $g) {
-            $grades[$g->id]=true;
+        
+        foreach($subject2grade as $g) {
+            $grades[]=$g->grade_id;
         }
         
         $values = array(

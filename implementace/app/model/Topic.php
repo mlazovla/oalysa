@@ -32,6 +32,11 @@ class Topic extends \Nette\Database\Table\Selection {
         return $this->get($idTopic)->subject2grade == null ? null : $this->get($idTopic)->subject2grade->grade;
     }
     
+    public function getZombieCount() {
+        $topic = new Topic($this->db);
+        return $topic->where('subject2grade_id', null)->count('id');
+    }
+    
     public function safeDelete($topic_id) {
         $attachement = new Attachement($this->db);
         $attachements = $attachement->select('id')->where('topic_id', $topic_id)->fetchAll();
