@@ -13,6 +13,7 @@ use App\Model\MyAuthorizator;
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
     protected $database;
+    protected $log;
     
     public function injectDatabase(Nette\Database\Context $database)
     {

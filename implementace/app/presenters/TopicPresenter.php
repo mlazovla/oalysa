@@ -13,6 +13,7 @@ use Tester\Runner\CommandLine;
 use App\Model\Subject2Grade;
 
 use Nette\Application\BadRequestException;
+use App\Model\Log;
 
 /**
  * Topic presenter.
@@ -27,6 +28,8 @@ class TopicPresenter extends BasePresenter
     public function __construct(Nette\Database\Context $database)
     {
         $this->database = $database;
+        $this->topic = new Topic($this->database);
+        $this->log = new Log($this->database);
     }
 
     /**
@@ -90,6 +93,8 @@ class TopicPresenter extends BasePresenter
         $this->template->isAllowedToUpdateAttachement = $this->user->isAllowed('attachement', 'update');
         $this->template->isAllowedToDeleteAttachement = $this->user->isAllowed('attachement', 'delete');
         
+        // Log
+        $this->log->addVisit($this->user->id, $topicId);
     }
     
     /**

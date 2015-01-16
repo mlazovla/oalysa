@@ -23,6 +23,10 @@
 				<th>Role:</th>
 				<td>{$acount->role->name}</td>
 			</tr>
+			<tr n:if="$lastLogin">
+				<th>Poslední přihlášení:</th>
+				<td>{$lastLogin->created_at|date:'d.m.Y H:i:s'}, IP {$lastLogin->note}</td>
+			</tr>
 			<tr>
 				<th>Počáteční heslo:</th>
 				<td id="selfInitPassword">

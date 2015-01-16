@@ -4,6 +4,8 @@ namespace App\Presenters;
 
 use Nette,
 	App\Model;
+use App\Model\Log;
+use Nette\DI\Container;
 
 
 /**
@@ -11,7 +13,6 @@ use Nette,
  */
 class SignPresenter extends BasePresenter
 {
-
 
 	/**
 	 * Sign-in form factory.
@@ -49,6 +50,10 @@ class SignPresenter extends BasePresenter
 		
 		try {
 			$this->getUser()->login($values->username, $values->password);
+			
+			$httpRequest = $this->getHttpRequest();
+			$this->log = new Log($this->database);
+			$this->log->addLogin($this->user->id, $httpRequest->getRemoteAddress());
 			$this->redirect('Homepage:'); //uspesne prihlaseni
 
 		} catch (Nette\Security\AuthenticationException $e) { // neuspesne prihlaseni

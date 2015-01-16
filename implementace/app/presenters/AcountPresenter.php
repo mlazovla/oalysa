@@ -14,6 +14,7 @@ use App\Model\UserManager;
 use Nette\Application\BadRequestException;
 use Nette\Utils\Strings;
 use Nette\Application\ForbiddenRequestException;
+use App\Model\Log;
 /**
  * Acount presenter  
  */
@@ -35,6 +36,7 @@ class AcountPresenter extends BasePresenter
     {
         $this->database = $database;
         $this->acount = new Acount($this->database);
+        $this->log = new Log($this->database);
     }
     
 	public function renderDefault()
@@ -65,6 +67,7 @@ class AcountPresenter extends BasePresenter
 		    $acounts = $this->acount->where('activate', '1')->order('grade.name, name');
 		    $this->template->acounts = $acounts;
 		}
+		$this->template->lastLogin = $this->log->getLastLoginOfUser($this->user->id);
 	}
 	
 	public function renderShow($acountId)
@@ -107,6 +110,7 @@ class AcountPresenter extends BasePresenter
 	        $acounts = $this->acount->where('activate', '1')->order('grade.name, name');
 	        $this->template->acounts = $acounts;
 	    }
+	    $this->template->lastLogin = $this->log->getLastLoginOfUser($acountId);
 	    
 	}
 
