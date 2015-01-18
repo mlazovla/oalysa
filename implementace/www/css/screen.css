@@ -1,16 +1,5 @@
 /* Nette original design*/
 
-body {
-	font-size: 15px;
-	line-height: 1.6;
-	color: #333;
-	background: white;
-}
-
-h1 {
-	color: #3484D2;
-}
-
 #ajax-spinner {
 	margin: 15px 0 0 15px;
 	padding: 13px;
@@ -32,6 +21,8 @@ a[href^="#error:"] {
 	background: red;
 	color: white;
 }
+
+/* FORMS */
 
 form th, form td {
 	vertical-align: top;
@@ -56,65 +47,3 @@ html.js .jshidden {
 }
 
 
-/***************************************
- *
- * OA Lysa design by Vladimir Mlazovsky
- *
- */
-
-* {
-	margin: 0 0 0 0;
-	padding: 0 0 0 0;
-}
-
-header {
-	display: block;
-	padding: 10px 10px 10px 10px;
-	background-color: #24A;
-	color: #DDE;
-}
-
-header a {
-	color: white;
-}
-
-footer {background-color: #AAA;}
-
-div {
-	margin: 5px 5px;
-	border: 1px solid silver;
-	background: rgba(0,0,0,0.05);
-}
-
-*[class^='button'] {
-	font-family: 'Arial';
-	font-weight: lighter;
-	padding: 0.2em 0.5em 0.2em 0.5em;
-	background-color: #334;
-	border: 1px solid black;
-	color:white;
-	
-}
-
-/************************/
-/* comentary */
-#comentaries .comentar .content {
-	white-space: pre;
-}
-
-
-/************************/
-/* attachement */
-#attachements .type img {
-	height: 20px;
-}
-
-/************************/
-/* topic */
-#topic #frm-topicForm-name {
-	font-size: 150%;
-}
-
-#topic #frm-topicForm-content {
-	height: 15em;
-}

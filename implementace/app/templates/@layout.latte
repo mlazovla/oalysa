@@ -7,15 +7,26 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<title>{ifset #title}{include title|striptags}{/ifset}</title>
 
-	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/screen.css">
+	<!-- STYLESHEET -->
+	<link rel="stylesheet" href="{$basePath}/css/screen.css">
+
+
+	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/bootstrap.min.css">
 	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
 	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/textAreaWithLines.css">
+	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/screen_oalysa.css">
 
+	<!-- GOOGLE FONTS -->
+	<link href='http://fonts.googleapis.com/css?family=Lobster|Open+Sans:400,300&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+	<!-- ICON -->	
 	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
 
+	<!-- TINIMCE -->
 	<script src="{$basePath}/js/tinymce/tinymce.min.js"></script>
 	<script src="{$basePath}/js/textAreaWithLines.js"></script>	
 
@@ -49,53 +60,60 @@ tinymce.init({l}
 
 <body>
 	<script> document.documentElement.className+=' js' </script>
-	<header>
-		{block header}{/block}
-		{block userInfo}
-			{if $isLoggedIn}
-				{$currentUser['name']} (<span class="role">{$currentUser['role']->name}</span>)
-				<a n:href="Sign:out">Odhlásit se</a>
-			{/if}
-		{/block}
-	</header>
-	
-	{block navigation}
-		<div n:if="$isLoggedIn" id="navigation">
-			<h2>Navigace</h2>
-			<ul class="navig">
-			    <li><a n:href="Homepage:">Home</a></li>
-			    <li><a n:href="Acount:">Účet</a></li>		    
-			</ul>
+
+	<div id="wrap" class="container-fluid">
+
+		<div id="header" class="container-fluid">
+			<a n:href="Homepage:" id="logo"><img src="{$basePath}/images/icons/logo.png" title="Homepage" alt="Logo OA Lysá nad Labem"/></a>
+			{block header}{/block}
+			{block userInfo}
+				{if $isLoggedIn}
+					<span><a n:href="Acount:" class="userName"><i class="glyphicon glyphicon-user"></i> {$currentUser['name']}</a>
+					<span class="role">{$currentUser['role']->name}</span></span>
+					<span><a n:href="Sign:out"><i class="glyphicon glyphicon-off"></i> Odhlásit se</a></span>
+				{/if}
+			{/block}
 		</div>
-	{/block}
+		
+		<div class="container-fluid">
+			<div id="sideNavigation" class="col-md-2 col-xs-12">
+			{block navigation}{/block}
+			
+			
+			{block menu}{/block}
+			
+			
+			</div>
+			<div id="content" class="col-md-10 col-xs-12">
+				<div class="content">
+					<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+				
+					{if $isLoggedIn}
+						{include content}
+					{else}
+						<p>Je třeba být přihlášen.</p>
+					{/if}
+				</div>
+			</div>
+		</div>
 	
-	
-	{block menu}{/block}
-	
-	
-	
-	<div id="content">
-		<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
-	
-		{if $isLoggedIn}
-			{include content}
-		{else}
-			<p>Je třeba být přihlášen.</p>
-		{/if}
+	</div> <!-- id="container" -->
+	<div id="footer">
+			
 	</div>
+		
 	
+
 	{block scripts}
 	<script src="{$basePath}/js/jquery.js"></script>
 	<script src="{$basePath}/js/netteForms.js"></script>
+	<script src="{$basePath}/js/bootstrap.min.js"></script>
 	<script src="{$basePath}/js/main.js"></script>
 	<script src="{$basePath}/js/myScripts.js"></script>
 	<script>
 		createTextAreaWithLines('frm-batchForm-batch');
 	</script>
 	{/block}
-	
-	<footer>
-		Vladimír Mlázovský 2015
-	</footer>
+
 </body>
 </html>

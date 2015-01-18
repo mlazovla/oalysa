@@ -36,11 +36,11 @@
 			<a n:href="Subject:insert" n:if="$isAllowedInsertSubject" class="buttonInsert">Přidat předmět</a>
 		</div>
 
-		<h2>škola</h2>
+		<h2>Předměty</h2>
 			{if count($subjects) > 0}
 				<ul>
 				{foreach $subjects as $s}
-						<li><a href="{link Subject:show $s->id}" title="{$s->name}">{$s->shortcut}</a></li>
+						<li><a href="{link Subject:show $s->id}" title="{$s->name}">{$s->shortcut} <span class="name">{$s->name}</span></a></li>
 				{/foreach}
 				</ul>
 			{else}
