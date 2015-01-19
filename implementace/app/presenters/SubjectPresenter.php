@@ -114,7 +114,7 @@ class SubjectPresenter extends BasePresenter
         $subject = new Subject($this->database);
          
         // Unikatni zkratka
-        if ($subject->where('shortcut', $values['shortcut'])) {
+        if ($subject->where('shortcut', $values['shortcut'])->count('id') > 0) {
             $form->addError('Uvedená zkratka v systému již existuje.');
         }
          
