@@ -1,4 +1,4 @@
-var lineObjOffsetTop = -5;
+var lineObjOffsetTop = -3;
 var lineObjOffsetLeft = -4;   
    function createTextAreaWithLines(id)
    {

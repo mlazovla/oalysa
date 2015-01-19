@@ -1,0 +1,31 @@
+<div id="news" class="widget container-fluid">
+<h2>Novinky</h2>
+	{if count($news) > 0}
+		<div class="row">
+			{foreach $news as $n}
+				<div class="col-xs-12 col-sm-6 col-lg-4">
+					<div class="thumbnail">
+						<span class="date">{$n->created_at|date:'%d.%m.%Y %H:%M'}</span>
+						<span n:if="$n->user" class="owner">{$n->user->name}</span>
+						<div class="clearfix"></div>
+						<span class="content">
+							<a n:if="$isAllowedDeleteNew" n:href="deleteNews $n->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat novinku?'));" title="smazat">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+							{$n->content}
+						</span>
+					</div>
+				</div>
+			{/foreach}
+		</div>
+
+	{else}
+		Žádné novinky nebyly načteny.
+	{/if}
+
+{if $isAllowedInsertNew}
+	<div class="container">
+		{control newsForm}
+	</div>
+{/if}
+</div>

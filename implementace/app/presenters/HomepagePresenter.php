@@ -8,6 +8,7 @@ use App\Model\News;
 use App\Model\Subject;
 
 use App\Model\MyAuthorizator;
+use App\Model\Topic;
 
 /**
  * Homepage presenter.
@@ -35,7 +36,7 @@ class HomepagePresenter extends BasePresenter
 		
 		if ($this->user->isLoggedIn()) {
 		    $news = new News($this->database);
-		    $this->template->news = $news->select('*')->order('created_at')->limit(3);	
+		    $this->template->news = $news->select('*')->order('created_at DESC')->limit(9);	
 
 		    $subjects = new Subject($this->database);
 		    $this->template->subjects = $subjects->select('*')->order('shortcut');
@@ -43,6 +44,9 @@ class HomepagePresenter extends BasePresenter
 		    $this->template->isAllowedInsertNew = $this->user->isAllowed('news', 'insert');
 		    $this->template->isAllowedDeleteNew = $this->user->isAllowed('news', 'delete');
 		    $this->template->isAllowedInsertSubject = $this->user->isAllowed('subject', 'insert');
+		    
+		    $topic = new Topic($this->database);
+		    $this->template->lastTopics = $topic->order('created_at DESC')->limit(9);
 		}
 	}
 	

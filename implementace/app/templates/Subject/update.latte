@@ -1,5 +1,7 @@
 {block content}
 		<h1 n:block="title">Upravit předmět {$subject->name}</h1>
+
+		<a n:href="Homepage:" title="Zrušit" class="buttonCancel">Zrušit</a><br />
 		<p class="info">Odebráním spojení Předmět - Ročník mohou vzniknout nepřiřazená témata.</p>
 		
 		{control subjectUpdateForm}

@@ -6,12 +6,16 @@
 			<a n:if="$isAllowedToEditTopic" n:href="Topic:new $subject->id, $grade->id" class="buttonInsert">Přidat téma</a>
 			<a n:if="$isAllowedToEditTopic && $notAssignedTopicCount > 0" n:href="Topic:zombie" class="buttonOpen">Zobrazit nepřiřazená témata ({$notAssignedTopicCount})</a>
 		</div>
+		<ul>
+			<li><a href="{link Subject:show $subject->id}" title="{$subject->name}">{$subject->shortcut} <span class="name">{$subject->name}</span></a><li>
+		</ul>
+
 		{if count($topics)>0}
 			<ul>
 				{foreach $topics as $t}
 					<li>
 						<a href="{link Topic:show $t->id}">{$t->name}</a>
-						{if $isAllowedToDeleteAnyTopic || ($t->user && $isAllowedToDeleteSelfTopic && $currentUser['id'] == $t->user->id)}<a n:href="Topic:DeleteTopic $t->id" class="buttonDelete"  onclick="return(confirm('Opravdu chcete smazat toto téma?'));">smazat</a>{/if}
+						{*{if $isAllowedToDeleteAnyTopic || ($t->user && $isAllowedToDeleteSelfTopic && $currentUser['id'] == $t->user->id)}<a n:href="Topic:DeleteTopic $t->id" class="buttonDelete"  onclick="return(confirm('Opravdu chcete smazat toto téma?'));"><i class="glyphicon glyphicon-trash"></i></a>{/if}*}
 					</li>
 				{/foreach}
 			</ul>
@@ -27,8 +31,10 @@
 
 {block content}
 	{if $subject}
+	<div id="subjectGrade">
 		<h1 n:block="title">{$subject->name}</h1>
 		{$subject->description|noescape}
+	</div>
 	{else}
 		<p>Předmět se nepodařilo načíst. <a n:href="Homepage:">Zpět na Homepage</a></p>
 	{/if}

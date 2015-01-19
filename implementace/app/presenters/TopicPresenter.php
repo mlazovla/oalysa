@@ -60,12 +60,8 @@ class TopicPresenter extends BasePresenter
         else
             $gradeId = null;
         
-        if ($gradeId == null) {
-            $this->template->topics = null;
-        }
-        else {
-            $this->template->topics = $topic->where('subject2grade_id', $gradeId);
-        }
+
+        $this->template->topics = $topic->where('subject2grade_id', $this->topic->subject2grade_id);
         
         if ($this->user->isAllowed('attachement', 'read')) {   
             /**
@@ -172,8 +168,8 @@ class TopicPresenter extends BasePresenter
         $authorizator->injectDatabase($this->database);
         $this->user->setAuthorizator($authorizator);
         $coment = new Comentary($this->database);
-        $owner_id = $coment->get($coment_id)->user->id;
-        $topic_id = $coment->get($coment_id)->topic->id;
+        $owner_id = $coment->get($coment_id)->user_id;
+        $topic_id = $coment->get($coment_id)->topic_id;
         if ($this->user->id == $owner_id) { // Vlastni komentar
             if (!$this->user->isAllowed('selfComentary', 'delete')) {
                 $this->flashMessage('Nemáte oprávnění odstranit vlastní komentář.','warning');

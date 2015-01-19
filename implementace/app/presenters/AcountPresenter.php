@@ -239,7 +239,7 @@ class AcountPresenter extends BasePresenter
         if ($values['grade_id'] == 0) $values['grade_id'] = null; // nezvoleny rocnik
 	    
 	    $this->acount = new Acount($this->database);
-        $username = $this->acount->add($username, $values['password'], $values['role_id'], $values['name'], $values['grade_id'], $values['email'], 1, true);
+        $username = $this->acount->add($values['username'], $values['password'], $values['role_id'], $values['name'], $values['grade_id'], $values['email'], 1, true);
 	    if ($username == $values['username']) {
 	        $this->flashMessage("Účet ". $values->username ." (". $values->name .") přidán.", 'success'); 	         
 	    }

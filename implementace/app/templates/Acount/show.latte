@@ -40,44 +40,8 @@
 	</div>
 
 	{if $isAllowedReadAcount}
-	<div>
-		<h2>Ostatní účty</h2>
-		<a n:if="$isAllowedInsertAcount" n:href="acount:new" class="buttonInsert">Nový</a>
-		<a n:if="$isAllowedInsertAcount" n:href="acount:batch" class="buttonInsert">Dávkové zpracování</a>
-
-		<table class="grid">
-		<thead>
-			<tr>
-				<th>Jméno</th><th>Uživatelské jméno</th><th>Ročník</th><th>Email</th><th>Role</th><th>Nástroje</th>
-			</tr>
-		</thead>
-		<tbody>
-			{foreach $acounts as $a}
-				<tr>
-					<td>{$a->name}</td>
-					<td>{$a->username}</td>
-					<td>{if $a->grade}{$a->grade->name}{else}<span class="note">není zvolen</span>{/if}</td>
-					<td>{$a->email}</td>
-					<td>{$a->role->name}</td>
-					<td>
-						<a n:href="acount:show $a->id" class="buttonOpen">Otevřít</a>
-						<a n:if="$isAllowedResetPasswordAcount" n:href="acount:resetPassword $a->id" class="buttonUpdate" onclick="return(confirm('Opravdu chcete resetovat heslo?'));">Reset hesla</a>
-						<a n:if="$isAllowedUpdateAcount" n:href="acount:update $a->id" class="buttonUpdate">Upravit</a>
-						<a n:if="$isAllowedDeleteAcount" n:href="acount:delete $a->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tento účet?'));">Smazat</a>
-						<span id="initPassword_{$a->id}" n:if="$isAllowedShowInitPasswordAcount"> 
-							<button href="Acount:showInitPassword $a->id"
-								class="buttonShow"
-								onclick="loadToElement({link Acount:showInitPassword $a->id}, 'initPassword_{$a->id}');" >
-								Ukázat počáteční heslo
-							</button>
-						</span>
-					</td>
-				</tr>
-			{/foreach}
-		</tbody>
-		</table>
-	</div>
-	{/if}		
+		{include 'widget_allAcounts.latte'}
+	{/if}			
 		
 	
 {/block}

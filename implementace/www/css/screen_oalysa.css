@@ -25,12 +25,15 @@ body {
 
 }
 #wrap {
-  min-height: 100%;
-  height: auto;
-  /* Negative indent footer by its height */
-  margin: 0 auto -60px;
-  /* Pad bottom by footer height */
-  padding: 0 0 60px;
+	min-height: 100%;
+	height: auto;
+
+    background-color: white;
+	-webkit-box-shadow: 0px 0px 33px rgba(255,255,255,0.2);
+	-moz-box-shadow: 0px 0px 33px rgba(255,255,255,0.2);
+	box-shadow: 0px 0px 33px rgba(255,255,255,0.2);
+
+
 }
 
 /* Set the fixed height of the footer here */
@@ -46,7 +49,6 @@ body {
 	-moz-box-shadow: inset 0px 20px 40px -30px rgba(255,255,255,0.6);
 	box-shadow: inset 0px 20px 40px -30px rgba(255,255,255,0.6);
 }
-
 
 #header {
 	line-height: 25px;
@@ -87,6 +89,8 @@ body {
 	vertical-align: middle;
 }
 
+/* MENU */
+
 #sideNavigation {
 	background: linear-gradient(to bottom, rgba(204,204,204,1) 0%,rgba(255,255,255,1) 100%); 
 	
@@ -104,8 +108,35 @@ body {
 
 }
 
+#content > .content div.topicMeta {
+	background-color:#EDD;
+	margin: -12px -10px 0 -12px;
+	padding: 10px 10px 5px 10px;
+	border-radius: 6px 6px 0 0;
+	border: 2px solid #EDD;
+}
+
+#content .topicMeta .date{
+	float: right;
+	text-align: right;
+	font-size: small;
+	font-style: italic;
+	font-weight: lighter;
+}
+
+#content .topicMeta .author{
+	text-align: right;
+	font-size: small;
+	color: black;
+}
+
 #menu {
 	padding: 10px 10px;
+}
+
+#menu h2 {
+	border: none;
+	font-size: 18px;
 }
 
 #menu ul {
@@ -126,14 +157,108 @@ body {
 }
 
 
+/*  BUTTONS */
+
 *[class^='button'] {
+	display: inline-block;
 	font-weight: lighter;
 	padding: 0.2em 0.5em 0.2em 0.5em;
 	background-color: #334;
 	border: 1px solid black;
+	border-radius: 3px;
 	color:white;
-	
+	transition: background-color 1s;
+	margin: 3px 3px 3px 3px;
 }
+
+.buttonDelete {
+	background-color: #A00;
+	border: 1px solid #800;
+	color:white;
+}
+
+.buttonDelete:hover {
+	background-color: #F00;
+	text-shadow:none;
+	color:white;
+	cursor:hand;
+}
+
+
+.buttonNew, .buttonInsert, input[type='submit'], .buttonAnswer_on, .buttonConfirm{
+	background-color: #4169E1;
+	border: 1px solid #3149C1;
+	color:white;
+}
+
+.buttonNew:hover, .buttonInsert:hover, input[type='submit']:hover, .buttonAnswer_on:hover, .buttonConfirm:hover{
+	background-color: #1139FF;
+	text-shadow:none;
+	color:white;
+	cursor:hand;
+}
+
+.buttonUpdate, .buttonEdit {
+	background-color: #C80;
+	border: 1px solid #880;
+	color:white;
+}
+
+.buttonUpdate:hover, .buttonEdit:hover {
+	background-color: #DA0;
+	text-shadow:none;
+	color:white;
+	cursor:hand;
+}
+
+.buttonCancel {
+	background-color: #EEE;
+	border: 1px solid #36F;
+	color: #36F;
+}
+
+.buttonCancel:hover {
+	background-color: #FFF;
+	text-shadow:none;
+	color: #36F;
+	cursor:hand;
+}
+
+.buttonOpen, .buttonDownload, .buttonShow {
+	background-color: #4A1;
+	border: 1px solid #290;
+	color:white;
+}
+
+.buttonOpen:hover, .buttonDownload:hover, .buttonShow:hover {
+	background-color: #5C1;
+	text-shadow:none;
+	color:white;
+	cursor:hand;
+}
+
+table tr td {
+	padding: 3px 3px;
+}
+
+table thead tr {
+	border-left: 2px solid red;
+	background-color: #AAA;
+}
+
+table thead tr th{
+	text-align: center;
+}
+
+
+table tbody tr:hover {
+	background-color: rgba(0,0,0,0.1);
+}
+
+table tr td {
+	border: 1px solid #DDD;
+}
+/* COMMON GLOBALS */
 
 a {
 	color:red;
@@ -148,31 +273,231 @@ a:hover {
 h1 {
 	font-family: 'Lobster', cursive;
 	color: #333;
-	text-shadow: 2px 2px 0px red;
-	font-size: 42px;
+	text-shadow: 2px 2px 0px #AAA;
+	font-size: 50px;
+}
+
+#topic > h1, #acount > h1, #subject > h1, #subjectGrade > h1 {
+	text-shadow: 2px 2px 0px red;	
 }
 
 h2 {
 	font-family: 'Lobster', cursive;
 	color: #333;
+	font-size: 35px;
+	border-top: 2px solid #FAA;
+	text-shadow: 2px 2px 0px #AAA;
 }
 
-ul {
-	margin-left: 20px;
+h3 {
+	font-family: 'Lobster', cursive;
+	color: #333;
+	font-size: 30px;
 }
+
+ul, ol {
+	margin-left: 30px;
+}
+
+label.required:after {
+	content: '*';
+	color: red;
+}
+
+label.required {
+	font-weight: bold;
+}
+
+p {
+	color: black;
+}
+
+/**************************/
+/* FORMS */
+input[type='submit'] {
+	float: right;
+}
+
+input[type='checkbox'] {
+	margin:0 3px 0 3px;
+}
+
+*[id^='frm'] table tr td {
+	border: none;
+}
+
+form table th, form table td{
+	padding: 3px 3px;
+}
+
+#frm-newsForm table, #frm-comentaryForm table{
+	width: 100%;
+}
+
+#frm-newsForm table th, #frm-comentaryForm table th {
+	width: 1%;
+}
+
+
+#frm-newsForm textarea, #frm-comentaryForm textarea {
+	width: 100%;
+}
+
+
+/**************************/
+/* FLASH MESSAGES */
+
+div.flash {
+	border: none;
+	border-radius: 3px;
+	/* Chrome, Safari, Opera */
+    -webkit-animation-name: vanish;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-delay: 5s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-direction: forward;
+    -webkit-animation-play-state: running;
+    -webkit-animation-fill-mode: forwards;
+    /* Standard syntax */
+    animation-name: vanish;
+    animation-duration: 1s;
+    animation-delay: 5s;
+    animation-iteration-count: 1;
+    animation-direction: forward;
+    animation-play-state: running;
+    animation-fill-mode: forwards;
+}
+
+div.success {
+	background-color: #BFB;
+} 
+
+div.info {
+	background-color: #EDB;
+}
+
+div.warning {
+	background-color: #BFB;
+} 
+
 
 
 /************************/
+/* WIDGET */
+
+.widget {
+
+}
+
+.widget .thumbnail {
+	box-shadow: 0px 5px 10px 10px rgba(0,0,0,0.10);
+	height: 100px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 5px 5px 5px 5px;
+	overflow: auto;
+}
+
+.widget h3 {
+	margin-top: 3px;
+}
+
+
+.widget .date{
+	float: right;
+	display: inline-block;
+	text-align: right;
+	font-size: small;
+	font-style: italic;
+	font-weight: lighter;
+}
+
+.widget .owner{
+	float: left;
+	display: inline-block;
+	text-align: right;
+	font-size: small;
+	color: black;
+}
+
+.widget .content {
+	display: block;
+	float: none;
+	color: #333;
+	
+}
+
+.widget *[class^='button'] {
+	float: right;
+}
+
+/************************/
 /* comentary */
+#comentaries .comentar{
+	box-shadow: 0px 5px 10px 10px rgba(0,0,0,0.10);
+	border-radius: 2px;
+	margin-bottom: 25px;
+	padding: 10px 3px 10px 3px;
+}
+
+#comentaries .answer, #comentaries .question{
+	margin-bottom: 10px;
+	line-height: 30px;
+	padding: 3px 5px 3px 5px;
+}
+
+#comentaries .question {
+	margin-top: -7px;
+	border-radius: 10px;
+	background-color: #AAA;
+}
+
+#comentaries .question .content {
+	font-style: italic;
+}
+
+#comentaries .answer{
+	border-left: 2px solid red;
+	color: black;
+	font-weight: normal;
+}
+
+#comentaries .date{
+	float: right;
+	display: inline-block;
+	text-align: right;
+	font-size: small;
+	font-style: italic;
+	font-weight: lighter;
+	margin-right: 10px;
+}
+
+#comentaries .user{
+	float: left;
+	display: inline-block;
+	text-align: right;
+	font-size: small;
+	color: black;
+}
+
 #comentaries .comentar .content {
 	white-space: pre;
 }
 
+#comentaries *[class^='button'] {
+	float: right;
+	line-height: 22px;
+	margin-left: 5px;
+}
 
 /************************/
 /* attachement */
 #attachements .type img {
 	height: 20px;
+}
+
+#attachements *[class^='button'] {
+	margin:3px 3px 3px 3px;
 }
 
 /************************/
@@ -183,4 +508,27 @@ ul {
 
 #topic #frm-topicForm-content {
 	height: 15em;
+}
+
+/*---------------------------------------
+
+       ANIMATIONS ^_^
+
+---------------------------------------*/
+
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes vanish {
+    0%  {}
+    50% {color: transparent;height:inherit; background-color: inherit; margin: inherit; padding: inherit;}
+    100% {height:0px; font-size: 0px;color: transparent; background-color:transparent; 
+    	display: none; margin: 0 inherit 0 inherit; padding: 0 inherit 0 inherit;}
+}
+
+/* Standard syntax */
+@keyframes vanish {
+    0%  {}
+    50% {color: transparent;height:inherit; background-color: inherit; margin: inherit; padding: inherit;}
+    100% {height:0px; font-size: 0px;color: transparent; background-color:transparent; 
+    	display: none; margin: 0 inherit 0 inherit; padding: 0 inherit 0 inherit;}
 }

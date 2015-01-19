@@ -6,27 +6,9 @@
 
 {block content}
 	<h1 n:block="title">Home</h1>
+	{include 'widget_news.latte'}
+	{include 'widget_lastTopics.latte'}
 
-	<div id="news">
-	<h2>Novinky</h2>
-		{if count($news) > 0}
-			{foreach $news as $n}
-				<div>
-					<a n:href="deleteNews $n->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat novinku?'));">Smazat</a>
-					<span class="date">{$n->created_at|date:'%d.%m.%Y %H:%M'}</span>
-					<span class="owner">{$n->user->name}</span>
-					<span class="content">{$n->content}</span>
-				</div>
-			{/foreach}
-		{else}
-			Žádné novinky nebyly načteny.
-		{/if}
-		{if $isAllowedInsertNew}
-			<div>
-				{control newsForm}
-			</div>
-		{/if}
-	</div>
 {/block}
 
 {block menu}

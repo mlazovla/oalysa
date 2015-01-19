@@ -2,6 +2,9 @@
 	<div id="menu">
 	{if $subject}
 		<h2>{$subject->shortcut} - {$grade->name}</h2>
+		<ul>
+			<li><a href="{link Subject:show $subject->id}" title="{$subject->name}">{$subject->shortcut} <span class="name">{$subject->name}</span></a><li>
+		</ul>
 		{if count($topics)>0}
 			<ul>
 				{foreach $topics as $t}
@@ -9,7 +12,7 @@
 				{/foreach}
 			</ul>
 		{else}
-		<p>Nebyla načtena žádná témata.</p>
+			<p>Nebyla načtena žádná témata.</p>
 		{/if}
 	{else}
 	
@@ -21,23 +24,25 @@
 {block content}
 	<div id="topic">
 		{if $topic}
-			<div class="info">
+			<div class="topicMeta">
 				<span n:if="$topic->user" class="author">{$topic->user->name}</span>
 				<span class="date">{$topic->created_at|date:'d.m.Y H:i'}</span>
 			</div>
 			<h1 n:block="title">{$topic->name}</h1>
 			
-			<div class="tools">
-				<a n:if="isAllowedToInsertTopic" n:href="Topic:new $topic->subject2grade->subject->id, $topic->subject2grade->grade->id" class="buttonNew">Nový</a>
-				<a n:if="isAllowedToUpdateTopic" n:href="Topic:update $topic->id" class="buttonEdit">Upravit</a>
+			<div n:if="$topic->subject2grade" class="tools">
+				<a n:if="isAllowedToInsertTopic" n:href="Topic:new $topic->subject2grade->subject->id, $topic->subject2grade->grade->id" class="buttonNew" title="Nové téma"><i class="glyphicon glyphicon-plus"></i> Nové</a>
+				<a n:if="isAllowedToUpdateTopic" n:href="Topic:update $topic->id" class="buttonEdit" title="Upravit téma"><i class="glyphicon glyphicon-pencil"></i> Upravit</a>
 				<a n:if="$isAllowedToDeleteAnyTopic || ($topic->user && $isAllowedToDeleteSelfTopic && $currentUser['id'] == $topic->user->id)"
 					n:href="Topic:deleteTopic $topic->id"
 					class="buttonDelete"
-					onclick="return(confirm('Opravdu chcete smazat toto téma?'));
-				">
-					Smazat
+					onclick="return(confirm('Opravdu chcete smazat toto téma?'));"
+					title="Smazat téma"
+				>
+					<i class="glyphicon glyphicon-trash"></i> Smazat
 				</a>
 			</div>
+			<a n:if="!$topic->subject2grade" n:href="Topic:zombie" class="buttonShow">Zobrazit seznam nepřiřazených témat</a>
 
 			<div id="anotation">
 				{$topic->anotation|noescape}
@@ -60,16 +65,16 @@
 				<tbody>
 					{foreach $attachements as $a}
 						<tr>
-							<td class="type"><img src="{$basePath}/images/icons/files/{$a->extension}.png" title="{$a->mimeType}">
+							<td class="type"><img src="{$basePath}/images/icons/files/{$a->extension}.png" title="{$a->mimeType}"></td>
 							<td class="name"><span title="Stáhnout/Otevřít {$a->name}">{$a->name}</span></td>
 							<td class="tools">
-								<a n:href="Attachement:open $a->id" class="buttonOpen">Otevřít</a>								
-								<a n:href="Attachement:download $a->id" class="buttonDownload" download>Stáhnout</a>
-								{if $isAllowedToUpdateAttachement}<a n:href="Attachement:update $a->id" class="buttonEdit" download>Upravit</a>{/if}
-								{if $isAllowedToDeleteAttachement}<a onclick="return(confirm('Opravdu chcete smazat tuto přílohu?'));" n:href="Attachement:delete $a->id" class="buttonDelete">Smazat</a>{/if}								
+								<a n:href="Attachement:open $a->id" class="buttonOpen" title="Otevřít"><i class="glyphicon glyphicon-eye-open"></i></a>								
+								<a n:href="Attachement:download $a->id" class="buttonDownload" title="Download" download><i class="glyphicon glyphicon-download-alt"></i></a>
+								{if $isAllowedToUpdateAttachement}<a n:href="Attachement:update $a->id" class="buttonEdit" title="Upravit"><i class="glyphicon glyphicon-pencil"></i></a>{/if}
+								{if $isAllowedToDeleteAttachement}<a onclick="return(confirm('Opravdu chcete smazat tuto přílohu?'));" n:href="Attachement:delete $a->id" class="buttonDelete" title="Smazat"><i class="glyphicon glyphicon-trash"></i></a>{/if}								
 
 							</td>
-							<td class="owner" n:if="isset($a->user)">{if $a->user}{$a->user->name}{else}<i>není</i>{/if}</td>
+							<td class="owner">{if $a->user}{$a->user->name}{else}<i>není</i>{/if}</td>
 							<td class="timeDate">{$a->created_at|date:'%d.%m.%Y %H:%M'}</td>
 							<td class="description">{$a->description}</td>
 						</tr>
@@ -98,15 +103,19 @@
 					{if $c->comentary != null}
 					<a name="comentary{$c->id}"></a>
 					<div class="question">
-						<span class="user" n:if="isset($a->user)">{$c->comentary->user->name}</span>
-						<span class="date">{$c->comentary->created_at}</span>
+						<span class="user" n:if="$c->user">{$c->comentary->user->name}</span>
 						<a href="#comentary{$c->comentary->id}" title="Ukázat komentář." class="buttonShow">Ukázat</a>
-						napsal: {$c->comentary->content|truncate:50}					
+						<span class="date">{$c->comentary->created_at}</span>
+						<div class="clearfix"></div>
+						<span class="content">napsal: {$c->comentary->content|truncate:50}</span>				
 					</div>
 					{/if}
 					<div class="answer">
-						<span class="user" n:if="isset($a->user)">{$c->user->name}</span>
-						<span class="date">{$c->created_at|date:'%d.%m.%Y %H:%M'}</span>
+						<span class="user" n:if="$c->user">{$c->user->name}</span>
+												{if ($isAllowedToDeleteAnyComent || ($isAllowedToDeleteSelfComent && $c->user_id == $currentUser['id']))}
+							<a n:href="deleteComent $c->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tento komentář?'));">X</a>
+						{/if}
+
 						{if $isAllowedToWriteComents}
 							<a
 								class="buttonAnswer_on"
@@ -115,14 +124,14 @@
 								onClick="
 									setInputValueById('frm-comentaryForm-answer_on','{$c->id}');
 									setElementValueById('answer_on_message', '{$c->content|truncate:30}');
-							">Odpovědět</a>
+							"><i class="glyphicon glyphicon-share-alt"></i></a>
 						{/if}
-						{if ($isAllowedToDeleteAnyComent || ($isAllowedToDeleteSelfComent && $c->user_id == $currentUser['id']))}
-							<a n:href="deleteComent $c->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tento komentář?'));">X</a>
-						{/if}
+						<span class="date">{$c->created_at|date:'%d.%m.%Y %H:%M'}</span>
+						<div class="clearfix"></div>
 						<span class="content">{$c->content}</span>
 					</div>
 				</div>
+				<div class="fixclear"></div>
 			{/foreach}
 		{else}
 			<p>K tomuto tématu nejsou zatím žádné komentáře.</p>

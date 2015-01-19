@@ -1,0 +1,26 @@
+<div id="lastTopics" class="widget container-fluid">
+<h2>Poslední témata</h2>
+	{if count($lastTopics) > 0}
+		<div class="row">
+			{foreach $lastTopics as $t}
+				<div class="col-xs-12 col-sm-6 col-lg-4">
+					<div class="thumbnail">
+						<span class="date">{$t->created_at|date:'%d.%m.%Y %H:%M'}</span>
+						<span n:if="$t->user" class="owner">{$t->user->name}</span>
+						<div class="clearfix"></div>
+						<div class="content">
+							<a n:href="Topic:show $t->id" class="buttonOpen" title="Otevřít téma">
+								<i class="glyphicon glyphicon-eye-open"></i>
+							</a>
+							<h3>{$t->name}</h3>
+							{$t->anotation|noescape}
+						</div>
+					</div>
+				</div>
+			{/foreach}
+		</div>
+
+	{else}
+		Žádná nová témata nebyla načtena.
+	{/if}
+</div>

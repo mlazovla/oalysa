@@ -103,13 +103,14 @@ class Acount extends \Nette\Database\Table\Selection {
         $acount->where('activate', 0);
         $upd = array();
         foreach($acount->where('activate', 0) as $a) {
-            $upd[]=array(
+            $tmp=array(
                 'id' => $a->id,
                 'activate' => 1,
             );
             if ($a->password == '') {
-                $upd['password'] = Acount::generateRandomString($a->id);
+                $tmp['password'] = Acount::generateRandomString($a->id);
             }
+            $upd[] = $tmp;
         }
         foreach ($upd as $u) {
             $acount = new Acount($this->db);
