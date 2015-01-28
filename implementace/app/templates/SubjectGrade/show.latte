@@ -7,7 +7,7 @@
 			<a n:if="$isAllowedToEditTopic && $notAssignedTopicCount > 0" n:href="Topic:zombie" class="buttonOpen">Zobrazit nepřiřazená témata ({$notAssignedTopicCount})</a>
 		</div>
 		<ul>
-			<li><a href="{link Subject:show $subject->id}" title="{$subject->name}">{$subject->shortcut} <span class="name">{$subject->name}</span></a><li>
+			<li><i class="glyphicon glyphicon-arrow-left"></i> <a href="{link Subject:show $subject->id}" title="{$subject->name}">{$subject->shortcut} <span class="name">{$subject->name}</span></a><li>
 		</ul>
 
 		{if count($topics)>0}
@@ -33,6 +33,7 @@
 	{if $subject}
 	<div id="subjectGrade">
 		<h1 n:block="title">{$subject->name}</h1>
+		<h2>{$grade->name}</h2>
 		{$subject->description|noescape}
 	</div>
 	{else}

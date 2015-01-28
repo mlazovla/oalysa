@@ -125,6 +125,7 @@ class Attachement extends \Nette\Database\Table\Selection {
      * @return bool success
      */
     public function insertFile(FileUpload $file, $topic_id, $user_id, $description = null) {
+        
         $attachement = new Attachement($this->db);
         $filename = $file->getName();
         $ext = self::getExtensionByName($filename);
@@ -160,8 +161,7 @@ class Attachement extends \Nette\Database\Table\Selection {
             default: $mime = "application/octet-stream"; // a binary file
         }
                 
-        
-        $attachement->insert(array(
+        $lastAttachement_id = $attachement->insert(array(
             'name' => $filename,
             'mimeType' => $mime,
             'extension' => $ext,
@@ -169,12 +169,16 @@ class Attachement extends \Nette\Database\Table\Selection {
             'user_id' => $user_id,
             'description' => $description
         ));
+
+        if (!move_uploaded_file($file->getTemporaryFile(), self::SAVE_DIR . $lastAttachement_id . '.' . $ext)) {
+            $attachement = new Attachement($this->db);
+            $attachement->where('id', $lastAttachement_id)->delete();
+            return false;   
+        }
+        
         
         $lastAttachement = $attachement->select('id')->order('id DESC')->limit(1)->fetch();
         
-        if (!move_uploaded_file($file->getTemporaryFile(), self::SAVE_DIR . $lastAttachement['id'] . '.' . $ext)) {
-            return false;   
-        }
         return true;
     }
     

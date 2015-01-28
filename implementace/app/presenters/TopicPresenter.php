@@ -530,7 +530,7 @@ class TopicPresenter extends BasePresenter
         $this->topic = new Topic($this->database);
         $this->template->topic = $this->topic->get($subjectId);
         
-        $this['attachTopicForm']->setDefaults(array('id'=>$subjectId));
+        $this['attachTopicForm']->setDefaults(array('id'=>$subjectId, 'subject2grade' => $this->template->topic->subject2grade_id));
     }
     
     

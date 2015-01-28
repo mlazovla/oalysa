@@ -2,8 +2,10 @@
 	<div id="menu">
 	{if $subject}
 		<h2>{$subject->shortcut} - {$grade->name}</h2>
+		<a n:if="isAllowedToInsertTopic" n:href="Topic:new $topic->subject2grade->subject->id, $topic->subject2grade->grade->id" class="buttonNew" title="Nové téma pod {$subject->shortcut}"><i class="glyphicon glyphicon-plus"></i> Nové téma</a>
+
 		<ul>
-			<li><a href="{link Subject:show $subject->id}" title="{$subject->name}">{$subject->shortcut} <span class="name">{$subject->name}</span></a><li>
+			<li><i class="glyphicon glyphicon-arrow-left"></i> <a href="{link Subject:show $subject->id}" title="{$subject->name}">{$subject->shortcut} <span class="name">{$subject->name}</span></a><li>
 		</ul>
 		{if count($topics)>0}
 			<ul>
@@ -29,10 +31,11 @@
 				<span class="date">{$topic->created_at|date:'d.m.Y H:i'}</span>
 			</div>
 			<h1 n:block="title">{$topic->name}</h1>
+			<h2 n:if="$topic->subject2grade">{$subject->name} - {$grade->name}</h2>
 			
 			<div n:if="$topic->subject2grade" class="tools">
-				<a n:if="isAllowedToInsertTopic" n:href="Topic:new $topic->subject2grade->subject->id, $topic->subject2grade->grade->id" class="buttonNew" title="Nové téma"><i class="glyphicon glyphicon-plus"></i> Nové</a>
 				<a n:if="isAllowedToUpdateTopic" n:href="Topic:update $topic->id" class="buttonEdit" title="Upravit téma"><i class="glyphicon glyphicon-pencil"></i> Upravit</a>
+				<a n:if="$isAllowedToUpdateTopic" n:href="Topic:attach $topic->id" class="buttonEdit" download>Přesunout</a>
 				<a n:if="$isAllowedToDeleteAnyTopic || ($topic->user && $isAllowedToDeleteSelfTopic && $currentUser['id'] == $topic->user->id)"
 					n:href="Topic:deleteTopic $topic->id"
 					class="buttonDelete"
@@ -58,6 +61,7 @@
 	<div id="attachements">
 	<h2>Přílohy</h2>
 		{if $attachements and count($attachements)>0}
+			<div class="attachementTable">
 			<table>
 				<thead>
 					<tr><th>Typ</th><th>Název</th><th>Nástroje</th><th>Vlastník</th><th>Nahráno</th><th>Popis</th></tr>
@@ -81,6 +85,7 @@
 					{/foreach}
 				</tbody>
 			</table>
+			</div>
 		{else}
 			<p>K tomuto tématu nejsou přiloženy žádné přílohy.</p>
 		{/if}

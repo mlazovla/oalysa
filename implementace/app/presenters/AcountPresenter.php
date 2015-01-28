@@ -550,7 +550,27 @@ class AcountPresenter extends BasePresenter
 	       }
 	       
 	    }
-        
+	    
+	}
+
+	public function actionMove($type) {
+	    $this->setMyAutorizator();
+	    if (!$this->user->isAllowed('acount', 'update')) {
+	        $this->flashMessage('Nemáte oprávnění upravovat uživatelské účty.','warning');
+	        redirect('Acount:');
+	        return;
+	    }
+	    
+	    if(($type == 'toBatch' || $type == 'delete') && !$this->user->isAllowed('acount', 'delete')) {
+	        $this->flashMessage('Nemáte oprávnění upravovat uživatelské účtys následným mazáním.','warning');
+	        redirect('Acount:');
+	        return;
+	    }
+	    $this->acount = new Acount($this->database);
+	    if ($this->acount->moveGrade($type)) {
+	        $this->flashMessage('Uživatelské učty byly hromadně upraveny.','success');
+	        redirect('Acount:');
+	    }
 	}
 	
 	

@@ -9,12 +9,14 @@ use App\Model\Subject;
 
 use App\Model\MyAuthorizator;
 use App\Model\Topic;
+use App\Model\Log;
 
 /**
  * Homepage presenter.
  */
 class HomepagePresenter extends BasePresenter
 {
+    const WIDGET_MESSAGES_LIMIT = 6;
     
     public function __construct(Nette\Database\Context $database)
     {
@@ -36,7 +38,7 @@ class HomepagePresenter extends BasePresenter
 		
 		if ($this->user->isLoggedIn()) {
 		    $news = new News($this->database);
-		    $this->template->news = $news->select('*')->order('created_at DESC')->limit(9);	
+		    $this->template->news = $news->select('*')->order('created_at DESC')->limit(self::WIDGET_MESSAGES_LIMIT);	
 
 		    $subjects = new Subject($this->database);
 		    $this->template->subjects = $subjects->select('*')->order('shortcut');
@@ -46,7 +48,9 @@ class HomepagePresenter extends BasePresenter
 		    $this->template->isAllowedInsertSubject = $this->user->isAllowed('subject', 'insert');
 		    
 		    $topic = new Topic($this->database);
-		    $this->template->lastTopics = $topic->order('created_at DESC')->limit(9);
+		    $log = new Log($this->database);
+		    $this->template->lastTopics = $topic->order('created_at DESC')->limit(self::WIDGET_MESSAGES_LIMIT);
+		    $this->template->lastVisits = $log->getListVisitsOfUser($this->user->id, self::WIDGET_MESSAGES_LIMIT, true, true);
 		}
 	}
 	

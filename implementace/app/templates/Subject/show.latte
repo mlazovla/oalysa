@@ -13,7 +13,7 @@
 		{if count($grades)>0}
 			<ul>
 				{foreach $grades as $g}
-					<li><a href="{link SubjectGrade:show $subject->id, $g->id}">{$g->name}</a></li>
+					<li><i class="glyphicon glyphicon-arrow-left"></i> <a href="{link SubjectGrade:show $subject->id, $g->id}">{$g->name}</a></li>
 				{/foreach}
 			</ul>
 		{else}

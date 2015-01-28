@@ -118,4 +118,38 @@ class Acount extends \Nette\Database\Table\Selection {
         }
     }
     
+    /**
+     * 
+     * @param string $secondAction
+     */ 
+    public function moveGrade($secondAction = '') {
+       /* $acount = new Acount($this->db);
+        $ret = 0;
+        switch ($secondAction) {
+            case 'block':
+                $ret = $acount->where('grade != ?','null')
+                    ->where('grade.grade.id == ?' ) // TODO posuny uživatelů
+                
+                
+                break;            
+            case 'toBatch':
+                
+                
+                
+                    break;
+            case 'delete':
+                
+                
+                
+                break;
+            default:
+            
+            
+            
+                break;
+            
+        
+        }*/
+    }
+    
 }

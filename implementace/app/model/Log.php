@@ -127,14 +127,17 @@ class Log extends \Nette\Database\Table\Selection {
         ->limit($limit);
     }
 
-    public function getListVisitsOfUser($user_id, $limit=1000, $chronolog = true) {
+    public function getListVisitsOfUser($user_id, $limit=1000, $chronolog = true, $distinct = false) {
         $log = new Log($this->db);
         $order = $chronolog ? 'ASC' : 'DESC';
+        $dst = $distinct ? 'DISTINCT ' : '';
         return $log
-        ->where('user_id', $user_id)
-        ->where('action_id', self::ACTION_VISIT_ID)
-        ->order('created_at '.$order)
-        ->limit($limit);
+            ->select($dst . 'topic_id')
+            ->where('user_id', $user_id)
+            ->where('topic_id != ?', 'null')
+            ->where('action_id', self::ACTION_VISIT_ID)
+            ->order('created_at '.$order)
+            ->limit($limit);
     }
     
     public function getLastVisitOfTopic($topic_id) {

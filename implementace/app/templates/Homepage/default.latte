@@ -5,10 +5,12 @@
 {/block}
 
 {block content}
-	<h1 n:block="title">Home</h1>
-	{include 'widget_news.latte'}
-	{include 'widget_lastTopics.latte'}
-
+	<div id="homepage">
+		<h1 n:block="title">Home</h1>
+		{include 'widget_news.latte'}
+		{include 'widget_lastTopics.latte'}
+		{include 'widget_lastVisits.latte'}
+	</div>
 {/block}
 
 {block menu}

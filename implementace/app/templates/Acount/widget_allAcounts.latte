@@ -1,7 +1,6 @@
 <div>
 	<h2>Ostatní účty</h2>
 	<a n:if="$isAllowedInsertAcount" n:href="acount:new" class="buttonInsert"><i class="glyphicon glyphicon-plus"></i> Nový</a>
-	<a n:if="$isAllowedInsertAcount" n:href="acount:batch" class="buttonInsert">Dávkové zpracování</a>
 
 	<table class="grid">
 	<thead>
@@ -21,7 +20,7 @@
 					<a n:href="acount:show $a->id" class="buttonOpen" title="Otevřít"><i class="glyphicon glyphicon-eye-open"></i></a>
 					<a n:if="$isAllowedResetPasswordAcount" n:href="acount:resetPassword $a->id" class="buttonUpdate" onclick="return(confirm('Opravdu chcete resetovat heslo?'));">Reset hesla</a>
 					<a n:if="$isAllowedUpdateAcount" n:href="acount:update $a->id" class="buttonUpdate" title="Upravit"><i class="glyphicon glyphicon-pencil"></i></a>
-					<a n:if="$isAllowedDeleteAcount" n:href="acount:delete $a->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tento účet?'));"><i class="glyphicon glyphicon-trash"> Odstranit</a>
+					<a n:if="$isAllowedDeleteAcount" n:href="acount:delete $a->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat tento účet?'));"><i class="glyphicon glyphicon-trash"></i> Odstranit</a>
 					<span id="initPassword_{$a->id}" n:if="$isAllowedShowInitPasswordAcount"> 
 						<button href="Acount:showInitPassword $a->id"
 							class="buttonShow"
@@ -35,5 +34,28 @@
 		{/foreach}
 	</tbody>
 	</table>
+
+	<div n:if="$isAllowedUpdateAcount">
+		<h2>Nástroje pro dávkové zpracování</h2>
+		<p><b>Upozornění:</b> Všechny tyto nástroje operují s mnoha uživatelskými účty naráz. Jejich neuvážené použití může způsobit nenávratné škody!</p>
+		<a n:if="$isAllowedInsertAcount" n:href="acount:batch" class="buttonInsert"
+		>Dávkové zpracování</a>
+		<a n:if="$isAllowedUpdateAcount" n:href="acount:gradeMove nothing" class="buttonUpdate"
+			title="Posune žáky do dalšího ročníku."
+			onclick="return(confirm('Opravdu chcete posunout žáky do dalšího ročníku? Žáci posledního ročníku zůstanou mimo ročník.'));"
+		>Posunout</a>
+		<a n:if="$isAllowedUpdateAcount" n:href="acount:move block" class="buttonUpdate"
+			title="Posune žáky do dalšího ročníku, účty z posledního ročníku budou zablokovány."
+			onclick="return(confirm('Opravdu chcete posunout žáky do dalšího ročníku? Žáci posledního ročníku budou mít zablokovaný účet.'));"
+		>Posunout &amp; zablokovat</a>
+		<a n:if="$isAllowedUpdateAcount && $isAllowedDeleteAcount" n:href="acount:gradeMove toBatch" class="deleteUpdate"
+			title="Posune žáky do dalšího ročníku, účty z posledního ročníku budou přesunuty do dávky."
+			onclick="return(confirm('Opravdu chcete posunout žáky do dalšího ročníku? Žákům posledního ročníku bude deaktivován a přesunut do dávky.'));"
+		>Posunout &amp; přenést do dávky.</a>
+		<a n:if="$isAllowedUpdateAcount && $isAllowedDeleteAcount" n:href="acount:gradeMove delete" class="deleteUpdate"
+			title="Posune žáky do dalšího ročníku."
+			onclick="return(confirm('Opravdu chcete posunout žáky do dalšího ročníku? Žákům posledního ročníku bude účet odstraněn.'));"
+		>Posunout &amp; odstranit</a>
+	</div>
 </div>
 	

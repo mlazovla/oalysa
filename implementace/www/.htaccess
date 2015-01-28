@@ -25,3 +25,7 @@
 		AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript text/javascript application/javascript application/json
 	</IfModule>
 </IfModule>
+
+
+php_value upload_max_filesize 40M
+php_value post_max_size 42M

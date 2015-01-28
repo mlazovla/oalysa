@@ -10,6 +10,7 @@ use App\Model\Grade;
 use App\Model\MyAuthorizator;
 
 use Nette\Application\BadRequestException;
+use Nette\Utils\Strings;
 
 
 /**
@@ -137,11 +138,25 @@ class AttachementPresenter extends BasePresenter
             $this->redirect('Homepage:');
             return;
         }
-    
+        
         $attachement = new Attachement($this->database);
-    
+        
+        if (!$attachement) {
+            $this->flashMessage('Příloha neexistuje.','warning');
+            $this->redirect('Homepage:');
+            return;            
+        }
+
         $path = $attachement->getPathById($attachementId);
-        $filename = $attachement->get($attachementId)->name;
+        $filename = Strings::webalize($attachement->get($attachementId)->name);
+
+        if(!file_exists($path)) {
+            $this->flashMessage('Přílohu nelze načíst.','warning');
+            $this->redirect('Topic:show', $attachement->topic->id);
+            return;            
+        }
+
+
         header('Content-Transfer-Encoding: binary');  // For Gecko browsers mainly
         header('Last-Modified: ' . $attachement->get($attachementId)->created_at . ' GMT');
         header('Accept-Ranges: bytes');  // Allow support for download resume
@@ -168,7 +183,7 @@ class AttachementPresenter extends BasePresenter
         $attachement = new Attachement($this->database);
     
         $path = $attachement->getPathById($attachementId);
-        $filename = $attachement->get($attachementId)->name;
+        $filename = Strings::webalize($attachement->get($attachementId)->name);
     
         header('Content-type:' . $attachement->get($attachementId)->mimeType);
         header('Content-Disposition: inline; filename="' . $filename . '"');
