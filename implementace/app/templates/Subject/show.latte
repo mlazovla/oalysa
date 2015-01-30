@@ -8,12 +8,13 @@
 	</div>
 		<h2>{$subject->shortcut}</h2>
 		<ul>
-			<li><a n:href="Homepage:">Všechny předměty</a></li>
+			<li><i class="glyphicon glyphicon-arrow-left"></i> <a n:href="Homepage:">Všechny předměty</a></li>
+			<li> </li>
 		<ul>
 		{if count($grades)>0}
 			<ul>
 				{foreach $grades as $g}
-					<li><i class="glyphicon glyphicon-arrow-left"></i> <a href="{link SubjectGrade:show $subject->id, $g->id}">{$g->name}</a></li>
+					<li><a href="{link SubjectGrade:show $subject->id, $g->id}">{$g->name}</a></li>
 				{/foreach}
 			</ul>
 		{else}

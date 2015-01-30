@@ -148,14 +148,13 @@ class AttachementPresenter extends BasePresenter
         }
 
         $path = $attachement->getPathById($attachementId);
-        $filename = Strings::webalize($attachement->get($attachementId)->name);
+        $filename = Attachement::getWebalizeName($attachement->get($attachementId)->name);
 
         if(!file_exists($path)) {
             $this->flashMessage('Přílohu nelze načíst.','warning');
             $this->redirect('Topic:show', $attachement->topic->id);
             return;            
         }
-
 
         header('Content-Transfer-Encoding: binary');  // For Gecko browsers mainly
         header('Last-Modified: ' . $attachement->get($attachementId)->created_at . ' GMT');
@@ -183,8 +182,8 @@ class AttachementPresenter extends BasePresenter
         $attachement = new Attachement($this->database);
     
         $path = $attachement->getPathById($attachementId);
-        $filename = Strings::webalize($attachement->get($attachementId)->name);
-    
+        $filename = Attachement::getWebalizeName($attachement->get($attachementId)->name);
+            
         header('Content-type:' . $attachement->get($attachementId)->mimeType);
         header('Content-Disposition: inline; filename="' . $filename . '"');
         header('Content-Transfer-Encoding: binary');

@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Nette\Http\FileUpload;
+use Nette\Utils\Strings;
 /**
  * Třída obstarávající přístup do databázovou tabulku s údaji o jednotlivých přiložených souborechke článkům.
  * Převzaté datové položky z databáze:
@@ -99,6 +100,18 @@ class Attachement extends \Nette\Database\Table\Selection {
         }
         
         return substr($filename, 0, -( strlen(end($tmp))+1 ));
+    }
+    
+    /**
+     * Get file webalize name include extension from filename
+     * @param string $filename
+     * @return string
+     */
+    public static function getWebalizeName($filename) {
+        $tmp = explode('.', $filename);
+        $name = self::getNameWithoutExtension($filename);
+        $extension = self::getExtensionByName($filename);
+        return Strings::webalize($name) . '.' . $extension;
     }
     
     /**
