@@ -15,7 +15,7 @@ namespace App\Model;
  *  - text content
  */
 class Topic extends \Nette\Database\Table\Selection {
-    private $table = "Topic";
+    private $table = "topic";
     private $db;
     
     public function __construct(\Nette\Database\Context $database) {

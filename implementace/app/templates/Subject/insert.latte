@@ -1,6 +1,6 @@
 {block content}
 		<h1 n:block="title">Vložit nový předmět</h1>
-		<a n:href="Homepage:" title="Zrušit" class="buttonCancel">Zrušit</a><br />
+		<a n:href="Homepage:" title="Zrušit" class="buttonCancel" onclick="return(confirm('Přijdete o všechna neuložená data?'));">Zrušit</a><br />
 
 		
 		{control subjectForm}

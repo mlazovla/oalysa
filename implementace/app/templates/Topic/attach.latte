@@ -2,6 +2,11 @@
 
 	<h1 n:block="title">Přiřadit {$topic->name}</h1>
 
+	<div class="tools">
+		<a n:href="topic:show $topic->id" class="buttonCancel">Zrušit</a>								
+		<a n:href="topic:deleteTopic $topic->id" class="buttonDelete" onclick="return(confirm('Opravdu chcete smazat toto téma?'));">Smazat</a>
+	</div>
+
 	<div id="anotation">
 		{$topic->anotation|noescape}
 	</div>

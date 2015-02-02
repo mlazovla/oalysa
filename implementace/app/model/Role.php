@@ -10,7 +10,7 @@ namespace App\Model;
  *  - int inherit FK
  */
 class Role extends \Nette\Database\Table\Selection {
-    private $table = "Role";
+    private $table = "role";
     private $db;
 
     public function __construct(\Nette\Database\Context $database) {

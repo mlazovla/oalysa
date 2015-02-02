@@ -41,10 +41,9 @@ class AcountPresenter extends BasePresenter
     
 	public function renderDefault()
 	{   
-	    $this->template->user = $this->database->table('User')
-	       ->select('id, username, name')
-	       ->wherePrimary($this->user->id)->get($this->user->id);
-		
+	    $acount = new Acount($this->database);
+	    $this->template->user = $acount->get($this->user->id);
+	     
 	    $isAllowedReadAcount = false;
 		if ($this->user->isLoggedIn()) {
 		    $isAllowedReadAcount = $this->user->isAllowed('acount', 'read');
@@ -78,10 +77,9 @@ class AcountPresenter extends BasePresenter
 	    if ($this->user->id == $acountId) { // pokud chci zobrazit svuj ucet preskoci na renderDefault
 	        $this->redirect('Acount:');
 	    }
-	    $this->template->user = $this->database->table('User')
-	    ->select('id, username, name')
-	    ->wherePrimary($this->user->id)->get($this->user->id);
-	
+	    $acount = new Acount($this->database);
+	    $this->template->user = $acount->get($this->user->id);
+	    	
         $isAllowedReadAcount = ($this->user->isAllowed('acount', 'read') || $acountId == $this->user->id);
         if (!$isAllowedReadAcount) {
             $this->flashMessage('Nemáte oprávnění si prohlížet cizí účty.','warning');
@@ -119,10 +117,9 @@ class AcountPresenter extends BasePresenter
 	    if (!$this->user->isLoggedIn()) {
 	        $this->redirect('Homepage:');
 	    }
-	    $this->template->user = $this->database->table('User')
-	    ->select('id, username, name')
-	    ->wherePrimary($this->user->id)->get($this->user->id);
-	
+	    $acount = new Acount($this->database);
+	    $this->template->user = $acount->get($this->user->id);
+	    	
 	    $isAllowedUpdateAcount = ($this->user->isAllowed('acount', 'update') || $acountId == $this->user->id);
 	    if (!$isAllowedUpdateAcount) {
 	        $this->flashMessage('Nemáte oprávnění upravovat cizí účty.','warning');
@@ -138,10 +135,9 @@ class AcountPresenter extends BasePresenter
 	
 	public function renderBatch()
 	{
-	    $this->template->user = $this->database->table('User')
-	    ->select('id, username, name')
-	    ->wherePrimary($this->user->id)->get($this->user->id);
-	
+	    $acount = new Acount($this->database);
+	    $this->template->user = $acount->get($this->user->id);
+	    	
 	    $isAllowedReadAcount = false;
 	    if ($this->user->isLoggedIn()) {
 	        $isAllowedReadAcount = $this->user->isAllowed('acount', 'read');
@@ -387,6 +383,33 @@ class AcountPresenter extends BasePresenter
 	    }
 	    echo Acount::generateRandomString($acountId);
 	    $this->terminate();
+	}
+	
+	public function renderShowAllInitialPasswords($all = null){
+	    if (!$this->user->isAllowed('acount', 'showInitPassword')) {
+	        throw new ForbiddenRequestException();
+	    }
+	    
+	    $this->acount = $this->acount
+	       ->order('grade.name ASC, name ASC');
+	    
+	    if ($all) {
+	        $this->template->message = "Výpis je kompletní.";
+	    }
+	    else {
+	        $this->acount = $this->acount->where('role_id', self::defaultRole);
+	        $this->template->message = "Výpis obsahuje jen žákovské účty.";	         
+	    }
+	    
+	    $acounts = array();
+	    foreach($this->acount as $a) {
+	        $t['name'] = $a->name;
+	        $t['username'] = $a->username;
+	        $t['initialPassword'] = Acount::generatePasswordFromId($a->id);
+	        $t['gradeName'] = ($a->grade_id) ? ($a->grade->name) : "-";
+	        $acounts[] = $t;
+	    }
+	    $this->template->acounts = $acounts;
 	}
 	
 	protected function createComponentBatchForm()

@@ -10,6 +10,7 @@ use App\Model\Subject;
 use App\Model\MyAuthorizator;
 use App\Model\Topic;
 use App\Model\Log;
+use App\Model\Acount;
 
 /**
  * Homepage presenter.
@@ -25,13 +26,11 @@ class HomepagePresenter extends BasePresenter
     
 	public function renderDefault()
 	{
-	    
-	    $this->template->user = $this->database->table('User')
-	       ->select('id, username, name')
-	       ->wherePrimary($this->user->id)->get($this->user->id);
+	    $acount = new Acount($this->database);
+	    $this->template->user = $acount->get($this->user->id);
 		
-		$this->template->subjects = $this->database->table('Subject')
-		->order('shortcut ASC');
+	    $subject = new Subject($this->database);
+		$this->template->subjects = $subject->order('shortcut ASC');
 
 		$this->template->news = null;
 		$this->template->subjects = null;

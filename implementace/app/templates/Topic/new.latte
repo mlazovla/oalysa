@@ -1,6 +1,11 @@
 {block content}
 	<div id="topic">
 		<h1 n:block="title">Nové téma</h1>
+		
+		<div class="tools">
+			<a n:href="topic:show $topic->id" class="buttonCancel" onclick="return(confirm('Přijdete o všechna neuložená data. Přesto odejít?'));">Zrušit</a>								
+		</div>
+
 		Nové téma bude zařazeno pod předmět <b>{$subject->name}</b> do <b>{$grade->name}</b>.
 		{control topicForm}
 	</div>

@@ -6,8 +6,8 @@ $configurator = new Nette\Configurator;
 
 //$configurator->setDebugMode('23.75.345.200'); // enable for your remote IP
 //$configurator->setDebugMode('82.202.90.22'); // enable for your remote IP (Dvory)
-//$configurator->setDebugMode('83.208.79.67'); // enable for your remote IP (Vrutice)
-$configurator->setDebugMode('10.0.0.14'); // enable for your remote IP (Michal)
+$configurator->setDebugMode('83.208.79.67'); // enable for your remote IP (Vrutice)
+//$configurator->setDebugMode('10.0.0.14'); // enable for your remote IP (Michal)
 
 
 $configurator->enableDebugger(__DIR__ . '/../log');

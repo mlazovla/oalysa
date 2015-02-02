@@ -2,8 +2,8 @@ parameters:
 
 
 database:
-	dsn: 'mysql:host=127.0.0.1;dbname=oalysa'
+	dsn: 'mysql:host=127.0.0.1;dbname=oalysamujweb'
 	user: root
-	password: 
+	password:
 	options:
 		lazy: yes

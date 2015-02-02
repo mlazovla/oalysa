@@ -38,8 +38,14 @@
 	<div n:if="$isAllowedUpdateAcount">
 		<h2>Nástroje pro dávkové zpracování</h2>
 		<p><b>Upozornění:</b> Všechny tyto nástroje operují s mnoha uživatelskými účty naráz. Jejich neuvážené použití může způsobit nenávratné škody!</p>
-		<a n:if="$isAllowedInsertAcount" n:href="acount:batch" class="buttonInsert"
-		>Dávkové zpracování</a>
+
+		<a n:if="$isAllowedInsertAcount" n:href="acount:batch" class="buttonInsert">Dávkové vytvoření</a>
+		<br />
+
+		<a n:if="$isAllowedShowInitPasswordAcount" n:href="acount:showAllInitialPasswords" class="buttonShow">Zobrazit počáteční hesla žáků</a>
+		<a n:if="$isAllowedShowInitPasswordAcount" n:href="acount:showAllInitialPasswords all" class="buttonShow">Zobrazit počáteční hesla všech</a>
+		<br />
+
 		<a n:if="$isAllowedUpdateAcount" n:href="acount:gradeMove nothing" class="buttonUpdate"
 			title="Posune žáky do dalšího ročníku."
 			onclick="return(confirm('Opravdu chcete posunout žáky do dalšího ročníku? Žáci posledního ročníku zůstanou mimo ročník.'));"
@@ -48,11 +54,11 @@
 			title="Posune žáky do dalšího ročníku, účty z posledního ročníku budou zablokovány."
 			onclick="return(confirm('Opravdu chcete posunout žáky do dalšího ročníku? Žáci posledního ročníku budou mít zablokovaný účet.'));"
 		>Posunout &amp; zablokovat</a>
-		<a n:if="$isAllowedUpdateAcount && $isAllowedDeleteAcount" n:href="acount:gradeMove toBatch" class="deleteUpdate"
+		<a n:if="$isAllowedUpdateAcount && $isAllowedDeleteAcount" n:href="acount:gradeMove toBatch" class="buttonUpdate"
 			title="Posune žáky do dalšího ročníku, účty z posledního ročníku budou přesunuty do dávky."
-			onclick="return(confirm('Opravdu chcete posunout žáky do dalšího ročníku? Žákům posledního ročníku bude deaktivován a přesunut do dávky.'));"
+			onclick="return(confirm('Opravdu chcete posunout žáky do dalšího ročníku? Žákům posledního ročníku bude účet deaktivován a přesunut do dávky.'));"
 		>Posunout &amp; přenést do dávky.</a>
-		<a n:if="$isAllowedUpdateAcount && $isAllowedDeleteAcount" n:href="acount:gradeMove delete" class="deleteUpdate"
+		<a n:if="$isAllowedUpdateAcount && $isAllowedDeleteAcount" n:href="acount:gradeMove delete" class="buttonUpdate"
 			title="Posune žáky do dalšího ročníku."
 			onclick="return(confirm('Opravdu chcete posunout žáky do dalšího ročníku? Žákům posledního ročníku bude účet odstraněn.'));"
 		>Posunout &amp; odstranit</a>

@@ -18,7 +18,7 @@ use Nette\Utils\Strings;
  *  
  */
 class Attachement extends \Nette\Database\Table\Selection {
-    private $table = "Attachement";
+    private $table = "attachement";
     private $db;
     /**
      * Path to attachements

@@ -11,7 +11,7 @@ namespace App\Model;
  *  
  */
 class Grade extends \Nette\Database\Table\Selection {
-    private $table = "Grade";
+    private $table = "grade";
     private $db;
     
     public function __construct(\Nette\Database\Context $database) {

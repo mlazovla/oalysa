@@ -11,7 +11,7 @@ namespace App\Model;
  *  - text content
  */
 class News extends \Nette\Database\Table\Selection {
-    private $table = "News";
+    private $table = "news";
     private $db;
     
     public function __construct(\Nette\Database\Context $database) {

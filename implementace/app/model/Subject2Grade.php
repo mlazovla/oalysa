@@ -10,7 +10,7 @@ namespace App\Model;
  *  - int Grade_id FK
  */
 class Subject2Grade extends \Nette\Database\Table\Selection {
-    private $table = "Subject2Grade";
+    private $table = "subject2grade";
     private $db;
     
     public function __construct(\Nette\Database\Context $database) {

@@ -11,7 +11,7 @@ namespace App\Model;
  *  
  */
 class Action extends \Nette\Database\Table\Selection {
-    private $table = "Action";
+    private $table = "action";
     private $db;
     
     public function __construct(\Nette\Database\Context $database) {

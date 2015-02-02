@@ -13,7 +13,7 @@ namespace App\Model;
  *  - text note
  */
 class Log extends \Nette\Database\Table\Selection {
-    private $table = "Log";
+    private $table = "log";
     private $db;
     
     const ACTION_VISIT_ID = '1'; // id of Visit action

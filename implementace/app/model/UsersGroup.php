@@ -11,7 +11,7 @@ namespace App\Model;
  *  
  */
 class UsersGroup extends \Nette\Database\Table\Selection {
-    private $table = "UsersGroup";
+    private $table = "usersgroup";
     private $db;
     
     public function __construct(\Nette\Database\Context $database) {

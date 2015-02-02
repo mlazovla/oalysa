@@ -12,7 +12,7 @@ namespace App\Model;
  *  
  */
 class Subject extends \Nette\Database\Table\Selection {
-    private $table = "Subject";
+    private $table = "subject";
     private $db;
     
     public function __construct(\Nette\Database\Context $database) {

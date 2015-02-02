@@ -52,7 +52,12 @@ class Acount extends \Nette\Database\Table\Selection {
         return $uniqueUsername;        
     }
     
-    
+    /**
+     * Generate random string based on seed
+     * @param int randSeed
+     * @param int lenght
+     * @return string
+     */
     public static function generateRandomString($randSeed = 0, $length = self::MIN_PASSWORD_LEN) {
         $characters = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ.';
         $charactersLength = strlen($characters);
@@ -62,6 +67,15 @@ class Acount extends \Nette\Database\Table\Selection {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
+    }
+    
+    /**
+     * Generate password based on id of acount
+     * @param int $id
+     * @return string
+     */
+    public static function generatePasswordFromId($id) {
+        return self::generateRandomString($id);
     }
     
     /**

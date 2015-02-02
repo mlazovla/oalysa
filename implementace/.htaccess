@@ -1,5 +1,2 @@
 RewriteEngine On
-RewriteCond %{HTTP_HOST} ^(www\.)?localhost$
-RewriteRule ^$ www/ [L]
-RewriteCond %{HTTP_HOST} ^(www\.)?localhost$
-RewriteRule (.*) www/$1 [L]
+RewriteRule ^$ /oa_lysa/www [L]

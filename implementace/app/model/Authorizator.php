@@ -11,7 +11,7 @@ implements \Nette\Security\IAuthorizator
     
     const GARANTED_PRIVILEGIES_TABLE = 'garantedprivilegies';
     const ROLE_COLUMB = 'role';
-    const ROLE_TABLE = 'Role';
+    const ROLE_TABLE = 'role';
     const RESOURCE_COLUMB = 'resource';
     const RESOURCE_TABLE = 'resource';
     const PRIVILEGE_COLUMB = 'privilege';

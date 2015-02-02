@@ -33,7 +33,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
                 $this->flashMessage('Nemáte oprávnění se přihlásit. Obraťte se na administrátora webu.', 'warning');
              }
             
-            $row = $this->database->table('User')->get($this->user->identity->getId());
+            $row = $this->database->table('user')->get($this->user->identity->getId());
             $currentUser = $row;
            
             $this->template->currentUser = $currentUser;    

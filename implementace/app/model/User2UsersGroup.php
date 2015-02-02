@@ -10,7 +10,7 @@ namespace App\Model;
  *  - int UsersGroup_id FK
  */
 class User2UsersGroup extends \Nette\Database\Table\Selection {
-    private $table = "User2UsersGroup";
+    private $table = "user2usersgroup";
     private $db;
     
     public function __construct(\Nette\Database\Context $database) {

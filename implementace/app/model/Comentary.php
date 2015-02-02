@@ -14,7 +14,7 @@ namespace App\Model;
  *  
  */
 class Comentary extends \Nette\Database\Table\Selection {
-    private $table = "Comentary";
+    private $table = "comentary";
     private $db;
     
     public function __construct(\Nette\Database\Context $database) {

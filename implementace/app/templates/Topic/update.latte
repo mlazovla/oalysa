@@ -24,7 +24,7 @@
 
 		<div class="tools">
 			<a n:href="topic:new $topic->id" class="buttonNew">Nový</a>
-			<a n:href="topic:show $topic->id" class="buttonCancel">Zrušit</a>								
+			<a n:href="topic:show $topic->id" class="buttonCancel" onclick="return(confirm('Přijdete o všechna neuložená data. Opravdu odejít?'));">Zrušit editaci</a>								
 			<a n:href="topic:deleteTopic $topic->id" class="buttonDelete">Smazat</a>
 		</div>
 		
